@@ -16,10 +16,13 @@ export interface PublicProfessional {
   location_state: string | null;
   price_cents: number;
   photo_url: string | null;
+  instagram_url: string | null;
+  whatsapp_url: string | null;
+  website_url: string | null;
 }
 
 const PUBLIC_COLUMNS =
-  "id, full_name, category, bio, years_experience, specialties, methods, personality, session_format, location_city, location_state, price_cents, photo_url";
+  "id, full_name, category, bio, years_experience, specialties, methods, personality, session_format, location_city, location_state, price_cents, photo_url, instagram_url, whatsapp_url, website_url";
 
 export interface ProfessionalSearchFilters {
   category?: ProfessionalCategory;

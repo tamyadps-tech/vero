@@ -12,3 +12,29 @@ export function parseTagList(input: string): string[] {
   }
   return result;
 }
+
+const MAX_TAGS = 10;
+
+/** Valida uma lista de tags vinda do corpo de uma requisição (já em array). */
+export function parseTagArray(value: unknown): string[] | null {
+  if (!Array.isArray(value)) return null;
+  if (value.length > MAX_TAGS) return null;
+  const tags: string[] = [];
+  for (const item of value) {
+    if (typeof item !== "string") return null;
+    const tag = item.trim();
+    if (!tag || tag.length > 40) return null;
+    tags.push(tag);
+  }
+  return tags;
+}
+
+/** Mesma validação, mas a partir de um campo de FormData (string JSON). */
+export function parseJsonTagField(value: unknown): string[] | null {
+  if (typeof value !== "string") return null;
+  try {
+    return parseTagArray(JSON.parse(value));
+  } catch {
+    return null;
+  }
+}

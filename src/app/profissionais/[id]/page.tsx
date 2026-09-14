@@ -106,6 +106,41 @@ export default async function ProfessionalProfilePage({
             <RatingBadge average={rating.average} count={rating.count} />
           </div>
 
+          {(professional.instagram_url || professional.whatsapp_url || professional.website_url) && (
+            <div className="mt-2 flex flex-wrap gap-3 text-sm">
+              {professional.instagram_url && (
+                <a
+                  href={professional.instagram_url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-primary hover:underline"
+                >
+                  Instagram
+                </a>
+              )}
+              {professional.whatsapp_url && (
+                <a
+                  href={professional.whatsapp_url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-primary hover:underline"
+                >
+                  WhatsApp
+                </a>
+              )}
+              {professional.website_url && (
+                <a
+                  href={professional.website_url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-primary hover:underline"
+                >
+                  Site
+                </a>
+              )}
+            </div>
+          )}
+
           {professional.personality && (
             <p className="mt-4 text-lg italic text-ink-soft">
               &ldquo;{professional.personality}&rdquo;

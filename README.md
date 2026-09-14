@@ -11,13 +11,15 @@ verdade (email+senha) pra profissional e cliente, e progresso visual. Ver
 enquanto revisamos tudo — não é pra divulgar esse link publicamente
 ainda. Conectado a serviços reais (Supabase, Resend, Stripe em modo
 teste). Já existem cadastro/vetting de profissional com login de
-verdade e foto de perfil (upload direto pro Supabase Storage), busca/
-perfil público, agendamento de sessão (exige cliente logado), prontuário
+verdade, foto de perfil e edição de perfil no próprio painel (bio, preço,
+especialidades, redes sociais — Instagram/WhatsApp/site), busca/perfil
+público, agendamento de sessão (exige cliente logado), prontuário
 compartilhado, progresso acompanhado no painel, autoavaliações (PHQ-9,
-GAD-7, Roda da Vida) — que o profissional acompanha na própria aba de
-clientes do painel —, avaliações públicas, email transacional e cobrança
-via Stripe — todos com fallback gracioso: sem alguma chave configurada,
-essa parte específica cai pro "modo grátis/sem email" em vez de quebrar.
+GAD-7, Roda da Vida) — liberadas teste a teste pelo profissional, o
+cliente só vê depois que o profissional libera —, avaliações públicas,
+email transacional e cobrança via Stripe — todos com fallback gracioso:
+sem alguma chave configurada, essa parte específica cai pro "modo
+grátis/sem email" em vez de quebrar.
 
 ## Stack
 

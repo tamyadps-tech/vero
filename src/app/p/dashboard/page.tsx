@@ -19,6 +19,7 @@ import { CATEGORY_LABELS } from "@/lib/professional-categories";
 import { SESSION_FORMAT_LABELS } from "@/lib/session-format";
 import { ENGAGEMENT_STATUS_LABELS } from "@/lib/client-engagement";
 import { AssessmentReleaseToggles } from "@/components/professional/AssessmentReleaseToggles";
+import { ProfessionalProfileSection } from "@/components/professional/ProfessionalProfileSection";
 
 export const metadata: Metadata = {
   title: "Meu painel — Vero",
@@ -125,6 +126,20 @@ export default async function ProfessionalDashboardPage() {
             {CATEGORY_LABELS[professional.category]} · {SESSION_FORMAT_LABELS[professional.session_format]} ·{" "}
             {formatPrice(professional.price_cents)}/sessão · <RatingBadge average={rating.average} count={rating.count} />
           </p>
+
+          {/* Meu perfil */}
+          <section className="mt-10">
+            <h2 className="text-sm font-semibold uppercase tracking-wide text-ink-soft">
+              Meu perfil
+            </h2>
+            <p className="mt-1 text-sm text-ink-soft">
+              Como você aparece pra quem te encontra na busca. Mantenha bio,
+              foto e redes sociais atualizadas.
+            </p>
+            <div className="mt-4">
+              <ProfessionalProfileSection professional={professional} />
+            </div>
+          </section>
 
           {/* Divulgação */}
           <section className="mt-10">
