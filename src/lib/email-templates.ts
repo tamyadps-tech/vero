@@ -177,3 +177,28 @@ export function professionalRejectedEmail({
     html: shell("Sobre sua candidatura — Vero", body),
   };
 }
+
+export function professionalMessageEmail({
+  clientName,
+  professionalName,
+  subject,
+  message,
+}: {
+  clientName: string;
+  professionalName: string;
+  subject: string;
+  message: string;
+}): { subject: string; html: string } {
+  const messageHtml = escapeHtml(message).replace(/\n/g, "<br>");
+  const body = `
+    <p style="font-size:16px;">Olá, <strong>${escapeHtml(clientName)}</strong>,</p>
+    <p style="font-size:14px;line-height:1.6;color:#1b2421;">${messageHtml}</p>
+    <p style="margin-top:24px;font-size:12px;color:#5b6763;">
+      Mensagem enviada por <strong>${escapeHtml(professionalName)}</strong> pela Vero.
+    </p>
+  `;
+  return {
+    subject: `${subject} — ${professionalName}`,
+    html: shell(subject, body),
+  };
+}

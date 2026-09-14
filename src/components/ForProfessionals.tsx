@@ -2,6 +2,9 @@ import { WaitlistForm } from "./WaitlistForm";
 
 const perks = [
   "Agenda, prontuário e cobrança num só lugar",
+  "CRM com o histórico de cada cliente e o valor que ele já gerou (LTV)",
+  "Sinal de quem está sumindo, pra você reengajar antes de perder o cliente",
+  "Envie mensagens (avisos, novidades, promoções) direto pros seus clientes",
   "Perfil público com avaliações reais de clientes",
   "Resumo de sessão automático — você não escreve o email",
   "Comissão simples por sessão, sem mensalidade no início",
