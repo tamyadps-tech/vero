@@ -6,15 +6,17 @@ verdade (email+senha) pra profissional e cliente, e progresso visual. Ver
 [`BRANDING.md`](./BRANDING.md) para nome, cores e tom de voz, e
 [`docs/planning/`](./docs/planning) para o PRD original.
 
-**Estágio atual**: pré-lançamento — o produto está funcionalmente completo
-e conectado a serviços reais (Supabase, Resend, Stripe em modo teste), mas
-ainda não está publicado em nenhum domínio. A landing page captura
-interesse na lista de espera; já existem cadastro/vetting de profissional,
-busca/perfil público, agendamento de sessão, prontuário compartilhado,
-progresso sem login, autoavaliações (PHQ-9, GAD-7, Roda da Vida),
-avaliações públicas, email transacional e cobrança via Stripe — todos com
-fallback gracioso: sem alguma chave configurada, essa parte específica
-cai pro "modo grátis/sem email" em vez de quebrar.
+**Estágio atual**: pré-lançamento, já publicado num domínio da Vercel
+(`vero-rose.vercel.app`) mas ainda bloqueado pra buscadores (`robots.ts`)
+enquanto revisamos tudo — não é pra divulgar esse link publicamente
+ainda. Conectado a serviços reais (Supabase, Resend, Stripe em modo
+teste). Já existem cadastro/vetting de profissional com login de
+verdade, busca/perfil público, agendamento de sessão (exige cliente
+logado), prontuário compartilhado, progresso acompanhado no painel,
+autoavaliações (PHQ-9, GAD-7, Roda da Vida), avaliações públicas, email
+transacional e cobrança via Stripe — todos com fallback gracioso: sem
+alguma chave configurada, essa parte específica cai pro "modo
+grátis/sem email" em vez de quebrar.
 
 ## Stack
 

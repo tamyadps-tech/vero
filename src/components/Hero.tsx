@@ -18,8 +18,8 @@ export function Hero() {
           <p className="mx-auto mt-6 max-w-xl text-lg leading-relaxed text-ink-soft">
             A Vero conecta terapeutas, psicólogos, coaches e consultores a
             clientes que buscam acompanhamento sério — com aprovação por
-            vetting, resumo de sessão automático e progresso visual, sem
-            precisar de login.
+            vetting, resumo de sessão automático e progresso visual, tudo
+            na sua própria conta.
           </p>
         </div>
         <div id="lista-espera-cliente" className="mx-auto mt-10 max-w-md">

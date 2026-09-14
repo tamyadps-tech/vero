@@ -4,7 +4,7 @@ import "./globals.css";
 export const metadata: Metadata = {
   title: "Vero — Profissionais verificados. Progresso que se vê.",
   description:
-    "Marketplace de terapeutas, psicólogos, coaches e consultores com vetting de credenciais, avaliações públicas e progresso visual sem login.",
+    "Marketplace de terapeutas, psicólogos, coaches e consultores com vetting de credenciais, avaliações públicas e progresso visual acompanhado no seu painel.",
   // Pré-lançamento: o site está no ar pra revisão interna, mas ainda não
   // é pra aparecer em buscadores. Remover quando decidirem lançar de
   // verdade (ver robots.ts também).

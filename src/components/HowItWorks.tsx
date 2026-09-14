@@ -15,7 +15,7 @@ const steps = [
     step: "03",
     title: "Acompanhe seu progresso",
     description:
-      "Receba um resumo por email e veja gráficos de evolução num link pessoal — sem precisar criar conta.",
+      "Receba um resumo por email e veja sua evolução no seu painel pessoal, com o histórico de todas as sessões.",
   },
 ];
 

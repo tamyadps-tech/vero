@@ -16,9 +16,9 @@ const features = [
     ),
   },
   {
-    title: "Progresso visual, sem login",
+    title: "Progresso visual, na sua conta",
     description:
-      "Depois de cada sessão, o cliente recebe um resumo por email e acessa seu progresso por um link único — sem senha, sem fricção.",
+      "Depois de cada sessão, o cliente recebe um resumo por email e acompanha sua evolução no próprio painel, com histórico completo de tudo.",
     icon: (
       <path d="M4 19V5m0 14h16M8 15l3-4 3 3 4-6" />
     ),

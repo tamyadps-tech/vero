@@ -21,6 +21,9 @@ export function Header() {
           <a href="#confianca" className="hover:text-ink">
             Confiança &amp; vetting
           </a>
+          <a href="#faq" className="hover:text-ink">
+            Dúvidas
+          </a>
         </nav>
         <div className="flex items-center gap-3">
           <Link
