@@ -3,6 +3,7 @@ import { getSupabaseAdmin } from "@/lib/supabase-admin";
 import { getAssessmentTemplate, scoreAssessment } from "@/lib/assessments";
 import { getClientIdFromAccessToken } from "@/lib/client-session";
 import { readAccessToken } from "@/lib/read-session-token";
+import { isAssessmentReleasedForClient } from "@/lib/assessment-releases";
 
 export async function POST(request: Request) {
   let body: unknown;
@@ -54,6 +55,16 @@ export async function POST(request: Request) {
   const clientId = await getClientIdFromAccessToken(accessToken);
   if (!clientId) {
     return NextResponse.json({ error: "Faça login novamente." }, { status: 401 });
+  }
+
+  // Nunca confia só na UI escondendo o botão: mesmo que o cliente chame
+  // essa rota direto, o teste precisa ter sido liberado pelo profissional.
+  const isReleased = await isAssessmentReleasedForClient(clientId, template.slug);
+  if (!isReleased) {
+    return NextResponse.json(
+      { error: "Esse teste ainda não foi liberado pelo seu profissional." },
+      { status: 403 }
+    );
   }
 
   const { error: insertError } = await supabase.from("assessment_responses").insert({

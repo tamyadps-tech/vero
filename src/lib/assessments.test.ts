@@ -2,6 +2,7 @@ import { describe, it, expect } from "vitest";
 import {
   scoreAssessment,
   getAssessmentTemplate,
+  isAssessmentTemplateSlug,
   ASSESSMENT_TEMPLATES,
 } from "./assessments";
 
@@ -70,5 +71,19 @@ describe("scoreAssessment", () => {
       expect(bandsCoverMax).toBe(true);
       expect(bandsCoverMin).toBe(true);
     }
+  });
+});
+
+describe("isAssessmentTemplateSlug", () => {
+  it("accepts every known template slug", () => {
+    for (const template of ASSESSMENT_TEMPLATES) {
+      expect(isAssessmentTemplateSlug(template.slug)).toBe(true);
+    }
+  });
+
+  it("rejects unknown or non-string values", () => {
+    expect(isAssessmentTemplateSlug("nao-existe")).toBe(false);
+    expect(isAssessmentTemplateSlug(undefined)).toBe(false);
+    expect(isAssessmentTemplateSlug(42)).toBe(false);
   });
 });

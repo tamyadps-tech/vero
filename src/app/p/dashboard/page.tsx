@@ -18,11 +18,7 @@ import { getReviewSummaries } from "@/lib/reviews";
 import { CATEGORY_LABELS } from "@/lib/professional-categories";
 import { SESSION_FORMAT_LABELS } from "@/lib/session-format";
 import { ENGAGEMENT_STATUS_LABELS } from "@/lib/client-engagement";
-import { ASSESSMENT_TEMPLATES } from "@/lib/assessments";
-
-const ASSESSMENT_NAMES: Record<string, string> = Object.fromEntries(
-  ASSESSMENT_TEMPLATES.map((t) => [t.slug, t.name])
-);
+import { AssessmentReleaseToggles } from "@/components/professional/AssessmentReleaseToggles";
 
 export const metadata: Metadata = {
   title: "Meu painel — Vero",
@@ -218,9 +214,10 @@ export default async function ProfessionalDashboardPage() {
             </h2>
             <p className="mt-1 text-sm text-ink-soft">
               Quem já passou por sessões com você, com histórico, valor
-              vitalício (LTV), sinal de quem precisa de reengajamento e o
-              resultado mais recente das autoavaliações (PHQ-9, GAD-7, Roda
-              da Vida) que o próprio cliente faz no painel dele.
+              vitalício (LTV) e sinal de quem precisa de reengajamento.
+              Autoavaliações (PHQ-9, GAD-7, Roda da Vida) ficam ocultas pro
+              cliente até você liberar — libere só quando fizer sentido
+              clinicamente.
             </p>
             <div className="mt-4">
               {clients === null ? (
@@ -270,20 +267,11 @@ export default async function ProfessionalDashboardPage() {
                             <p>Última: {dateFormatter.format(new Date(client.lastSessionAt))}</p>
                           )}
                         </div>
-                        {client.latestAssessments.length > 0 && (
-                          <div className="mt-1 flex w-full flex-wrap gap-1.5">
-                            {client.latestAssessments.map((a) => (
-                              <span
-                                key={a.templateSlug}
-                                className="rounded-full bg-paper-alt px-2.5 py-0.5 text-xs text-ink-soft"
-                                title={dateFormatter.format(new Date(a.createdAt))}
-                              >
-                                {ASSESSMENT_NAMES[a.templateSlug] ?? a.templateSlug}: {a.score} (
-                                {a.severity})
-                              </span>
-                            ))}
-                          </div>
-                        )}
+                        <AssessmentReleaseToggles
+                          clientId={client.id}
+                          releasedSlugs={client.releasedAssessmentSlugs}
+                          latestAssessments={client.latestAssessments}
+                        />
                       </div>
                     ))}
                   </div>

@@ -6,6 +6,7 @@ import { LogoutButton } from "@/components/auth/LogoutButton";
 import { getClientFromAccessToken } from "@/lib/client-session";
 import { readAccessToken } from "@/lib/read-session-token";
 import { getClientProgress } from "@/lib/client-progress";
+import { listReleasedTemplateSlugsForClient } from "@/lib/assessment-releases";
 import { ReviewForm } from "@/components/ReviewForm";
 import { AssessmentsSection } from "@/components/AssessmentsSection";
 
@@ -58,7 +59,10 @@ export default async function ClientDashboardPage({
     );
   }
 
-  const progress = await getClientProgress(client.id);
+  const [progress, releasedSlugs] = await Promise.all([
+    getClientProgress(client.id),
+    listReleasedTemplateSlugsForClient(client.id),
+  ]);
 
   if (!progress) {
     return (
@@ -125,10 +129,14 @@ export default async function ClientDashboardPage({
             Autoavaliações
           </h2>
           <p className="mt-1 text-sm text-ink-soft">
-            Faça periodicamente pra acompanhar sua evolução ao longo do tempo.
+            Cada teste só fica disponível depois que seu profissional
+            libera — combina com ele se e quando fizer sentido.
           </p>
           <div className="mt-4">
-            <AssessmentsSection responses={progress.assessmentResponses} />
+            <AssessmentsSection
+              responses={progress.assessmentResponses}
+              releasedSlugs={Array.from(releasedSlugs)}
+            />
           </div>
 
           <h2 className="mt-10 text-sm font-semibold uppercase tracking-wide text-ink-soft">

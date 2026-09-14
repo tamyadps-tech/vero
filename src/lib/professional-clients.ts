@@ -1,6 +1,7 @@
 import { getSupabaseAdmin } from "@/lib/supabase-admin";
 import { computeEngagementStatus, type EngagementStatus } from "@/lib/client-engagement";
 import { ASSESSMENT_TEMPLATES } from "@/lib/assessments";
+import { fetchReleasedSlugsByClient } from "@/lib/assessment-releases";
 
 export interface ClientLatestAssessment {
   templateSlug: string;
@@ -21,6 +22,8 @@ export interface ProfessionalClient {
   engagementStatus: EngagementStatus;
   /** Resultado mais recente de cada autoavaliação (PHQ-9, GAD-7, Roda da Vida) que o cliente já fez. */
   latestAssessments: ClientLatestAssessment[];
+  /** Slugs de teste que este profissional já liberou pra esse cliente. */
+  releasedAssessmentSlugs: string[];
 }
 
 type SessionRow = {
@@ -38,7 +41,10 @@ type AssessmentResponseRow = {
   created_at: string;
 };
 
-type ClientAccumulator = Omit<ProfessionalClient, "engagementStatus" | "latestAssessments">;
+type ClientAccumulator = Omit<
+  ProfessionalClient,
+  "engagementStatus" | "latestAssessments" | "releasedAssessmentSlugs"
+>;
 
 /**
  * Busca o resultado mais recente de cada teste (PHQ-9, GAD-7, Roda da
@@ -143,10 +149,11 @@ export async function listProfessionalClients(
     byClient.set(client.id, entry);
   }
 
-  const assessmentsByClient = await fetchLatestAssessmentsByClient(
-    supabase,
-    Array.from(byClient.keys())
-  );
+  const clientIds = Array.from(byClient.keys());
+  const [assessmentsByClient, releasedByClient] = await Promise.all([
+    fetchLatestAssessmentsByClient(supabase, clientIds),
+    fetchReleasedSlugsByClient(professionalId, clientIds),
+  ]);
 
   return Array.from(byClient.values())
     .map((entry) => ({
@@ -157,6 +164,7 @@ export async function listProfessionalClients(
         now,
       }),
       latestAssessments: assessmentsByClient.get(entry.id) ?? [],
+      releasedAssessmentSlugs: Array.from(releasedByClient.get(entry.id) ?? []),
     }))
     .sort((a, b) => (b.lastSessionAt ?? "").localeCompare(a.lastSessionAt ?? ""));
 }

@@ -135,6 +135,10 @@ export function getAssessmentTemplate(slug: string): AssessmentTemplate | undefi
   return ASSESSMENT_TEMPLATES.find((t) => t.slug === slug);
 }
 
+export function isAssessmentTemplateSlug(value: unknown): value is string {
+  return typeof value === "string" && ASSESSMENT_TEMPLATES.some((t) => t.slug === value);
+}
+
 export function getResponseOptions(responseType: ResponseType) {
   if (responseType === "likert4") return LIKERT4_OPTIONS;
   return Array.from({ length: 11 }, (_, value) => ({ value, label: String(value) }));
