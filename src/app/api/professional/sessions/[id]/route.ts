@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { getSupabaseAdmin } from "@/lib/supabase-admin";
-import { getProfessionalIdByToken } from "@/lib/professional-auth";
+import { getProfessionalIdFromAccessToken } from "@/lib/professional-session";
+import { readAccessToken } from "@/lib/read-session-token";
 import { parseSessionUpdate, notifySessionCompletion } from "@/lib/session-updates";
 
 export async function PATCH(
@@ -16,8 +17,6 @@ export async function PATCH(
     return NextResponse.json({ error: "Corpo inválido." }, { status: 400 });
   }
 
-  const { token } = (body ?? {}) as { token?: unknown };
-
   const result = parseSessionUpdate(body);
   if ("error" in result) {
     return NextResponse.json({ error: result.error }, { status: 400 });
@@ -31,9 +30,10 @@ export async function PATCH(
     );
   }
 
-  const professionalId = await getProfessionalIdByToken(supabase, token);
+  const accessToken = await readAccessToken("professional");
+  const professionalId = await getProfessionalIdFromAccessToken(accessToken);
   if (!professionalId) {
-    return NextResponse.json({ error: "Link inválido." }, { status: 404 });
+    return NextResponse.json({ error: "Faça login novamente." }, { status: 401 });
   }
 
   // O filtro por professional_id aqui garante que o profissional só edita

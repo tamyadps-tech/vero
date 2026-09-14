@@ -46,7 +46,7 @@ export async function PATCH(
       vetting_notes: notesValue,
     })
     .eq("id", id)
-    .select("full_name, email, access_token")
+    .select("full_name, email")
     .single();
 
   if (error || !updated) {
@@ -62,7 +62,7 @@ export async function PATCH(
   if (action === "aprovar") {
     const { subject, html } = professionalApprovedEmail({
       professionalName: updated.full_name,
-      dashboardUrl: `${origin}/p/${updated.access_token}`,
+      dashboardUrl: `${origin}/p/entrar`,
     });
     await sendEmail({ to: updated.email, subject, html });
   } else {

@@ -16,43 +16,59 @@ describe("BookingWidget", () => {
   });
 
   it("shows an honest empty state when there are no slots", () => {
-    render(<BookingWidget professionalId={PROFESSIONAL_ID} slotsIso={[]} />);
+    render(
+      <BookingWidget professionalId={PROFESSIONAL_ID} slotsIso={[]} isLoggedIn={true} />
+    );
     expect(
       screen.getByText(/sem horários disponíveis no momento/i)
     ).toBeInTheDocument();
   });
 
-  it("lets the client pick a slot, fill the form, and book successfully", async () => {
+  it("prompts login when the client isn't logged in", () => {
+    render(
+      <BookingWidget
+        professionalId={PROFESSIONAL_ID}
+        slotsIso={[SLOT_ISO]}
+        isLoggedIn={false}
+      />
+    );
+    expect(
+      screen.getByText(/entre ou crie sua conta pra agendar/i)
+    ).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: /entrar/i })).toHaveAttribute(
+      "href",
+      "/c/entrar"
+    );
+  });
+
+  it("lets a logged-in client pick a slot and book successfully", async () => {
     const fetchMock = fetch as unknown as ReturnType<typeof vi.fn>;
     fetchMock.mockResolvedValueOnce({
       ok: true,
-      json: async () => ({ ok: true, progressToken: "token-123" }),
+      json: async () => ({ ok: true }),
     });
 
     const user = userEvent.setup();
-    render(<BookingWidget professionalId={PROFESSIONAL_ID} slotsIso={[SLOT_ISO]} />);
+    render(
+      <BookingWidget
+        professionalId={PROFESSIONAL_ID}
+        slotsIso={[SLOT_ISO]}
+        isLoggedIn={true}
+      />
+    );
 
     await user.click(screen.getByRole("button", { name: /·/ }));
-
-    await user.type(screen.getByLabelText(/nome completo/i), "João Silva");
-    await user.type(screen.getByLabelText(/^email$/i), "joao@example.com");
     await user.click(screen.getByRole("button", { name: /confirmar agendamento/i }));
 
     await waitFor(() =>
       expect(screen.getByText(/sessão agendada/i)).toBeInTheDocument()
     );
-    expect(screen.getByRole("link", { name: /token-123/ })).toHaveAttribute(
-      "href",
-      "/c/token-123"
-    );
 
     const [, options] = fetchMock.mock.calls[0];
     const sentBody = JSON.parse(options.body);
-    expect(sentBody).toMatchObject({
+    expect(sentBody).toEqual({
       professionalId: PROFESSIONAL_ID,
       slot: SLOT_ISO,
-      clientName: "João Silva",
-      clientEmail: "joao@example.com",
     });
   });
 
@@ -64,11 +80,15 @@ describe("BookingWidget", () => {
     });
 
     const user = userEvent.setup();
-    render(<BookingWidget professionalId={PROFESSIONAL_ID} slotsIso={[SLOT_ISO]} />);
+    render(
+      <BookingWidget
+        professionalId={PROFESSIONAL_ID}
+        slotsIso={[SLOT_ISO]}
+        isLoggedIn={true}
+      />
+    );
 
     await user.click(screen.getByRole("button", { name: /·/ }));
-    await user.type(screen.getByLabelText(/nome completo/i), "João Silva");
-    await user.type(screen.getByLabelText(/^email$/i), "joao@example.com");
     await user.click(screen.getByRole("button", { name: /confirmar agendamento/i }));
 
     await waitFor(() =>

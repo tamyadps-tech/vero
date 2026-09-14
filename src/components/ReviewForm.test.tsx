@@ -7,7 +7,6 @@ vi.mock("next/navigation", () => ({
   useRouter: () => ({ refresh: vi.fn() }),
 }));
 
-const TOKEN = "11111111-1111-1111-1111-111111111111";
 const SESSION_ID = "22222222-2222-2222-2222-222222222222";
 
 describe("ReviewForm", () => {
@@ -21,7 +20,7 @@ describe("ReviewForm", () => {
 
   it("requires a rating before submitting", async () => {
     const user = userEvent.setup();
-    render(<ReviewForm token={TOKEN} sessionId={SESSION_ID} />);
+    render(<ReviewForm sessionId={SESSION_ID} />);
 
     await user.click(screen.getByRole("button", { name: /enviar avaliação/i }));
 
@@ -36,7 +35,7 @@ describe("ReviewForm", () => {
     fetchMock.mockResolvedValueOnce({ ok: true, json: async () => ({ ok: true }) });
 
     const user = userEvent.setup();
-    render(<ReviewForm token={TOKEN} sessionId={SESSION_ID} />);
+    render(<ReviewForm sessionId={SESSION_ID} />);
 
     await user.click(screen.getByRole("radio", { name: /4 estrelas/i }));
     await user.type(screen.getByPlaceholderText(/comentário opcional/i), "Muito bom");
@@ -48,7 +47,6 @@ describe("ReviewForm", () => {
 
     const [, options] = fetchMock.mock.calls[0];
     expect(JSON.parse(options.body)).toEqual({
-      token: TOKEN,
       sessionId: SESSION_ID,
       rating: 4,
       comment: "Muito bom",

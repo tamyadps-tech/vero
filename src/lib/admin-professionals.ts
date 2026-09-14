@@ -23,10 +23,6 @@ export interface AdminProfessional {
   created_at: string;
 }
 
-export interface AdminProfessionalDetail extends AdminProfessional {
-  access_token: string;
-}
-
 /** Retorna null quando o Supabase ainda não está configurado. */
 export async function listProfessionals(): Promise<AdminProfessional[] | null> {
   const supabase = getSupabaseAdmin();
@@ -49,7 +45,7 @@ export async function listProfessionals(): Promise<AdminProfessional[] | null> {
 
 type ProfessionalLookup =
   | { configured: false }
-  | { configured: true; professional: AdminProfessionalDetail | null };
+  | { configured: true; professional: AdminProfessional | null };
 
 export async function getProfessional(id: string): Promise<ProfessionalLookup> {
   const supabase = getSupabaseAdmin();
@@ -58,7 +54,7 @@ export async function getProfessional(id: string): Promise<ProfessionalLookup> {
   const { data, error } = await supabase
     .from("professionals")
     .select(
-      "id, full_name, email, category, bio, years_experience, specialties, methods, personality, session_format, location_city, location_state, location_address, price_cents, vetting_status, vetting_notes, credential_document_url, created_at, access_token"
+      "id, full_name, email, category, bio, years_experience, specialties, methods, personality, session_format, location_city, location_state, location_address, price_cents, vetting_status, vetting_notes, credential_document_url, created_at"
     )
     .eq("id", id)
     .maybeSingle();

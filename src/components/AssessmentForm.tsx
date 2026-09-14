@@ -5,11 +5,9 @@ import { useRouter } from "next/navigation";
 import { getAssessmentTemplate, getResponseOptions } from "@/lib/assessments";
 
 export function AssessmentForm({
-  token,
   templateSlug,
   onClose,
 }: {
-  token: string;
   templateSlug: string;
   onClose: () => void;
 }) {
@@ -35,7 +33,7 @@ export function AssessmentForm({
       const response = await fetch("/api/assessments/submit", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ token, templateSlug, answers: orderedAnswers }),
+        body: JSON.stringify({ templateSlug, answers: orderedAnswers }),
       });
       const data = await response.json();
 

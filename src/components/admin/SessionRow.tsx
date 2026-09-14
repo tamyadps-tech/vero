@@ -45,11 +45,11 @@ function toDatetimeLocal(iso: string | null): string {
 
 export function SessionRow({
   session,
-  token,
+  own,
 }: {
   session: AdminSession;
-  /** Presente no painel do profissional (/p/[token]); ausente no admin. */
-  token?: string;
+  /** true no painel do próprio profissional (sessão logada); ausente no admin. */
+  own?: boolean;
 }) {
   const router = useRouter();
   const [topics, setTopics] = useState(session.topics?.join(", ") ?? "");
@@ -67,14 +67,13 @@ export function SessionRow({
     setError("");
     setSaved(false);
     try {
-      const endpoint = token
+      const endpoint = own
         ? `/api/professional/sessions/${session.id}`
         : `/api/admin/sessions/${session.id}`;
       const response = await fetch(endpoint, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          token,
           topics: parseTagList(topics),
           homework,
           nextSessionAt: nextSessionAt ? new Date(nextSessionAt).toISOString() : null,

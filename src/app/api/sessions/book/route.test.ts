@@ -7,8 +7,6 @@ const FUTURE_SLOT = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString()
 const VALID_BODY = {
   professionalId: VALID_PROFESSIONAL_ID,
   slot: FUTURE_SLOT,
-  clientName: "João Silva",
-  clientEmail: "joao@example.com",
 };
 
 function makeRequest(body: unknown) {
@@ -40,18 +38,6 @@ describe("POST /api/sessions/book", () => {
 
   it("rejects a malformed slot", async () => {
     const response = await POST(makeRequest({ ...VALID_BODY, slot: "not-a-date" }));
-    expect(response.status).toBe(400);
-  });
-
-  it("rejects a short client name", async () => {
-    const response = await POST(makeRequest({ ...VALID_BODY, clientName: "Jo" }));
-    expect(response.status).toBe(400);
-  });
-
-  it("rejects a malformed client email", async () => {
-    const response = await POST(
-      makeRequest({ ...VALID_BODY, clientEmail: "not-an-email" })
-    );
     expect(response.status).toBe(400);
   });
 

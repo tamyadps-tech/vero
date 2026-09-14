@@ -3,13 +3,7 @@
 import { useState, type FormEvent } from "react";
 import { useRouter } from "next/navigation";
 
-export function ReviewForm({
-  token,
-  sessionId,
-}: {
-  token: string;
-  sessionId: string;
-}) {
+export function ReviewForm({ sessionId }: { sessionId: string }) {
   const router = useRouter();
   const [rating, setRating] = useState(0);
   const [comment, setComment] = useState("");
@@ -32,7 +26,7 @@ export function ReviewForm({
       const response = await fetch("/api/reviews", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ token, sessionId, rating, comment }),
+        body: JSON.stringify({ sessionId, rating, comment }),
       });
       const data = await response.json();
 

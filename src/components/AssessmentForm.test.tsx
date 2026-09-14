@@ -7,8 +7,6 @@ vi.mock("next/navigation", () => ({
   useRouter: () => ({ refresh: vi.fn() }),
 }));
 
-const TOKEN = "11111111-1111-1111-1111-111111111111";
-
 describe("AssessmentForm", () => {
   beforeEach(() => {
     vi.stubGlobal("fetch", vi.fn());
@@ -20,9 +18,7 @@ describe("AssessmentForm", () => {
 
   it("disables submit until every question is answered", async () => {
     const user = userEvent.setup();
-    render(
-      <AssessmentForm token={TOKEN} templateSlug="gad7" onClose={() => {}} />
-    );
+    render(<AssessmentForm templateSlug="gad7" onClose={() => {}} />);
 
     const submit = screen.getByRole("button", { name: /ver resultado/i });
     expect(submit).toBeDisabled();
@@ -40,9 +36,7 @@ describe("AssessmentForm", () => {
     });
 
     const user = userEvent.setup();
-    render(
-      <AssessmentForm token={TOKEN} templateSlug="gad7" onClose={() => {}} />
-    );
+    render(<AssessmentForm templateSlug="gad7" onClose={() => {}} />);
 
     const neverOptions = screen.getAllByRole("radio", { name: /nunca/i });
     for (const option of neverOptions) {
@@ -58,7 +52,6 @@ describe("AssessmentForm", () => {
     const [, options] = fetchMock.mock.calls[0];
     const sentBody = JSON.parse(options.body);
     expect(sentBody).toEqual({
-      token: TOKEN,
       templateSlug: "gad7",
       answers: new Array(7).fill(0),
     });

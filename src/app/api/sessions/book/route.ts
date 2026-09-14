@@ -4,8 +4,9 @@ import { getUpcomingSlotsForProfessional } from "@/lib/booking";
 import { sendEmail } from "@/lib/email";
 import { bookingConfirmationEmail } from "@/lib/email-templates";
 import { getStripeClient } from "@/lib/stripe";
+import { getClientFromAccessToken } from "@/lib/client-session";
+import { readAccessToken } from "@/lib/read-session-token";
 
-const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
 export async function POST(request: Request) {
@@ -16,11 +17,9 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Corpo inválido." }, { status: 400 });
   }
 
-  const { professionalId, slot, clientName, clientEmail } = (body ?? {}) as {
+  const { professionalId, slot } = (body ?? {}) as {
     professionalId?: unknown;
     slot?: unknown;
-    clientName?: unknown;
-    clientEmail?: unknown;
   };
 
   if (typeof professionalId !== "string" || !UUID_RE.test(professionalId)) {
@@ -32,16 +31,6 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Horário inválido." }, { status: 400 });
   }
 
-  const fullName = typeof clientName === "string" ? clientName.trim() : "";
-  if (fullName.length < 3) {
-    return NextResponse.json({ error: "Informe seu nome completo." }, { status: 400 });
-  }
-
-  const email = typeof clientEmail === "string" ? clientEmail.trim().toLowerCase() : "";
-  if (!EMAIL_RE.test(email)) {
-    return NextResponse.json({ error: "Informe um email válido." }, { status: 400 });
-  }
-
   const supabase = getSupabaseAdmin();
   if (!supabase) {
     return NextResponse.json(
@@ -50,6 +39,15 @@ export async function POST(request: Request) {
           "Agendamento ainda não está conectado ao banco de dados. Tente novamente em breve.",
       },
       { status: 503 }
+    );
+  }
+
+  const accessToken = await readAccessToken("client");
+  const client = await getClientFromAccessToken(accessToken);
+  if (!client) {
+    return NextResponse.json(
+      { error: "Faça login ou crie uma conta pra agendar." },
+      { status: 401 }
     );
   }
 
@@ -77,20 +75,6 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Profissional não encontrado." }, { status: 404 });
   }
 
-  const { data: client, error: clientError } = await supabase
-    .from("clients")
-    .upsert({ full_name: fullName, email }, { onConflict: "email" })
-    .select("id, access_token")
-    .single();
-
-  if (clientError || !client) {
-    console.error("[sessions/book] client upsert failed:", clientError?.message);
-    return NextResponse.json(
-      { error: "Não foi possível agendar agora. Tente novamente." },
-      { status: 500 }
-    );
-  }
-
   const { data: session, error: sessionError } = await supabase
     .from("sessions")
     .insert({
@@ -111,7 +95,7 @@ export async function POST(request: Request) {
   }
 
   const origin = new URL(request.url).origin;
-  const progressUrl = `${origin}/c/${client.access_token}`;
+  const progressUrl = `${origin}/c/dashboard`;
 
   const stripe = getStripeClient();
   if (stripe && professional.price_cents > 0) {
@@ -123,7 +107,7 @@ export async function POST(request: Request) {
       const checkoutSession = await stripe.checkout.sessions.create({
         mode: "payment",
         currency: "brl",
-        customer_email: email,
+        customer_email: client.email,
         line_items: [
           {
             price_data: {
@@ -148,11 +132,7 @@ export async function POST(request: Request) {
       if (paymentError) {
         console.error("[sessions/book] payment insert failed:", paymentError.message);
       } else if (checkoutSession.url) {
-        return NextResponse.json({
-          ok: true,
-          progressToken: client.access_token,
-          checkoutUrl: checkoutSession.url,
-        });
+        return NextResponse.json({ ok: true, checkoutUrl: checkoutSession.url });
       }
     } catch (error) {
       console.error("[sessions/book] Stripe checkout failed:", error);
@@ -164,14 +144,14 @@ export async function POST(request: Request) {
 
   // Sem Stripe configurado (ou falha ao criar o checkout): email é um
   // bônus, não um bloqueio — se falhar, o agendamento já está valendo e o
-  // cliente ainda vê o link de progresso na tela.
+  // cliente ainda vê a sessão no próprio painel.
   const { subject, html } = bookingConfirmationEmail({
-    clientName: fullName,
+    clientName: client.full_name,
     professionalName: professional.full_name,
     scheduledAt: slotDate.toISOString(),
     progressUrl,
   });
-  await sendEmail({ to: email, subject, html });
+  await sendEmail({ to: client.email, subject, html });
 
-  return NextResponse.json({ ok: true, progressToken: client.access_token });
+  return NextResponse.json({ ok: true });
 }

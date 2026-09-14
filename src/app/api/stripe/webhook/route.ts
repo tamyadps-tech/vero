@@ -63,13 +63,13 @@ export async function POST(request: Request) {
     const { data: session } = await supabase
       .from("sessions")
       .select(
-        "scheduled_at, professional:professionals(full_name), client:clients(full_name, email, access_token)"
+        "scheduled_at, professional:professionals(full_name), client:clients(full_name, email)"
       )
       .eq("id", payment.session_id)
       .single();
 
     const client = session?.client as unknown as
-      | { full_name: string; email: string; access_token: string }
+      | { full_name: string; email: string }
       | undefined;
     const professional = session?.professional as unknown as
       | { full_name: string }
@@ -80,7 +80,7 @@ export async function POST(request: Request) {
         clientName: client.full_name,
         professionalName: professional.full_name,
         scheduledAt: session.scheduled_at,
-        progressUrl: `${new URL(request.url).origin}/c/${client.access_token}`,
+        progressUrl: `${new URL(request.url).origin}/c/dashboard`,
       });
       await sendEmail({ to: client.email, subject, html });
     }

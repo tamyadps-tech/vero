@@ -1,8 +1,6 @@
 import { getSupabaseAdmin } from "@/lib/supabase-admin";
 import type { SessionStatus } from "@/lib/admin-sessions";
 
-const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
-
 export interface ClientProgressSession {
   id: string;
   scheduled_at: string;
@@ -28,30 +26,22 @@ export interface ClientProgress {
   assessmentResponses: ClientAssessmentResponse[];
 }
 
-type ClientLookup =
-  | { configured: false }
-  | { configured: true; client: ClientProgress | null };
-
-/** `configured: false` quando o Supabase ainda não está configurado. */
-export async function getClientProgress(token: string): Promise<ClientLookup> {
+/** Retorna null quando o Supabase ainda não está configurado. */
+export async function getClientProgress(clientId: string): Promise<ClientProgress | null> {
   const supabase = getSupabaseAdmin();
-  if (!supabase) return { configured: false };
-
-  if (!UUID_RE.test(token)) {
-    return { configured: true, client: null };
-  }
+  if (!supabase) return null;
 
   const { data: client, error: clientError } = await supabase
     .from("clients")
     .select("id, full_name")
-    .eq("access_token", token)
+    .eq("id", clientId)
     .maybeSingle();
 
   if (clientError || !client) {
     if (clientError) {
       console.error("[client-progress] Failed to load client:", clientError.message);
     }
-    return { configured: true, client: null };
+    return null;
   }
 
   const { data: sessions, error: sessionsError } = await supabase
@@ -80,11 +70,8 @@ export async function getClientProgress(token: string): Promise<ClientLookup> {
   }
 
   return {
-    configured: true,
-    client: {
-      full_name: client.full_name,
-      sessions: (sessions ?? []) as unknown as ClientProgressSession[],
-      assessmentResponses: assessmentResponses ?? [],
-    },
+    full_name: client.full_name,
+    sessions: (sessions ?? []) as unknown as ClientProgressSession[],
+    assessmentResponses: assessmentResponses ?? [],
   };
 }

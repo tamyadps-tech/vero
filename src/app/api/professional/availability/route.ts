@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { getSupabaseAdmin } from "@/lib/supabase-admin";
-import { getProfessionalIdByToken } from "@/lib/professional-auth";
+import { getProfessionalIdFromAccessToken } from "@/lib/professional-session";
+import { readAccessToken } from "@/lib/read-session-token";
 
 const TIME_RE = /^([01]\d|2[0-3]):[0-5]\d$/;
 
@@ -12,8 +13,7 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Corpo inválido." }, { status: 400 });
   }
 
-  const { token, weekday, startTime } = (body ?? {}) as {
-    token?: unknown;
+  const { weekday, startTime } = (body ?? {}) as {
     weekday?: unknown;
     startTime?: unknown;
   };
@@ -41,9 +41,10 @@ export async function POST(request: Request) {
     );
   }
 
-  const professionalId = await getProfessionalIdByToken(supabase, token);
+  const accessToken = await readAccessToken("professional");
+  const professionalId = await getProfessionalIdFromAccessToken(accessToken);
   if (!professionalId) {
-    return NextResponse.json({ error: "Link inválido." }, { status: 404 });
+    return NextResponse.json({ error: "Faça login novamente." }, { status: 401 });
   }
 
   const { error } = await supabase.from("availability_slots").insert({

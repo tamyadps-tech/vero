@@ -1,8 +1,9 @@
 "use client";
 
-import { useState, type FormEvent } from "react";
+import { useState } from "react";
+import Link from "next/link";
 
-type Status = "picking" | "form" | "loading" | "success" | "error";
+type Status = "picking" | "confirm" | "loading" | "success" | "error";
 
 const dateFormatter = new Intl.DateTimeFormat("pt-BR", {
   weekday: "short",
@@ -17,19 +18,17 @@ const timeFormatter = new Intl.DateTimeFormat("pt-BR", {
 export function BookingWidget({
   professionalId,
   slotsIso,
+  isLoggedIn,
 }: {
   professionalId: string;
   slotsIso: string[];
+  isLoggedIn: boolean;
 }) {
   const [selectedSlot, setSelectedSlot] = useState<string | null>(null);
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
   const [status, setStatus] = useState<Status>("picking");
   const [message, setMessage] = useState("");
-  const [progressToken, setProgressToken] = useState<string | null>(null);
 
-  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault();
+  async function handleConfirm() {
     if (!selectedSlot) return;
     setStatus("loading");
     setMessage("");
@@ -38,12 +37,7 @@ export function BookingWidget({
       const response = await fetch("/api/sessions/book", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          professionalId,
-          slot: selectedSlot,
-          clientName: name,
-          clientEmail: email,
-        }),
+        body: JSON.stringify({ professionalId, slot: selectedSlot }),
       });
       const data = await response.json();
 
@@ -56,7 +50,6 @@ export function BookingWidget({
         return;
       }
 
-      setProgressToken(data.progressToken ?? null);
       setStatus("success");
     } catch (error) {
       setStatus("error");
@@ -80,28 +73,21 @@ export function BookingWidget({
     return (
       <div className="rounded-2xl border border-primary/30 bg-primary-light px-6 py-5 text-center">
         <p className="font-medium text-primary-dark">Sessão agendada!</p>
-        {progressToken && (
-          <>
-            <p className="mt-2 text-sm text-primary-dark">
-              Guarde este link — é como você acompanha o progresso das suas
-              sessões, sem precisar de senha:
-            </p>
-            <a
-              href={`/c/${progressToken}`}
-              className="mt-2 inline-block break-all text-sm font-medium text-primary-dark underline"
-            >
-              /c/{progressToken}
-            </a>
-          </>
-        )}
+        <p className="mt-2 text-sm text-primary-dark">
+          Acompanhe no seu{" "}
+          <Link href="/c/dashboard" className="underline">
+            painel
+          </Link>
+          .
+        </p>
       </div>
     );
   }
 
-  if (status === "form" || status === "loading" || status === "error") {
+  if (status === "confirm" || status === "loading" || status === "error") {
     const slotDate = selectedSlot ? new Date(selectedSlot) : null;
     return (
-      <form onSubmit={handleSubmit} className="space-y-4">
+      <div className="space-y-4">
         {slotDate && (
           <p className="text-sm text-ink">
             Agendando para{" "}
@@ -118,34 +104,9 @@ export function BookingWidget({
             </button>
           </p>
         )}
-        <div>
-          <label className="mb-1.5 block text-sm font-medium text-ink" htmlFor="booking-name">
-            Nome completo
-          </label>
-          <input
-            id="booking-name"
-            required
-            minLength={3}
-            value={name}
-            onChange={(event) => setName(event.target.value)}
-            className="w-full rounded-xl border border-border bg-paper px-4 py-2.5 text-sm text-ink focus:border-primary focus:outline-none"
-          />
-        </div>
-        <div>
-          <label className="mb-1.5 block text-sm font-medium text-ink" htmlFor="booking-email">
-            Email
-          </label>
-          <input
-            id="booking-email"
-            type="email"
-            required
-            value={email}
-            onChange={(event) => setEmail(event.target.value)}
-            className="w-full rounded-xl border border-border bg-paper px-4 py-2.5 text-sm text-ink focus:border-primary focus:outline-none"
-          />
-        </div>
         <button
-          type="submit"
+          type="button"
+          onClick={handleConfirm}
           disabled={status === "loading"}
           className="w-full rounded-xl bg-primary px-5 py-3 text-sm font-semibold text-paper transition hover:bg-primary-dark disabled:opacity-60"
         >
@@ -156,7 +117,28 @@ export function BookingWidget({
             {message}
           </p>
         )}
-      </form>
+      </div>
+    );
+  }
+
+  if (!isLoggedIn) {
+    return (
+      <div className="rounded-2xl border border-dashed border-border bg-paper-alt/40 p-5 text-center">
+        <p className="text-sm text-ink">
+          Entre ou crie sua conta pra agendar uma sessão.
+        </p>
+        <div className="mt-3 flex flex-wrap items-center justify-center gap-3">
+          <Link
+            href="/c/entrar"
+            className="rounded-xl bg-primary px-4 py-2 text-sm font-semibold text-paper transition hover:bg-primary-dark"
+          >
+            Entrar
+          </Link>
+          <Link href="/c/cadastrar" className="text-sm text-primary hover:underline">
+            Criar conta
+          </Link>
+        </div>
+      </div>
     );
   }
 
@@ -170,7 +152,7 @@ export function BookingWidget({
             type="button"
             onClick={() => {
               setSelectedSlot(iso);
-              setStatus("form");
+              setStatus("confirm");
             }}
             className="rounded-xl border border-border bg-paper px-4 py-2.5 text-left text-sm text-ink transition hover:border-primary"
           >

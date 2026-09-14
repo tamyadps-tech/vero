@@ -4,6 +4,7 @@ import { POST } from "./route";
 const VALID_BODY = {
   fullName: "Maria Silva",
   email: "maria@example.com",
+  password: "senha1234",
   category: "terapeuta",
   bio: "Psicóloga com 10 anos de experiência em TCC.",
   yearsExperience: 10,
@@ -35,6 +36,11 @@ describe("POST /api/professionals/apply", () => {
     const response = await POST(
       makeRequest({ ...VALID_BODY, email: "not-an-email" })
     );
+    expect(response.status).toBe(400);
+  });
+
+  it("rejects a short password", async () => {
+    const response = await POST(makeRequest({ ...VALID_BODY, password: "1234567" }));
     expect(response.status).toBe(400);
   });
 

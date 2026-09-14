@@ -1,5 +1,7 @@
 import { NextResponse } from "next/server";
 import { getSupabaseAdmin } from "@/lib/supabase-admin";
+import { getClientIdFromAccessToken } from "@/lib/client-session";
+import { readAccessToken } from "@/lib/read-session-token";
 
 const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
@@ -11,16 +13,12 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Corpo inválido." }, { status: 400 });
   }
 
-  const { token, sessionId, rating, comment } = (body ?? {}) as {
-    token?: unknown;
+  const { sessionId, rating, comment } = (body ?? {}) as {
     sessionId?: unknown;
     rating?: unknown;
     comment?: unknown;
   };
 
-  if (typeof token !== "string" || !UUID_RE.test(token)) {
-    return NextResponse.json({ error: "Link inválido." }, { status: 400 });
-  }
   if (typeof sessionId !== "string" || !UUID_RE.test(sessionId)) {
     return NextResponse.json({ error: "Sessão inválida." }, { status: 400 });
   }
@@ -42,16 +40,12 @@ export async function POST(request: Request) {
     );
   }
 
-  // Só quem tem o link de progresso desse cliente pode avaliar, e só uma
-  // sessão concluída dele mesmo — nunca confia em client_id vindo do corpo.
-  const { data: client, error: clientError } = await supabase
-    .from("clients")
-    .select("id")
-    .eq("access_token", token)
-    .maybeSingle();
-
-  if (clientError || !client) {
-    return NextResponse.json({ error: "Link inválido." }, { status: 404 });
+  // Só o cliente logado pode avaliar, e só uma sessão concluída dele mesmo
+  // — nunca confia em client_id vindo do corpo.
+  const accessToken = await readAccessToken("client");
+  const clientId = await getClientIdFromAccessToken(accessToken);
+  if (!clientId) {
+    return NextResponse.json({ error: "Faça login novamente." }, { status: 401 });
   }
 
   const { data: session, error: sessionError } = await supabase
@@ -60,7 +54,7 @@ export async function POST(request: Request) {
     .eq("id", sessionId)
     .maybeSingle();
 
-  if (sessionError || !session || session.client_id !== client.id) {
+  if (sessionError || !session || session.client_id !== clientId) {
     return NextResponse.json({ error: "Sessão não encontrada." }, { status: 404 });
   }
   if (session.status !== "concluida") {
@@ -72,7 +66,7 @@ export async function POST(request: Request) {
 
   const { error: insertError } = await supabase.from("reviews").insert({
     session_id: session.id,
-    client_id: client.id,
+    client_id: clientId,
     professional_id: session.professional_id,
     rating: ratingNumber,
     comment: commentText,

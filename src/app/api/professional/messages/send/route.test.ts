@@ -16,7 +16,7 @@ describe("POST /api/professional/messages/send", () => {
 
   it("rejects an empty client list", async () => {
     const response = await POST(
-      makeRequest({ token: "any-token", clientIds: [], subject: "Oi", message: "Olá!" })
+      makeRequest({ clientIds: [], subject: "Oi", message: "Olá!" })
     );
     expect(response.status).toBe(400);
   });
@@ -24,31 +24,21 @@ describe("POST /api/professional/messages/send", () => {
   it("rejects more than 50 recipients", async () => {
     const clientIds = Array.from({ length: 51 }, (_, i) => `client-${i}`);
     const response = await POST(
-      makeRequest({ token: "any-token", clientIds, subject: "Oi", message: "Olá!" })
+      makeRequest({ clientIds, subject: "Oi", message: "Olá!" })
     );
     expect(response.status).toBe(400);
   });
 
   it("rejects an empty subject", async () => {
     const response = await POST(
-      makeRequest({
-        token: "any-token",
-        clientIds: ["client-1"],
-        subject: "",
-        message: "Olá!",
-      })
+      makeRequest({ clientIds: ["client-1"], subject: "", message: "Olá!" })
     );
     expect(response.status).toBe(400);
   });
 
   it("rejects an empty message", async () => {
     const response = await POST(
-      makeRequest({
-        token: "any-token",
-        clientIds: ["client-1"],
-        subject: "Oi",
-        message: "",
-      })
+      makeRequest({ clientIds: ["client-1"], subject: "Oi", message: "" })
     );
     expect(response.status).toBe(400);
   });
@@ -56,7 +46,6 @@ describe("POST /api/professional/messages/send", () => {
   it("returns 503 when Supabase isn't configured yet", async () => {
     const response = await POST(
       makeRequest({
-        token: "any-token",
         clientIds: ["client-1"],
         subject: "Novidade",
         message: "Tenho um horário novo essa semana!",

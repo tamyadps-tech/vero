@@ -57,7 +57,7 @@ export function bookingConfirmationEmail({
     </p>
     <p style="font-size:18px;font-weight:600;margin:16px 0;">${escapeHtml(when)}</p>
     <p style="font-size:14px;line-height:1.6;color:#5b6763;">
-      Guarde o link abaixo — é como você acompanha o progresso das suas sessões, sem precisar de senha.
+      Entre na sua conta pra acompanhar o progresso das suas sessões.
     </p>
     <p style="margin:24px 0;">${button(progressUrl, "Ver meu progresso")}</p>
   `;
@@ -139,10 +139,10 @@ export function professionalApprovedEmail({
       perfil já está visível na Vero.
     </p>
     <p style="font-size:14px;line-height:1.6;color:#5b6763;">
-      Use o link abaixo pra configurar sua disponibilidade e acompanhar
-      suas sessões — sem senha, guarde-o num lugar seguro.
+      Entre com o email e a senha que você cadastrou na candidatura pra
+      configurar sua disponibilidade e acompanhar suas sessões.
     </p>
-    <p style="margin:24px 0;">${button(dashboardUrl, "Acessar meu painel")}</p>
+    <p style="margin:24px 0;">${button(dashboardUrl, "Fazer login")}</p>
   `;
   return {
     subject: "Sua candidatura foi aprovada — Vero",

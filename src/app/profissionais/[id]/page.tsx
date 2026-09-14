@@ -9,6 +9,8 @@ import { getUpcomingSlotsForProfessional } from "@/lib/booking";
 import { getReviewSummaries, listPublicReviews } from "@/lib/reviews";
 import { BookingWidget } from "@/components/BookingWidget";
 import { RatingBadge } from "@/components/RatingBadge";
+import { getClientIdFromAccessToken } from "@/lib/client-session";
+import { readAccessToken } from "@/lib/read-session-token";
 
 function formatPrice(cents: number) {
   return (cents / 100).toLocaleString("pt-BR", {
@@ -62,12 +64,14 @@ export default async function ProfessionalProfilePage({
   }
 
   const professional = lookup.professional;
-  const [upcomingSlots, ratingSummaries, reviews] = await Promise.all([
+  const [upcomingSlots, ratingSummaries, reviews, clientAccessToken] = await Promise.all([
     getUpcomingSlotsForProfessional(id),
     getReviewSummaries([id]),
     listPublicReviews(id),
+    readAccessToken("client"),
   ]);
   const rating = ratingSummaries?.[id] ?? { average: 0, count: 0 };
+  const isLoggedIn = Boolean(await getClientIdFromAccessToken(clientAccessToken));
 
   return (
     <>
@@ -157,6 +161,7 @@ export default async function ProfessionalProfilePage({
               <BookingWidget
                 professionalId={professional.id}
                 slotsIso={upcomingSlots.map((slot) => slot.toISOString())}
+                isLoggedIn={isLoggedIn}
               />
             )}
           </div>

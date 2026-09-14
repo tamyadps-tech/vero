@@ -8,12 +8,12 @@ import type { AdminAvailabilitySlot } from "@/lib/booking";
 export function AvailabilityManager({
   professionalId,
   slots,
-  token,
+  own,
 }: {
   professionalId: string;
   slots: AdminAvailabilitySlot[];
-  /** Presente no painel do profissional (/p/[token]); ausente no admin. */
-  token?: string;
+  /** true no painel do próprio profissional (sessão logada); ausente no admin. */
+  own?: boolean;
 }) {
   const router = useRouter();
   const [weekday, setWeekday] = useState("1");
@@ -25,11 +25,11 @@ export function AvailabilityManager({
     setPending(true);
     setError("");
     try {
-      const response = token
+      const response = own
         ? await fetch(`/api/professional/availability`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ token, weekday: Number(weekday), startTime }),
+            body: JSON.stringify({ weekday: Number(weekday), startTime }),
           })
         : await fetch(`/api/admin/professionals/${professionalId}/availability`, {
             method: "POST",
@@ -52,11 +52,9 @@ export function AvailabilityManager({
     setPending(true);
     setError("");
     try {
-      const response = token
+      const response = own
         ? await fetch(`/api/professional/availability/${slotId}`, {
             method: "DELETE",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ token }),
           })
         : await fetch(
             `/api/admin/professionals/${professionalId}/availability/${slotId}`,

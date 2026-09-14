@@ -7,9 +7,12 @@ const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const URL_RE = /^https?:\/\/.+/i;
 const MAX_TAGS = 10;
 
+const MIN_PASSWORD_LENGTH = 8;
+
 interface ApplyPayload {
   fullName: string;
   email: string;
+  password: string;
   category: string;
   bio: string;
   yearsExperience: number;
@@ -51,6 +54,11 @@ function validate(body: unknown): { data: ApplyPayload } | { error: string } {
   const email = typeof b.email === "string" ? b.email.trim() : "";
   if (!EMAIL_RE.test(email)) {
     return { error: "Informe um email válido." };
+  }
+
+  const password = typeof b.password === "string" ? b.password : "";
+  if (password.length < MIN_PASSWORD_LENGTH) {
+    return { error: `A senha precisa ter pelo menos ${MIN_PASSWORD_LENGTH} caracteres.` };
   }
 
   if (!isProfessionalCategory(b.category)) {
@@ -123,6 +131,7 @@ function validate(body: unknown): { data: ApplyPayload } | { error: string } {
     data: {
       fullName,
       email: email.toLowerCase(),
+      password,
       category: b.category,
       bio,
       yearsExperience,
@@ -168,40 +177,66 @@ export async function POST(request: Request) {
   }
 
   const { data } = result;
-  const { data: inserted, error } = await supabase
-    .from("professionals")
-    .insert({
-      full_name: data.fullName,
-      email: data.email,
-      category: data.category,
-      bio: data.bio,
-      years_experience: data.yearsExperience,
-      specialties: data.specialties,
-      methods: data.methods,
-      personality: data.personality ?? null,
-      session_format: data.sessionFormat,
-      location_city: data.locationCity ?? null,
-      location_state: data.locationState ?? null,
-      location_address: data.locationAddress ?? null,
-      price_cents: data.priceCents,
-      credential_document_url: data.credentialDocumentUrl ?? null,
-    })
-    .select("access_token")
-    .single();
 
-  if (error || !inserted) {
-    if (error?.code === "23505") {
+  // Cria a conta de login (Supabase Auth) antes do registro do
+  // profissional — email_confirm:true porque ainda não configuramos o
+  // fluxo de confirmação por email da própria Supabase; o acesso real ao
+  // painel já é controlado pelo vetting_status, não pela confirmação.
+  const { data: authUser, error: authError } = await supabase.auth.admin.createUser({
+    email: data.email,
+    password: data.password,
+    email_confirm: true,
+  });
+
+  if (authError || !authUser.user) {
+    if (authError?.code === "email_exists") {
       return NextResponse.json(
-        { error: "Já existe uma candidatura com esse email." },
+        { error: "Já existe uma conta com esse email." },
         { status: 409 }
       );
     }
-    console.error("[professionals/apply] Supabase insert failed:", error?.message);
+    console.error("[professionals/apply] Failed to create auth user:", authError?.message);
     return NextResponse.json(
       { error: "Não foi possível enviar agora. Tente novamente." },
       { status: 500 }
     );
   }
 
-  return NextResponse.json({ ok: true, dashboardToken: inserted.access_token });
+  const { error } = await supabase.from("professionals").insert({
+    auth_user_id: authUser.user.id,
+    full_name: data.fullName,
+    email: data.email,
+    category: data.category,
+    bio: data.bio,
+    years_experience: data.yearsExperience,
+    specialties: data.specialties,
+    methods: data.methods,
+    personality: data.personality ?? null,
+    session_format: data.sessionFormat,
+    location_city: data.locationCity ?? null,
+    location_state: data.locationState ?? null,
+    location_address: data.locationAddress ?? null,
+    price_cents: data.priceCents,
+    credential_document_url: data.credentialDocumentUrl ?? null,
+  });
+
+  if (error) {
+    // Sem usuário de auth órfão: se o registro do profissional falhar,
+    // desfaz a conta que acabou de ser criada.
+    await supabase.auth.admin.deleteUser(authUser.user.id).catch(() => {});
+
+    if (error.code === "23505") {
+      return NextResponse.json(
+        { error: "Já existe uma candidatura com esse email." },
+        { status: 409 }
+      );
+    }
+    console.error("[professionals/apply] Supabase insert failed:", error.message);
+    return NextResponse.json(
+      { error: "Não foi possível enviar agora. Tente novamente." },
+      { status: 500 }
+    );
+  }
+
+  return NextResponse.json({ ok: true });
 }

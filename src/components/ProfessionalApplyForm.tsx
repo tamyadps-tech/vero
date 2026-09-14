@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, type FormEvent } from "react";
+import Link from "next/link";
 import {
   PROFESSIONAL_CATEGORIES,
   CATEGORY_LABELS,
@@ -22,6 +23,7 @@ const labelClass = "mb-1.5 block text-sm font-medium text-ink";
 export function ProfessionalApplyForm() {
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [category, setCategory] = useState<ProfessionalCategory>("terapeuta");
   const [bio, setBio] = useState("");
   const [yearsExperience, setYearsExperience] = useState("");
@@ -36,7 +38,6 @@ export function ProfessionalApplyForm() {
   const [credentialUrl, setCredentialUrl] = useState("");
   const [status, setStatus] = useState<Status>("idle");
   const [message, setMessage] = useState("");
-  const [dashboardToken, setDashboardToken] = useState<string | null>(null);
 
   const needsLocation = sessionFormat !== "online";
 
@@ -54,6 +55,7 @@ export function ProfessionalApplyForm() {
         body: JSON.stringify({
           fullName,
           email,
+          password,
           category,
           bio,
           yearsExperience: Number(yearsExperience),
@@ -74,7 +76,6 @@ export function ProfessionalApplyForm() {
         throw new Error(data.error ?? "Não foi possível enviar agora.");
       }
 
-      setDashboardToken(data.dashboardToken ?? null);
       setStatus("success");
       setMessage(
         "Candidatura recebida! Vamos verificar suas credenciais e avisar em até 7 dias úteis."
@@ -93,21 +94,16 @@ export function ProfessionalApplyForm() {
     return (
       <div className="rounded-2xl border border-primary/30 bg-primary-light px-6 py-5 text-center">
         <p className="font-medium text-primary-dark">{message}</p>
-        {dashboardToken && (
-          <>
-            <p className="mt-3 text-sm text-primary-dark">
-              Guarde este link — é dele que você acompanha o status da
-              candidatura e, depois de aprovado(a), gerencia sua agenda e
-              suas sessões, sem precisar de senha:
-            </p>
-            <a
-              href={`/p/${dashboardToken}`}
-              className="mt-2 inline-block break-all text-sm font-medium text-primary-dark underline"
-            >
-              /p/{dashboardToken}
-            </a>
-          </>
-        )}
+        <p className="mt-3 text-sm text-primary-dark">
+          Sua conta já foi criada. Use o email e a senha que você acabou de
+          cadastrar pra entrar e acompanhar o status a qualquer momento:
+        </p>
+        <Link
+          href="/p/entrar"
+          className="mt-2 inline-block text-sm font-medium text-primary-dark underline"
+        >
+          Fazer login
+        </Link>
       </div>
     );
   }
@@ -143,6 +139,24 @@ export function ProfessionalApplyForm() {
             placeholder="maria@email.com"
           />
         </div>
+      </div>
+
+      <div>
+        <label className={labelClass} htmlFor="apply-password">
+          Crie uma senha
+        </label>
+        <input
+          id="apply-password"
+          type="password"
+          required
+          minLength={8}
+          value={password}
+          onChange={(event) => setPassword(event.target.value)}
+          className={fieldClass}
+        />
+        <p className="mt-1.5 text-xs text-ink-soft">
+          Pelo menos 8 caracteres. É com ela que você entra no seu painel.
+        </p>
       </div>
 
       <div className="grid gap-5 sm:grid-cols-3">

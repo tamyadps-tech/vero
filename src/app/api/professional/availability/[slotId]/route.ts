@@ -1,21 +1,13 @@
 import { NextResponse } from "next/server";
 import { getSupabaseAdmin } from "@/lib/supabase-admin";
-import { getProfessionalIdByToken } from "@/lib/professional-auth";
+import { getProfessionalIdFromAccessToken } from "@/lib/professional-session";
+import { readAccessToken } from "@/lib/read-session-token";
 
 export async function DELETE(
-  request: Request,
+  _request: Request,
   { params }: { params: Promise<{ slotId: string }> }
 ) {
   const { slotId } = await params;
-
-  let body: unknown;
-  try {
-    body = await request.json();
-  } catch {
-    return NextResponse.json({ error: "Corpo inválido." }, { status: 400 });
-  }
-
-  const { token } = (body ?? {}) as { token?: unknown };
 
   const supabase = getSupabaseAdmin();
   if (!supabase) {
@@ -25,9 +17,10 @@ export async function DELETE(
     );
   }
 
-  const professionalId = await getProfessionalIdByToken(supabase, token);
+  const accessToken = await readAccessToken("professional");
+  const professionalId = await getProfessionalIdFromAccessToken(accessToken);
   if (!professionalId) {
-    return NextResponse.json({ error: "Link inválido." }, { status: 404 });
+    return NextResponse.json({ error: "Faça login novamente." }, { status: 401 });
   }
 
   const { error } = await supabase

@@ -40,6 +40,7 @@ test("professional application form validates and submits", async ({
 
   await page.getByLabel(/nome completo/i).fill("Maria Silva");
   await page.getByLabel(/^email$/i).fill("maria@example.com");
+  await page.getByLabel(/crie uma senha/i).fill("senha1234");
   await page.getByLabel(/anos de experiência/i).fill("10");
   await page
     .getByLabel(/fale sobre sua experiência/i)

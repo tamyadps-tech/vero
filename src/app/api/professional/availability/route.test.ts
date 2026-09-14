@@ -15,23 +15,17 @@ describe("POST /api/professional/availability", () => {
   });
 
   it("rejects an invalid weekday", async () => {
-    const response = await POST(
-      makeRequest({ token: "any-token", weekday: 9, startTime: "09:00" })
-    );
+    const response = await POST(makeRequest({ weekday: 9, startTime: "09:00" }));
     expect(response.status).toBe(400);
   });
 
   it("rejects a malformed time", async () => {
-    const response = await POST(
-      makeRequest({ token: "any-token", weekday: 1, startTime: "9am" })
-    );
+    const response = await POST(makeRequest({ weekday: 1, startTime: "9am" }));
     expect(response.status).toBe(400);
   });
 
   it("returns 503 when Supabase isn't configured yet", async () => {
-    const response = await POST(
-      makeRequest({ token: "any-token", weekday: 1, startTime: "09:00" })
-    );
+    const response = await POST(makeRequest({ weekday: 1, startTime: "09:00" }));
     expect(response.status).toBe(503);
   });
 });

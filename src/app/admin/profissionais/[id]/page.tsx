@@ -50,9 +50,10 @@ export default async function AdminProfessionalDetailPage({
         {professional.vetting_status === "aprovado" && (
           <div className="mt-4 rounded-xl border border-border bg-paper-alt/40 px-4 py-3 text-sm">
             <p className="text-ink-soft">
-              Painel próprio do profissional (agenda, prontuário, clientes e
-              financeiro):{" "}
-              <code className="text-ink">/p/{professional.access_token}</code>
+              O profissional já gerencia agenda, prontuário, clientes e
+              financeiro pelo próprio painel — ele entra em{" "}
+              <code className="text-ink">/p/entrar</code> com o email e a
+              senha cadastrados na candidatura.
             </p>
           </div>
         )}

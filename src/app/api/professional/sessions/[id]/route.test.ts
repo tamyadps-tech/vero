@@ -15,25 +15,23 @@ describe("PATCH /api/professional/sessions/[id]", () => {
   });
 
   it("rejects an empty body (nothing to update)", async () => {
-    const response = await PATCH(makeRequest({ token: "any-token" }), {
+    const response = await PATCH(makeRequest({}), {
       params: Promise.resolve({ id: "abc" }),
     });
     expect(response.status).toBe(400);
   });
 
   it("rejects an invalid status", async () => {
-    const response = await PATCH(
-      makeRequest({ token: "any-token", status: "sumiu" }),
-      { params: Promise.resolve({ id: "abc" }) }
-    );
+    const response = await PATCH(makeRequest({ status: "sumiu" }), {
+      params: Promise.resolve({ id: "abc" }),
+    });
     expect(response.status).toBe(400);
   });
 
   it("returns 503 when Supabase isn't configured yet", async () => {
-    const response = await PATCH(
-      makeRequest({ token: "any-token", status: "concluida" }),
-      { params: Promise.resolve({ id: "abc" }) }
-    );
+    const response = await PATCH(makeRequest({ status: "concluida" }), {
+      params: Promise.resolve({ id: "abc" }),
+    });
     expect(response.status).toBe(503);
   });
 });

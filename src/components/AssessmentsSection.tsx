@@ -8,10 +8,8 @@ import type { ClientAssessmentResponse } from "@/lib/client-progress";
 const dateFormatter = new Intl.DateTimeFormat("pt-BR", { dateStyle: "short" });
 
 export function AssessmentsSection({
-  token,
   responses,
 }: {
-  token: string;
   responses: ClientAssessmentResponse[];
 }) {
   const [openSlug, setOpenSlug] = useState<string | null>(null);
@@ -60,7 +58,6 @@ export function AssessmentsSection({
             {openSlug === template.slug && (
               <div className="mt-3">
                 <AssessmentForm
-                  token={token}
                   templateSlug={template.slug}
                   onClose={() => setOpenSlug(null)}
                 />

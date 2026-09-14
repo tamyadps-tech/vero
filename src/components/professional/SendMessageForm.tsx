@@ -8,13 +8,7 @@ interface ClientOption {
   email: string;
 }
 
-export function SendMessageForm({
-  token,
-  clients,
-}: {
-  token: string;
-  clients: ClientOption[];
-}) {
+export function SendMessageForm({ clients }: { clients: ClientOption[] }) {
   const [selected, setSelected] = useState<Set<string>>(new Set());
   const [subject, setSubject] = useState("");
   const [message, setMessage] = useState("");
@@ -46,7 +40,6 @@ export function SendMessageForm({
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          token,
           clientIds: Array.from(selected),
           subject,
           message,

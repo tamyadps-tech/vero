@@ -16,7 +16,7 @@ describe("ProfessionalApplyForm", () => {
     const fetchMock = fetch as unknown as ReturnType<typeof vi.fn>;
     fetchMock.mockResolvedValueOnce({
       ok: true,
-      json: async () => ({ ok: true, dashboardToken: "token-abc" }),
+      json: async () => ({ ok: true }),
     });
 
     const user = userEvent.setup();
@@ -24,6 +24,7 @@ describe("ProfessionalApplyForm", () => {
 
     await user.type(screen.getByLabelText(/nome completo/i), "Maria Silva");
     await user.type(screen.getByLabelText(/^email$/i), "maria@example.com");
+    await user.type(screen.getByLabelText(/crie uma senha/i), "senha1234");
     await user.type(screen.getByLabelText(/anos de experiência/i), "10");
     await user.type(
       screen.getByLabelText(/fale sobre sua experiência/i),
@@ -39,9 +40,9 @@ describe("ProfessionalApplyForm", () => {
     await waitFor(() =>
       expect(screen.getByText(/candidatura recebida/i)).toBeInTheDocument()
     );
-    expect(screen.getByRole("link", { name: /token-abc/ })).toHaveAttribute(
+    expect(screen.getByRole("link", { name: /fazer login/i })).toHaveAttribute(
       "href",
-      "/p/token-abc"
+      "/p/entrar"
     );
 
     const [, options] = fetchMock.mock.calls[0];
@@ -49,6 +50,7 @@ describe("ProfessionalApplyForm", () => {
     expect(sentBody).toMatchObject({
       fullName: "Maria Silva",
       email: "maria@example.com",
+      password: "senha1234",
       category: "terapeuta",
       yearsExperience: 10,
       specialties: ["Ansiedade", "Burnout"],
@@ -69,6 +71,7 @@ describe("ProfessionalApplyForm", () => {
 
     await user.type(screen.getByLabelText(/nome completo/i), "Maria Silva");
     await user.type(screen.getByLabelText(/^email$/i), "maria@example.com");
+    await user.type(screen.getByLabelText(/crie uma senha/i), "senha1234");
     await user.type(screen.getByLabelText(/anos de experiência/i), "10");
     await user.type(
       screen.getByLabelText(/fale sobre sua experiência/i),

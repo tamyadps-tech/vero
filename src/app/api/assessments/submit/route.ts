@@ -1,8 +1,8 @@
 import { NextResponse } from "next/server";
 import { getSupabaseAdmin } from "@/lib/supabase-admin";
 import { getAssessmentTemplate, scoreAssessment } from "@/lib/assessments";
-
-const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+import { getClientIdFromAccessToken } from "@/lib/client-session";
+import { readAccessToken } from "@/lib/read-session-token";
 
 export async function POST(request: Request) {
   let body: unknown;
@@ -12,15 +12,10 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Corpo inválido." }, { status: 400 });
   }
 
-  const { token, templateSlug, answers } = (body ?? {}) as {
-    token?: unknown;
+  const { templateSlug, answers } = (body ?? {}) as {
     templateSlug?: unknown;
     answers?: unknown;
   };
-
-  if (typeof token !== "string" || !UUID_RE.test(token)) {
-    return NextResponse.json({ error: "Link inválido." }, { status: 400 });
-  }
 
   const template =
     typeof templateSlug === "string" ? getAssessmentTemplate(templateSlug) : undefined;
@@ -55,18 +50,14 @@ export async function POST(request: Request) {
     );
   }
 
-  const { data: client, error: clientError } = await supabase
-    .from("clients")
-    .select("id")
-    .eq("access_token", token)
-    .maybeSingle();
-
-  if (clientError || !client) {
-    return NextResponse.json({ error: "Link inválido." }, { status: 404 });
+  const accessToken = await readAccessToken("client");
+  const clientId = await getClientIdFromAccessToken(accessToken);
+  if (!clientId) {
+    return NextResponse.json({ error: "Faça login novamente." }, { status: 401 });
   }
 
   const { error: insertError } = await supabase.from("assessment_responses").insert({
-    client_id: client.id,
+    client_id: clientId,
     template_slug: template.slug,
     answers,
     score: result.score,

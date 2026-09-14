@@ -85,13 +85,13 @@ export async function notifySessionCompletion(
   const { data: fullSession } = await supabase
     .from("sessions")
     .select(
-      "topics, homework, next_session_at, professional:professionals(full_name), client:clients(full_name, email, access_token)"
+      "topics, homework, next_session_at, professional:professionals(full_name), client:clients(full_name, email)"
     )
     .eq("id", sessionId)
     .single();
 
   const client = fullSession?.client as unknown as
-    | { full_name: string; email: string; access_token: string }
+    | { full_name: string; email: string }
     | undefined;
   const professional = fullSession?.professional as unknown as
     | { full_name: string }
@@ -105,7 +105,7 @@ export async function notifySessionCompletion(
     topics: fullSession.topics ?? [],
     homework: fullSession.homework,
     nextSessionAt: fullSession.next_session_at,
-    progressUrl: `${origin}/c/${client.access_token}`,
+    progressUrl: `${origin}/c/entrar`,
   });
   await sendEmail({ to: client.email, subject, html });
 }

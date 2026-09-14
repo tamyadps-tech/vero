@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { getSupabaseAdmin } from "@/lib/supabase-admin";
-import { getProfessionalIdByToken } from "@/lib/professional-auth";
+import { getProfessionalIdFromAccessToken } from "@/lib/professional-session";
+import { readAccessToken } from "@/lib/read-session-token";
 import { sendEmail } from "@/lib/email";
 import { professionalMessageEmail } from "@/lib/email-templates";
 
@@ -16,8 +17,7 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Corpo inválido." }, { status: 400 });
   }
 
-  const { token, clientIds, subject, message } = (body ?? {}) as {
-    token?: unknown;
+  const { clientIds, subject, message } = (body ?? {}) as {
     clientIds?: unknown;
     subject?: unknown;
     message?: unknown;
@@ -54,9 +54,10 @@ export async function POST(request: Request) {
     );
   }
 
-  const professionalId = await getProfessionalIdByToken(supabase, token);
+  const accessToken = await readAccessToken("professional");
+  const professionalId = await getProfessionalIdFromAccessToken(accessToken);
   if (!professionalId) {
-    return NextResponse.json({ error: "Link inválido." }, { status: 404 });
+    return NextResponse.json({ error: "Faça login novamente." }, { status: 401 });
   }
 
   const { data: professional } = await supabase
