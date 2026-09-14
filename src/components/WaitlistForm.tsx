@@ -57,7 +57,7 @@ export function WaitlistForm({
     <div>
       <form
         onSubmit={handleSubmit}
-        className="flex flex-col gap-3 rounded-2xl border border-border bg-paper-alt/60 p-2 sm:flex-row"
+        className="flex flex-col gap-2 rounded-2xl border border-border bg-paper-alt/60 p-2 lg:flex-row"
       >
         <label className="sr-only" htmlFor="waitlist-email">
           Seu email
@@ -69,9 +69,9 @@ export function WaitlistForm({
           placeholder="seu@email.com"
           value={email}
           onChange={(event) => setEmail(event.target.value)}
-          className="flex-1 rounded-xl border border-transparent bg-paper px-4 py-3 text-sm text-ink placeholder:text-ink-soft/70 focus:border-primary focus:outline-none"
+          className="min-w-0 flex-1 rounded-xl border border-transparent bg-paper px-4 py-3 text-sm text-ink placeholder:text-ink-soft/70 focus:border-primary focus:outline-none"
         />
-        <div className="flex gap-2">
+        <div className="flex flex-col gap-2 sm:flex-row">
           <select
             value={role}
             onChange={(event) => setRole(event.target.value as Role)}

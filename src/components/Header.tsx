@@ -9,6 +9,9 @@ export function Header() {
           <Logo />
         </Link>
         <nav className="hidden items-center gap-8 text-sm font-medium text-ink-soft sm:flex">
+          <Link href="/profissionais" className="hover:text-ink">
+            Encontrar profissionais
+          </Link>
           <a href="#como-funciona" className="hover:text-ink">
             Como funciona
           </a>

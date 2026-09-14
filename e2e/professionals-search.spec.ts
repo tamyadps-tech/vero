@@ -14,12 +14,10 @@ test("search page shows an honest empty state without Supabase configured", asyn
   ).toBeVisible();
 });
 
-test("filters update the URL", async ({ page }) => {
+test("category tabs update the URL", async ({ page }) => {
   await page.goto("/profissionais");
 
-  await page
-    .getByLabel(/filtrar por categoria/i)
-    .selectOption("psicologo");
+  await page.getByRole("button", { name: "Psicólogo(a)" }).click();
 
   await expect(page).toHaveURL(/category=psicologo/);
 });
