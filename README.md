@@ -21,6 +21,15 @@ email transacional e cobrança via Stripe — todos com fallback gracioso:
 sem alguma chave configurada, essa parte específica cai pro "modo
 grátis/sem email" em vez de quebrar.
 
+O painel do profissional (`/p/dashboard`) é dividido em abas — Dashboard
+(KPIs reais: recebido, ticket médio, recompra, taxas de conclusão/
+cancelamento, faturamento por mês e sessões por status), Marketing
+(divulgação + mensagens), Financeiro, Agenda (disponibilidade + sessões)
+e Clientes (CRM) —, com a edição de perfil sempre visível no topo. Ainda
+faltam: calendário dia/semana/mês e envio automático de confirmação na
+Agenda, e controle de custos/despesas no Financeiro (imposto fica pra
+uma fase futura, decisão deliberada).
+
 ## Stack
 
 Abordagem **híbrida**, escolhida para manter custo próximo de zero
