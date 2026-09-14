@@ -12,18 +12,18 @@ export function Header() {
           <Link href="/profissionais" className="hover:text-ink">
             Encontrar profissionais
           </Link>
-          <a href="#como-funciona" className="hover:text-ink">
+          <Link href="/#como-funciona" className="hover:text-ink">
             Como funciona
-          </a>
-          <a href="#para-profissionais" className="hover:text-ink">
+          </Link>
+          <Link href="/#para-profissionais" className="hover:text-ink">
             Para profissionais
-          </a>
-          <a href="#confianca" className="hover:text-ink">
+          </Link>
+          <Link href="/#confianca" className="hover:text-ink">
             Confiança &amp; vetting
-          </a>
-          <a href="#faq" className="hover:text-ink">
+          </Link>
+          <Link href="/#faq" className="hover:text-ink">
             Dúvidas
-          </a>
+          </Link>
         </nav>
         <div className="flex items-center gap-3">
           <Link
@@ -32,12 +32,12 @@ export function Header() {
           >
             Entrar
           </Link>
-          <a
-            href="#lista-espera-cliente"
+          <Link
+            href="/#lista-espera-cliente"
             className="rounded-full bg-primary px-5 py-2.5 text-sm font-semibold text-paper transition hover:bg-primary-dark"
           >
             Entrar na lista de espera
-          </a>
+          </Link>
         </div>
       </div>
     </header>
