@@ -14,10 +14,21 @@ const VALID_BODY = {
   priceCents: 25000,
 };
 
-function makeRequest(body: unknown) {
+function makeRequest(body: Record<string, unknown>) {
+  const formData = new FormData();
+  for (const [key, value] of Object.entries(body)) {
+    if (value === undefined) continue;
+    if (Array.isArray(value)) {
+      formData.set(key, JSON.stringify(value));
+    } else if (value instanceof File) {
+      formData.set(key, value);
+    } else {
+      formData.set(key, String(value));
+    }
+  }
   return new Request("http://localhost/api/professionals/apply", {
     method: "POST",
-    body: JSON.stringify(body),
+    body: formData,
   });
 }
 

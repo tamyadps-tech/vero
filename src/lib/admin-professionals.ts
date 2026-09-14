@@ -20,6 +20,7 @@ export interface AdminProfessional {
   vetting_status: "pendente" | "aprovado" | "rejeitado";
   vetting_notes: string | null;
   credential_document_url: string | null;
+  photo_url: string | null;
   created_at: string;
 }
 
@@ -31,7 +32,7 @@ export async function listProfessionals(): Promise<AdminProfessional[] | null> {
   const { data, error } = await supabase
     .from("professionals")
     .select(
-      "id, full_name, email, category, bio, years_experience, specialties, methods, personality, session_format, location_city, location_state, location_address, price_cents, vetting_status, vetting_notes, credential_document_url, created_at"
+      "id, full_name, email, category, bio, years_experience, specialties, methods, personality, session_format, location_city, location_state, location_address, price_cents, vetting_status, vetting_notes, credential_document_url, photo_url, created_at"
     )
     .order("created_at", { ascending: true });
 
@@ -54,7 +55,7 @@ export async function getProfessional(id: string): Promise<ProfessionalLookup> {
   const { data, error } = await supabase
     .from("professionals")
     .select(
-      "id, full_name, email, category, bio, years_experience, specialties, methods, personality, session_format, location_city, location_state, location_address, price_cents, vetting_status, vetting_notes, credential_document_url, created_at"
+      "id, full_name, email, category, bio, years_experience, specialties, methods, personality, session_format, location_city, location_state, location_address, price_cents, vetting_status, vetting_notes, credential_document_url, photo_url, created_at"
     )
     .eq("id", id)
     .maybeSingle();

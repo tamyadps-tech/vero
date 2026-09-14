@@ -46,17 +46,18 @@ describe("ProfessionalApplyForm", () => {
     );
 
     const [, options] = fetchMock.mock.calls[0];
-    const sentBody = JSON.parse(options.body);
-    expect(sentBody).toMatchObject({
-      fullName: "Maria Silva",
-      email: "maria@example.com",
-      password: "senha1234",
-      category: "terapeuta",
-      yearsExperience: 10,
-      specialties: ["Ansiedade", "Burnout"],
-      sessionFormat: "online",
-      priceCents: 25000,
-    });
+    const sentBody = options.body as FormData;
+    expect(sentBody.get("fullName")).toBe("Maria Silva");
+    expect(sentBody.get("email")).toBe("maria@example.com");
+    expect(sentBody.get("password")).toBe("senha1234");
+    expect(sentBody.get("category")).toBe("terapeuta");
+    expect(sentBody.get("yearsExperience")).toBe("10");
+    expect(JSON.parse(sentBody.get("specialties") as string)).toEqual([
+      "Ansiedade",
+      "Burnout",
+    ]);
+    expect(sentBody.get("sessionFormat")).toBe("online");
+    expect(sentBody.get("priceCents")).toBe("25000");
   });
 
   it("shows an error message when the request fails", async () => {

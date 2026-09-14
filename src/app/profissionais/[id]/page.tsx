@@ -78,12 +78,24 @@ export default async function ProfessionalProfilePage({
       <Header />
       <main className="flex-1">
         <article className="mx-auto max-w-3xl px-6 py-16">
-          <span className="inline-flex items-center gap-2 rounded-full border border-border bg-paper-alt px-4 py-1.5 text-xs font-medium uppercase tracking-wide text-ink-soft">
-            {CATEGORY_LABELS[professional.category]}
-          </span>
-          <h1 className="mt-4 text-3xl font-semibold tracking-tight text-ink sm:text-4xl">
-            {professional.full_name}
-          </h1>
+          <div className="flex items-center gap-4">
+            {professional.photo_url && (
+              // eslint-disable-next-line @next/next/no-img-element -- avatar servido pelo Supabase Storage, sem domínio fixo pra configurar no next/image.
+              <img
+                src={professional.photo_url}
+                alt={professional.full_name}
+                className="h-20 w-20 shrink-0 rounded-full border border-border object-cover"
+              />
+            )}
+            <div>
+              <span className="inline-flex items-center gap-2 rounded-full border border-border bg-paper-alt px-4 py-1.5 text-xs font-medium uppercase tracking-wide text-ink-soft">
+                {CATEGORY_LABELS[professional.category]}
+              </span>
+              <h1 className="mt-2 text-3xl font-semibold tracking-tight text-ink sm:text-4xl">
+                {professional.full_name}
+              </h1>
+            </div>
+          </div>
           <p className="mt-2 text-ink-soft">
             {professional.years_experience} anos de experiência ·{" "}
             {SESSION_FORMAT_LABELS[professional.session_format]}

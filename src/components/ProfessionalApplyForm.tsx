@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, type FormEvent } from "react";
+import { useState, type ChangeEvent, type FormEvent } from "react";
 import Link from "next/link";
 import {
   PROFESSIONAL_CATEGORIES,
@@ -20,6 +20,9 @@ const fieldClass =
   "w-full rounded-xl border border-border bg-paper px-4 py-3 text-sm text-ink placeholder:text-ink-soft/70 focus:border-primary focus:outline-none";
 const labelClass = "mb-1.5 block text-sm font-medium text-ink";
 
+const MAX_PHOTO_BYTES = 4 * 1024 * 1024;
+const ALLOWED_PHOTO_TYPES = ["image/jpeg", "image/png", "image/webp"];
+
 export function ProfessionalApplyForm() {
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
@@ -36,10 +39,35 @@ export function ProfessionalApplyForm() {
   const [locationAddress, setLocationAddress] = useState("");
   const [price, setPrice] = useState("");
   const [credentialUrl, setCredentialUrl] = useState("");
+  const [photo, setPhoto] = useState<File | null>(null);
+  const [photoPreview, setPhotoPreview] = useState<string | null>(null);
+  const [photoError, setPhotoError] = useState("");
   const [status, setStatus] = useState<Status>("idle");
   const [message, setMessage] = useState("");
 
   const needsLocation = sessionFormat !== "online";
+
+  function handlePhotoChange(event: ChangeEvent<HTMLInputElement>) {
+    const file = event.target.files?.[0] ?? null;
+    setPhotoError("");
+    if (!file) {
+      setPhoto(null);
+      setPhotoPreview(null);
+      return;
+    }
+    if (!ALLOWED_PHOTO_TYPES.includes(file.type)) {
+      setPhotoError("A foto precisa ser JPG, PNG ou WEBP.");
+      event.target.value = "";
+      return;
+    }
+    if (file.size > MAX_PHOTO_BYTES) {
+      setPhotoError("A foto precisa ter no máximo 4MB.");
+      event.target.value = "";
+      return;
+    }
+    setPhoto(file);
+    setPhotoPreview(URL.createObjectURL(file));
+  }
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -48,27 +76,30 @@ export function ProfessionalApplyForm() {
 
     const priceCents = Math.round(parseFloat(price.replace(",", ".")) * 100);
 
+    const formData = new FormData();
+    formData.set("fullName", fullName);
+    formData.set("email", email);
+    formData.set("password", password);
+    formData.set("category", category);
+    formData.set("bio", bio);
+    formData.set("yearsExperience", yearsExperience);
+    formData.set("specialties", JSON.stringify(parseTagList(specialties)));
+    formData.set("methods", JSON.stringify(parseTagList(methods)));
+    if (personality) formData.set("personality", personality);
+    formData.set("sessionFormat", sessionFormat);
+    if (needsLocation) {
+      formData.set("locationCity", locationCity);
+      formData.set("locationState", locationState);
+      if (locationAddress) formData.set("locationAddress", locationAddress);
+    }
+    formData.set("priceCents", String(priceCents));
+    if (credentialUrl) formData.set("credentialDocumentUrl", credentialUrl);
+    if (photo) formData.set("photo", photo);
+
     try {
       const response = await fetch("/api/professionals/apply", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          fullName,
-          email,
-          password,
-          category,
-          bio,
-          yearsExperience: Number(yearsExperience),
-          specialties: parseTagList(specialties),
-          methods: parseTagList(methods),
-          personality: personality || undefined,
-          sessionFormat,
-          locationCity: needsLocation ? locationCity : undefined,
-          locationState: needsLocation ? locationState : undefined,
-          locationAddress: needsLocation ? locationAddress || undefined : undefined,
-          priceCents,
-          credentialDocumentUrl: credentialUrl || undefined,
-        }),
+        body: formData,
       });
       const data = await response.json();
 
@@ -343,6 +374,38 @@ export function ProfessionalApplyForm() {
           </div>
         </div>
       )}
+
+      <div>
+        <label className={labelClass} htmlFor="apply-photo">
+          Foto de perfil (opcional)
+        </label>
+        <div className="flex items-center gap-4">
+          {photoPreview && (
+            // eslint-disable-next-line @next/next/no-img-element -- prévia local (blob URL), não uma imagem remota.
+            <img
+              src={photoPreview}
+              alt="Prévia da foto de perfil"
+              className="h-16 w-16 shrink-0 rounded-full border border-border object-cover"
+            />
+          )}
+          <input
+            id="apply-photo"
+            type="file"
+            accept="image/jpeg,image/png,image/webp"
+            onChange={handlePhotoChange}
+            className="block w-full text-sm text-ink-soft file:mr-3 file:rounded-lg file:border-0 file:bg-primary-light file:px-3 file:py-2 file:text-sm file:font-medium file:text-primary-dark hover:file:bg-primary-light/80"
+          />
+        </div>
+        <p className="mt-1.5 text-xs text-ink-soft">
+          JPG, PNG ou WEBP, até 4MB. Perfis com foto passam mais confiança e
+          recebem mais agendamentos.
+        </p>
+        {photoError && (
+          <p role="alert" className="mt-1.5 text-xs text-accent-dark">
+            {photoError}
+          </p>
+        )}
+      </div>
 
       <div>
         <label className={labelClass} htmlFor="apply-credential">

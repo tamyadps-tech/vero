@@ -12,6 +12,11 @@ function formatPrice(cents: number) {
   });
 }
 
+function initials(fullName: string) {
+  const parts = fullName.trim().split(/\s+/);
+  return ((parts[0]?.[0] ?? "") + (parts[parts.length - 1]?.[0] ?? "")).toUpperCase();
+}
+
 export function ProfessionalCard({
   professional,
   rating,
@@ -25,14 +30,28 @@ export function ProfessionalCard({
       className="block rounded-2xl border border-border bg-paper p-6 transition hover:border-primary"
     >
       <div className="flex items-start justify-between gap-3">
-        <div>
-          <h3 className="font-semibold text-ink">{professional.full_name}</h3>
-          <p className="text-sm text-ink-soft">
-            {CATEGORY_LABELS[professional.category]} ·{" "}
-            {professional.years_experience} anos de experiência
-          </p>
-          <div className="mt-1">
-            <RatingBadge average={rating.average} count={rating.count} />
+        <div className="flex items-start gap-3">
+          {professional.photo_url ? (
+            // eslint-disable-next-line @next/next/no-img-element -- avatar servido pelo Supabase Storage, sem domínio fixo pra configurar no next/image.
+            <img
+              src={professional.photo_url}
+              alt={professional.full_name}
+              className="h-12 w-12 shrink-0 rounded-full border border-border object-cover"
+            />
+          ) : (
+            <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-primary-light text-sm font-semibold text-primary-dark">
+              {initials(professional.full_name)}
+            </span>
+          )}
+          <div>
+            <h3 className="font-semibold text-ink">{professional.full_name}</h3>
+            <p className="text-sm text-ink-soft">
+              {CATEGORY_LABELS[professional.category]} ·{" "}
+              {professional.years_experience} anos de experiência
+            </p>
+            <div className="mt-1">
+              <RatingBadge average={rating.average} count={rating.count} />
+            </div>
           </div>
         </div>
         <span className="whitespace-nowrap text-sm font-semibold text-primary">

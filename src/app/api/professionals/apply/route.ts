@@ -1,3 +1,4 @@
+import { randomUUID } from "crypto";
 import { NextResponse } from "next/server";
 import { getSupabaseAdmin } from "@/lib/supabase-admin";
 import { isProfessionalCategory } from "@/lib/professional-categories";
@@ -8,6 +9,13 @@ const URL_RE = /^https?:\/\/.+/i;
 const MAX_TAGS = 10;
 
 const MIN_PASSWORD_LENGTH = 8;
+
+const MAX_PHOTO_BYTES = 4 * 1024 * 1024; // Vercel serverless functions rejeitam corpos > 4.5MB.
+const PHOTO_MIME_EXTENSIONS: Record<string, string> = {
+  "image/jpeg": "jpg",
+  "image/png": "png",
+  "image/webp": "webp",
+};
 
 interface ApplyPayload {
   fullName: string;
@@ -25,6 +33,7 @@ interface ApplyPayload {
   locationAddress?: string;
   priceCents: number;
   credentialDocumentUrl?: string;
+  photo?: File;
 }
 
 function parseTags(value: unknown): string[] | null {
@@ -38,6 +47,28 @@ function parseTags(value: unknown): string[] | null {
     tags.push(tag);
   }
   return tags;
+}
+
+function parseTagListField(value: unknown): string[] | null {
+  if (typeof value !== "string") return null;
+  try {
+    return parseTags(JSON.parse(value));
+  } catch {
+    return null;
+  }
+}
+
+function validatePhoto(value: unknown): { photo?: File } | { error: string } {
+  if (!(value instanceof File) || value.size === 0) {
+    return {};
+  }
+  if (!PHOTO_MIME_EXTENSIONS[value.type]) {
+    return { error: "A foto precisa ser JPG, PNG ou WEBP." };
+  }
+  if (value.size > MAX_PHOTO_BYTES) {
+    return { error: "A foto precisa ter no máximo 4MB." };
+  }
+  return { photo: value };
 }
 
 function validate(body: unknown): { data: ApplyPayload } | { error: string } {
@@ -71,17 +102,17 @@ function validate(body: unknown): { data: ApplyPayload } | { error: string } {
   }
 
   const yearsExperience =
-    typeof b.yearsExperience === "number" ? Math.round(b.yearsExperience) : NaN;
+    typeof b.yearsExperience === "string" ? Math.round(Number(b.yearsExperience)) : NaN;
   if (!Number.isFinite(yearsExperience) || yearsExperience < 0 || yearsExperience > 60) {
     return { error: "Informe os anos de experiência (0 a 60)." };
   }
 
-  const specialties = parseTags(b.specialties);
+  const specialties = parseTagListField(b.specialties);
   if (!specialties || specialties.length === 0) {
     return { error: "Informe ao menos uma especialidade." };
   }
 
-  const methods = parseTags(b.methods);
+  const methods = parseTagListField(b.methods);
   if (!methods) {
     return { error: "Métodos inválidos." };
   }
@@ -114,7 +145,7 @@ function validate(body: unknown): { data: ApplyPayload } | { error: string } {
   }
 
   const priceCents =
-    typeof b.priceCents === "number" ? Math.round(b.priceCents) : NaN;
+    typeof b.priceCents === "string" ? Math.round(Number(b.priceCents)) : NaN;
   if (!Number.isFinite(priceCents) || priceCents < 0) {
     return { error: "Informe um preço de sessão válido." };
   }
@@ -125,6 +156,11 @@ function validate(body: unknown): { data: ApplyPayload } | { error: string } {
       : undefined;
   if (credentialDocumentUrl && !URL_RE.test(credentialDocumentUrl)) {
     return { error: "O link do documento precisa ser uma URL válida (http/https)." };
+  }
+
+  const photoResult = validatePhoto(b.photo);
+  if ("error" in photoResult) {
+    return { error: photoResult.error };
   }
 
   return {
@@ -144,19 +180,20 @@ function validate(body: unknown): { data: ApplyPayload } | { error: string } {
       locationAddress,
       priceCents,
       credentialDocumentUrl,
+      photo: photoResult.photo,
     },
   };
 }
 
 export async function POST(request: Request) {
-  let body: unknown;
+  let body: FormData;
   try {
-    body = await request.json();
+    body = await request.formData();
   } catch {
     return NextResponse.json({ error: "Corpo inválido." }, { status: 400 });
   }
 
-  const result = validate(body);
+  const result = validate(Object.fromEntries(body.entries()));
   if ("error" in result) {
     return NextResponse.json({ error: result.error }, { status: 400 });
   }
@@ -177,6 +214,20 @@ export async function POST(request: Request) {
   }
 
   const { data } = result;
+
+  let photoUrl: string | null = null;
+  if (data.photo) {
+    const ext = PHOTO_MIME_EXTENSIONS[data.photo.type];
+    const path = `${randomUUID()}.${ext}`;
+    const { error: uploadError } = await supabase.storage
+      .from("professional-photos")
+      .upload(path, data.photo, { contentType: data.photo.type });
+    if (uploadError) {
+      console.error("[professionals/apply] Failed to upload photo:", uploadError.message);
+    } else {
+      photoUrl = supabase.storage.from("professional-photos").getPublicUrl(path).data.publicUrl;
+    }
+  }
 
   // Cria a conta de login (Supabase Auth) antes do registro do
   // profissional — email_confirm:true porque ainda não configuramos o
@@ -218,6 +269,7 @@ export async function POST(request: Request) {
     location_address: data.locationAddress ?? null,
     price_cents: data.priceCents,
     credential_document_url: data.credentialDocumentUrl ?? null,
+    photo_url: photoUrl,
   });
 
   if (error) {

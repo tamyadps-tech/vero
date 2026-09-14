@@ -1,5 +1,13 @@
 import { getSupabaseAdmin } from "@/lib/supabase-admin";
 import { computeEngagementStatus, type EngagementStatus } from "@/lib/client-engagement";
+import { ASSESSMENT_TEMPLATES } from "@/lib/assessments";
+
+export interface ClientLatestAssessment {
+  templateSlug: string;
+  score: number;
+  severity: string;
+  createdAt: string;
+}
 
 export interface ProfessionalClient {
   id: string;
@@ -11,6 +19,8 @@ export interface ProfessionalClient {
   totalPaidCents: number;
   hasUpcomingSession: boolean;
   engagementStatus: EngagementStatus;
+  /** Resultado mais recente de cada autoavaliação (PHQ-9, GAD-7, Roda da Vida) que o cliente já fez. */
+  latestAssessments: ClientLatestAssessment[];
 }
 
 type SessionRow = {
@@ -20,7 +30,64 @@ type SessionRow = {
   payment: { status: string; amount_cents: number } | null;
 };
 
-type ClientAccumulator = Omit<ProfessionalClient, "engagementStatus">;
+type AssessmentResponseRow = {
+  client_id: string;
+  template_slug: string;
+  score: number;
+  severity: string;
+  created_at: string;
+};
+
+type ClientAccumulator = Omit<ProfessionalClient, "engagementStatus" | "latestAssessments">;
+
+/**
+ * Busca o resultado mais recente de cada teste (PHQ-9, GAD-7, Roda da
+ * Vida) por cliente. Autoavaliação é do cliente, não do profissional —
+ * aqui só olhamos os clientes que já têm sessão com este profissional,
+ * pra ele acompanhar a evolução de quem atende.
+ */
+async function fetchLatestAssessmentsByClient(
+  supabase: ReturnType<typeof getSupabaseAdmin>,
+  clientIds: string[]
+): Promise<Map<string, ClientLatestAssessment[]>> {
+  const byClient = new Map<string, ClientLatestAssessment[]>();
+  if (!supabase || clientIds.length === 0) return byClient;
+
+  const { data, error } = await supabase
+    .from("assessment_responses")
+    .select("client_id, template_slug, score, severity, created_at")
+    .in("client_id", clientIds)
+    .order("created_at", { ascending: false });
+
+  if (error) {
+    console.error("[professional-clients] Failed to load assessments:", error.message);
+    return byClient;
+  }
+
+  const seenTemplates = new Map<string, Set<string>>();
+  for (const row of (data ?? []) as AssessmentResponseRow[]) {
+    const seen = seenTemplates.get(row.client_id) ?? new Set<string>();
+    if (seen.has(row.template_slug)) continue;
+    seen.add(row.template_slug);
+    seenTemplates.set(row.client_id, seen);
+
+    const list = byClient.get(row.client_id) ?? [];
+    list.push({
+      templateSlug: row.template_slug,
+      score: row.score,
+      severity: row.severity,
+      createdAt: row.created_at,
+    });
+    byClient.set(row.client_id, list);
+  }
+
+  const templateOrder = ASSESSMENT_TEMPLATES.map((t) => t.slug);
+  for (const list of byClient.values()) {
+    list.sort((a, b) => templateOrder.indexOf(a.templateSlug) - templateOrder.indexOf(b.templateSlug));
+  }
+
+  return byClient;
+}
 
 /**
  * CRM básico: agrega as sessões do profissional por cliente, sem tabela
@@ -76,6 +143,11 @@ export async function listProfessionalClients(
     byClient.set(client.id, entry);
   }
 
+  const assessmentsByClient = await fetchLatestAssessmentsByClient(
+    supabase,
+    Array.from(byClient.keys())
+  );
+
   return Array.from(byClient.values())
     .map((entry) => ({
       ...entry,
@@ -84,6 +156,7 @@ export async function listProfessionalClients(
         hasUpcomingSession: entry.hasUpcomingSession,
         now,
       }),
+      latestAssessments: assessmentsByClient.get(entry.id) ?? [],
     }))
     .sort((a, b) => (b.lastSessionAt ?? "").localeCompare(a.lastSessionAt ?? ""));
 }

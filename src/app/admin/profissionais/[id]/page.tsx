@@ -39,13 +39,25 @@ export default async function AdminProfessionalDetailPage({
     <>
       <AdminNav active="/admin/profissionais" />
       <main className="mx-auto max-w-3xl px-6 py-10">
-        <h1 className="text-2xl font-semibold tracking-tight text-ink">
-          {professional.full_name}
-        </h1>
-        <p className="mt-1 text-sm text-ink-soft">
-          {CATEGORY_LABELS[professional.category]} · {professional.email} ·{" "}
-          {SESSION_FORMAT_LABELS[professional.session_format]}
-        </p>
+        <div className="flex items-center gap-4">
+          {professional.photo_url && (
+            // eslint-disable-next-line @next/next/no-img-element -- avatar servido pelo Supabase Storage, sem domínio fixo pra configurar no next/image.
+            <img
+              src={professional.photo_url}
+              alt={professional.full_name}
+              className="h-16 w-16 shrink-0 rounded-full border border-border object-cover"
+            />
+          )}
+          <div>
+            <h1 className="text-2xl font-semibold tracking-tight text-ink">
+              {professional.full_name}
+            </h1>
+            <p className="mt-1 text-sm text-ink-soft">
+              {CATEGORY_LABELS[professional.category]} · {professional.email} ·{" "}
+              {SESSION_FORMAT_LABELS[professional.session_format]}
+            </p>
+          </div>
+        </div>
 
         {professional.vetting_status === "aprovado" && (
           <div className="mt-4 rounded-xl border border-border bg-paper-alt/40 px-4 py-3 text-sm">
