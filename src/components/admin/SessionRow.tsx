@@ -61,6 +61,10 @@ export function SessionRow({
   const [pending, setPending] = useState(false);
   const [error, setError] = useState("");
   const [saved, setSaved] = useState(false);
+  const [confirmStatus, setConfirmStatus] = useState<"idle" | "loading" | "sent" | "error">(
+    "idle"
+  );
+  const [confirmMessage, setConfirmMessage] = useState("");
 
   async function save() {
     setPending(true);
@@ -90,6 +94,29 @@ export function SessionRow({
       setError(err instanceof Error ? err.message : "Erro inesperado.");
     } finally {
       setPending(false);
+    }
+  }
+
+  async function sendConfirmation() {
+    setConfirmStatus("loading");
+    setConfirmMessage("");
+    try {
+      const response = await fetch(`/api/professional/sessions/${session.id}/send-confirmation`, {
+        method: "POST",
+      });
+      const data = await response.json().catch(() => ({}));
+      if (!response.ok) {
+        throw new Error(data.error ?? "Não foi possível enviar agora.");
+      }
+      if (data.sent) {
+        setConfirmStatus("sent");
+      } else {
+        setConfirmStatus("error");
+        setConfirmMessage("Email ainda não está configurado.");
+      }
+    } catch (err) {
+      setConfirmStatus("error");
+      setConfirmMessage(err instanceof Error ? err.message : "Erro inesperado.");
     }
   }
 
@@ -161,7 +188,7 @@ export function SessionRow({
         </div>
       </div>
 
-      <div className="mt-4 flex items-center gap-3">
+      <div className="mt-4 flex flex-wrap items-center gap-3">
         <button
           type="button"
           disabled={pending}
@@ -175,6 +202,26 @@ export function SessionRow({
           <span role="alert" className="text-xs text-accent-dark">
             {error}
           </span>
+        )}
+        {own && (
+          <>
+            <button
+              type="button"
+              disabled={confirmStatus === "loading"}
+              onClick={sendConfirmation}
+              className="rounded-lg border border-border px-4 py-2 text-xs font-medium text-ink-soft transition hover:text-ink disabled:opacity-60"
+            >
+              {confirmStatus === "loading" ? "Enviando…" : "Reenviar confirmação"}
+            </button>
+            {confirmStatus === "sent" && (
+              <span className="text-xs text-primary-dark">Confirmação enviada!</span>
+            )}
+            {confirmStatus === "error" && (
+              <span role="alert" className="text-xs text-accent-dark">
+                {confirmMessage}
+              </span>
+            )}
+          </>
         )}
       </div>
     </div>

@@ -1,5 +1,5 @@
 import { sendEmail } from "@/lib/email";
-import { sessionSummaryEmail } from "@/lib/email-templates";
+import { sessionSummaryEmail, bookingConfirmationEmail } from "@/lib/email-templates";
 import { getSupabaseAdmin } from "@/lib/supabase-admin";
 
 const VALID_STATUSES = new Set([
@@ -108,4 +108,47 @@ export async function notifySessionCompletion(
     progressUrl: `${origin}/c/entrar`,
   });
   await sendEmail({ to: client.email, subject, html });
+}
+
+/**
+ * Reenvia a confirmação de uma sessão específica — usado quando o
+ * profissional quer confirmar/lembrar o cliente manualmente pelo painel,
+ * além do email automático que já sai no agendamento. Filtra por
+ * professional_id pra nunca deixar reenviar confirmação de sessão de
+ * outra pessoa.
+ */
+export async function sendSessionConfirmation(
+  supabase: NonNullable<ReturnType<typeof getSupabaseAdmin>>,
+  sessionId: string,
+  professionalId: string,
+  origin: string
+): Promise<{ sent: boolean; reason: string }> {
+  const { data: fullSession } = await supabase
+    .from("sessions")
+    .select(
+      "scheduled_at, professional:professionals(full_name), client:clients(full_name, email)"
+    )
+    .eq("id", sessionId)
+    .eq("professional_id", professionalId)
+    .single();
+
+  const client = fullSession?.client as unknown as
+    | { full_name: string; email: string }
+    | undefined;
+  const professional = fullSession?.professional as unknown as
+    | { full_name: string }
+    | undefined;
+
+  if (!fullSession || !client || !professional) {
+    return { sent: false, reason: "not_found" };
+  }
+
+  const { subject, html } = bookingConfirmationEmail({
+    clientName: client.full_name,
+    professionalName: professional.full_name,
+    scheduledAt: fullSession.scheduled_at,
+    progressUrl: `${origin}/c/dashboard`,
+  });
+  const result = await sendEmail({ to: client.email, subject, html });
+  return result.sent ? { sent: true, reason: "" } : { sent: false, reason: result.reason };
 }

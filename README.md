@@ -24,11 +24,13 @@ grátis/sem email" em vez de quebrar.
 O painel do profissional (`/p/dashboard`) é dividido em abas — Dashboard
 (KPIs reais: recebido, ticket médio, recompra, taxas de conclusão/
 cancelamento, faturamento por mês e sessões por status), Marketing
-(divulgação + mensagens), Financeiro, Agenda (disponibilidade + sessões)
-e Clientes (CRM) —, com a edição de perfil sempre visível no topo. Ainda
-faltam: calendário dia/semana/mês e envio automático de confirmação na
-Agenda, e controle de custos/despesas no Financeiro (imposto fica pra
-uma fase futura, decisão deliberada).
+(divulgação + mensagens), Financeiro, Agenda e Clientes (CRM) —, com a
+edição de perfil sempre visível no topo. A Agenda tem calendário com
+visão dia/semana/mês (clicando num dia no mês você cai na visão do dia)
+e um botão pra reenviar a confirmação por email de qualquer sessão —
+além do email automático que já sai sozinho quando o cliente agenda.
+Ainda falta: controle de custos/despesas no Financeiro (imposto fica
+pra uma fase futura, decisão deliberada).
 
 ## Stack
 
