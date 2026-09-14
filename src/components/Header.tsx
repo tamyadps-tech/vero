@@ -23,12 +23,12 @@ export function Header() {
           </a>
         </nav>
         <div className="flex items-center gap-3">
-          <a
-            href="#lista-espera-profissional"
-            className="hidden rounded-full px-4 py-2 text-sm font-medium text-ink-soft transition hover:text-ink sm:block"
+          <Link
+            href="/entrar"
+            className="rounded-full px-4 py-2 text-sm font-medium text-ink-soft transition hover:text-ink"
           >
-            Sou profissional
-          </a>
+            Entrar
+          </Link>
           <a
             href="#lista-espera-cliente"
             className="rounded-full bg-primary px-5 py-2.5 text-sm font-semibold text-paper transition hover:bg-primary-dark"
