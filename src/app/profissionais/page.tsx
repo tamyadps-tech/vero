@@ -5,7 +5,11 @@ import { Footer } from "@/components/Footer";
 import { ProfessionalFilters } from "@/components/ProfessionalFilters";
 import { ProfessionalCard } from "@/components/ProfessionalCard";
 import { listApprovedProfessionals } from "@/lib/public-professionals";
-import { isProfessionalCategory } from "@/lib/professional-categories";
+import {
+  isProfessionalCategory,
+  CATEGORY_LABELS,
+  CATEGORY_DESCRIPTIONS,
+} from "@/lib/professional-categories";
 import { isSessionFormat } from "@/lib/session-format";
 import { getReviewSummaries, type ReviewSummary } from "@/lib/reviews";
 
@@ -24,9 +28,10 @@ export default async function ProfissionaisPage({
   const category = typeof params.category === "string" ? params.category : undefined;
   const format = typeof params.format === "string" ? params.format : undefined;
   const q = typeof params.q === "string" ? params.q : undefined;
+  const activeCategory = isProfessionalCategory(category) ? category : undefined;
 
   const professionals = await listApprovedProfessionals({
-    category: isProfessionalCategory(category) ? category : undefined,
+    category: activeCategory,
     sessionFormat: isSessionFormat(format) ? format : undefined,
     q,
   });
@@ -52,6 +57,17 @@ export default async function ProfissionaisPage({
             <ProfessionalFilters />
           </div>
 
+          {activeCategory && (
+            <div className="mt-4 rounded-2xl border border-border bg-paper-alt/40 p-5">
+              <h2 className="font-semibold text-ink">
+                {CATEGORY_LABELS[activeCategory]}
+              </h2>
+              <p className="mt-1 text-sm text-ink-soft">
+                {CATEGORY_DESCRIPTIONS[activeCategory]}
+              </p>
+            </div>
+          )}
+
           {professionals === null ? (
             <div className="mt-10 rounded-2xl border border-dashed border-border bg-paper-alt/40 p-8 text-center">
               <p className="font-medium text-ink">
@@ -66,9 +82,20 @@ export default async function ProfissionaisPage({
               </p>
             </div>
           ) : professionals.length === 0 ? (
-            <p className="mt-10 text-center text-sm text-ink-soft">
-              Nenhum profissional encontrado com esses filtros.
-            </p>
+            <div className="mt-10 rounded-2xl border border-dashed border-border bg-paper-alt/40 p-8 text-center">
+              <p className="font-medium text-ink">
+                {activeCategory
+                  ? `Ainda não temos ${CATEGORY_LABELS[activeCategory].toLowerCase()} aprovado(a) nessa categoria.`
+                  : "Nenhum profissional encontrado com esses filtros."}
+              </p>
+              <p className="mt-1 text-sm text-ink-soft">
+                Deixe seu email na{" "}
+                <Link href="/#lista-espera-cliente" className="text-primary hover:underline">
+                  lista de espera
+                </Link>{" "}
+                pra saber quando tivermos novidades.
+              </p>
+            </div>
           ) : (
             <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
               {professionals.map((professional) => (
