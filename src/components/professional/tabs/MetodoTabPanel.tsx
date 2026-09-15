@@ -24,27 +24,22 @@ export function MetodoTabPanel() {
         conteúdo curado e escrito pela equipe Vero.
       </p>
 
-      <div className="mt-4 space-y-3">
+      <div className="mt-6 divide-y divide-border">
         {METHOD_ARTICLES.map((article) => (
-          <details
-            key={article.slug}
-            className="rounded-xl border border-border bg-paper p-4"
-          >
-            <summary className="flex cursor-pointer flex-wrap items-center gap-2 font-medium text-ink">
-              {article.title}
+          <article key={article.slug} className="py-8 first:pt-0">
+            <div className="flex flex-wrap items-center gap-2">
+              <h3 className="text-lg font-semibold text-ink">{article.title}</h3>
               <CategoryBadge category={article.category} />
-            </summary>
-            <p className="mt-2 text-sm text-ink-soft">{article.summary}</p>
+            </div>
+            <p className="mt-1.5 text-sm text-ink-soft">{article.summary}</p>
 
-            <div className="mt-4 space-y-4">
+            <div className="mt-5 space-y-5">
               {article.sections.map((section) => (
                 <div key={section.heading}>
-                  <p className="text-xs font-semibold uppercase tracking-wide text-ink-soft">
-                    {section.heading}
-                  </p>
-                  <div className="mt-1.5 space-y-2">
+                  <h4 className="text-sm font-semibold text-ink">{section.heading}</h4>
+                  <div className="mt-2 space-y-3">
                     {section.body.map((paragraph, index) => (
-                      <p key={index} className="text-sm text-ink">
+                      <p key={index} className="text-sm leading-relaxed text-ink-soft">
                         {paragraph}
                       </p>
                     ))}
@@ -52,7 +47,7 @@ export function MetodoTabPanel() {
                 </div>
               ))}
             </div>
-          </details>
+          </article>
         ))}
       </div>
     </section>

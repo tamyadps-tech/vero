@@ -32,44 +32,64 @@ function TestCatalog() {
             </summary>
             <p className="mt-2 text-sm text-ink-soft">{template.description}</p>
 
-            <p className="mt-4 text-xs font-semibold uppercase tracking-wide text-ink-soft">
-              Perguntas
+            <p className="mt-5 text-xs font-semibold uppercase tracking-wide text-ink-soft">
+              Prévia do formulário que o cliente responde
             </p>
-            <ol className="mt-1.5 list-decimal space-y-1 pl-5 text-sm text-ink">
+            <div className="mt-2 divide-y divide-border rounded-lg border border-border bg-paper-alt/40 px-3">
               {template.questions.map((question) => (
-                <li key={question.id}>{question.text}</li>
+                <div key={question.id} className="py-3 first:pt-3 last:pb-3">
+                  <p className="text-sm text-ink">{question.text}</p>
+                  <div className="mt-2 flex flex-wrap gap-1.5" aria-hidden="true">
+                    {options.map((option) => (
+                      <span
+                        key={option.value}
+                        className="rounded-lg border border-border bg-paper px-2.5 py-1 text-xs text-ink-soft"
+                      >
+                        {option.label}
+                      </span>
+                    ))}
+                  </div>
+                </div>
               ))}
-            </ol>
-
-            <p className="mt-4 text-xs font-semibold uppercase tracking-wide text-ink-soft">
-              Escala de resposta
-            </p>
-            <p className="mt-1 text-sm text-ink-soft">
-              {options.map((option) => option.label).join(" · ")}
-            </p>
+            </div>
 
             {template.dimensions ? (
               <>
-                <p className="mt-4 text-xs font-semibold uppercase tracking-wide text-ink-soft">
+                <p className="mt-5 text-xs font-semibold uppercase tracking-wide text-ink-soft">
                   Resultado
                 </p>
-                <p className="mt-1 text-sm text-ink-soft">
-                  Soma das respostas por dimensão — a de maior soma é o
-                  resultado: {template.dimensions.map((d) => d.label).join(", ")}.
+                <p className="mt-1.5 text-sm text-ink-soft">
+                  Soma das respostas por dimensão — a de maior soma é o resultado:
                 </p>
+                <div className="mt-2 flex flex-wrap gap-1.5">
+                  {template.dimensions.map((dimension) => (
+                    <span
+                      key={dimension.key}
+                      className="rounded-full bg-paper-alt px-2.5 py-1 text-xs text-ink"
+                    >
+                      {dimension.label}
+                    </span>
+                  ))}
+                </div>
               </>
             ) : (
               <>
-                <p className="mt-4 text-xs font-semibold uppercase tracking-wide text-ink-soft">
+                <p className="mt-5 text-xs font-semibold uppercase tracking-wide text-ink-soft">
                   Faixas de resultado
                 </p>
-                <ul className="mt-1.5 space-y-0.5 text-sm text-ink-soft">
+                <div className="mt-2 space-y-1.5">
                   {template.severityBands.map((band) => (
-                    <li key={band.label}>
-                      {band.min}–{band.max}: {band.label}
-                    </li>
+                    <div
+                      key={band.label}
+                      className="flex items-center gap-2 rounded-lg bg-paper-alt px-3 py-1.5 text-sm"
+                    >
+                      <span className="font-mono text-xs text-ink-soft">
+                        {band.min}–{band.max}
+                      </span>
+                      <span className="text-ink">{band.label}</span>
+                    </div>
                   ))}
-                </ul>
+                </div>
               </>
             )}
           </details>

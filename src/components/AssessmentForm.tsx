@@ -2,7 +2,11 @@
 
 import { useState, type FormEvent } from "react";
 import { useRouter } from "next/navigation";
-import { getAssessmentTemplate, getResponseOptions } from "@/lib/assessments";
+import {
+  getAssessmentTemplate,
+  getResponseOptions,
+  getDimensionBreakdown,
+} from "@/lib/assessments";
 
 export function AssessmentForm({
   templateSlug,
@@ -16,7 +20,12 @@ export function AssessmentForm({
   const [answers, setAnswers] = useState<Record<string, number>>({});
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
   const [message, setMessage] = useState("");
-  const [result, setResult] = useState<{ score: number; severity: string } | null>(null);
+  const [result, setResult] = useState<{
+    score: number;
+    maxScore: number;
+    severity: string;
+    orderedAnswers: number[];
+  } | null>(null);
 
   if (!template) return null;
   const options = getResponseOptions(template.responseType);
@@ -43,7 +52,12 @@ export function AssessmentForm({
         throw new Error(data.error ?? "Não foi possível enviar agora.");
       }
 
-      setResult({ score: data.score, severity: data.severity });
+      setResult({
+        score: data.score,
+        maxScore: data.maxScore,
+        severity: data.severity,
+        orderedAnswers,
+      });
       setStatus("success");
       router.refresh();
     } catch (error) {
@@ -55,17 +69,64 @@ export function AssessmentForm({
   }
 
   if (status === "success" && result) {
+    const breakdown = template.dimensions
+      ? getDimensionBreakdown(template, result.orderedAnswers)
+      : [];
+    const scorePct = Math.round((result.score / result.maxScore) * 100);
+
     return (
-      <div className="rounded-xl border border-primary/30 bg-primary-light p-4 text-center">
-        <p className="font-medium text-primary-dark">
-          Resultado: {result.score}/
-          {template.responseType === "scale0to10" ? 10 : template.questions.length * 3} —{" "}
+      <div className="rounded-xl border border-primary/30 bg-primary-light p-5">
+        <p className="text-xs font-semibold uppercase tracking-wide text-primary-dark">
+          Seu resultado — {template.name}
+        </p>
+
+        <div className="mt-3 flex items-baseline gap-2">
+          <span className="text-3xl font-semibold text-primary-dark">{result.score}</span>
+          <span className="text-sm text-primary-dark/70">/ {result.maxScore}</span>
+        </div>
+        <div className="mt-2 h-1.5 overflow-hidden rounded-full bg-paper/60">
+          <div
+            className="h-full rounded-full bg-primary-dark transition-[width]"
+            style={{ width: `${scorePct}%` }}
+          />
+        </div>
+        <p className="mt-2 inline-block rounded-full bg-paper px-3 py-1 text-sm font-medium text-primary-dark">
           {result.severity}
         </p>
+
+        {breakdown.length > 0 && (
+          <div className="mt-4 space-y-2 border-t border-primary/20 pt-4">
+            <p className="text-xs font-semibold uppercase tracking-wide text-primary-dark">
+              Detalhamento por dimensão
+            </p>
+            {breakdown.map((dimension) => (
+              <div key={dimension.key}>
+                <div className="flex items-center justify-between text-xs text-primary-dark">
+                  <span>{dimension.label}</span>
+                  <span>
+                    {dimension.total}/{dimension.maxTotal}
+                  </span>
+                </div>
+                <div className="mt-0.5 h-1.5 overflow-hidden rounded-full bg-paper/60">
+                  <div
+                    className="h-full rounded-full bg-primary-dark"
+                    style={{ width: `${(dimension.total / dimension.maxTotal) * 100}%` }}
+                  />
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+
+        <p className="mt-4 border-t border-primary/20 pt-3 text-xs text-primary-dark/80">
+          Seu profissional já tem acesso a esse resultado e vai conversar
+          sobre ele com você na próxima sessão.
+        </p>
+
         <button
           type="button"
           onClick={onClose}
-          className="mt-2 text-xs text-primary-dark underline"
+          className="mt-3 text-xs font-medium text-primary-dark underline"
         >
           Fechar
         </button>
