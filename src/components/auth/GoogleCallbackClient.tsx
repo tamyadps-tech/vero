@@ -29,7 +29,12 @@ export function GoogleCallbackClient() {
       const { data, error: exchangeError } = await supabase.auth.exchangeCodeForSession(code);
       if (cancelled) return;
       if (exchangeError || !data.session) {
-        setError("Não foi possível concluir o login com Google.");
+        console.error("[GoogleCallbackClient] exchangeCodeForSession failed:", exchangeError);
+        setError(
+          exchangeError?.message
+            ? `Não foi possível concluir o login com Google (${exchangeError.message}).`
+            : "Não foi possível concluir o login com Google."
+        );
         return;
       }
 
@@ -46,6 +51,11 @@ export function GoogleCallbackClient() {
 
       if (!response.ok) {
         const responseBody = await response.json().catch(() => ({}));
+        console.error(
+          "[GoogleCallbackClient] /api/auth/client/google-callback failed:",
+          response.status,
+          responseBody
+        );
         setError(responseBody.error ?? "Não foi possível concluir o login com Google.");
         return;
       }
