@@ -146,7 +146,12 @@ export default async function ProfessionalDashboardPage() {
             marketing={<MarketingTabPanel publicProfileUrl={publicProfileUrl} clients={clients} />}
             financeiro={<FinanceiroTabPanel finance={finance} expenses={expenses} />}
             agenda={
-              <AgendaTabPanel professionalId={professional.id} slots={slots} sessions={sessions} />
+              <AgendaTabPanel
+                professionalId={professional.id}
+                slots={slots}
+                sessions={sessions}
+                googleCalendarEmail={professional.google_calendar_email}
+              />
             }
             crm={<CrmTabPanel clients={clients} />}
             testes={<TestesTabPanel clients={clients} />}

@@ -1,10 +1,11 @@
 import { NextResponse } from "next/server";
 import { getSupabaseAdmin } from "@/lib/supabase-admin";
-import { getUpcomingSlotsForProfessional } from "@/lib/booking";
+import { getUpcomingSlotsForProfessional, SESSION_DURATION_MINUTES } from "@/lib/booking";
 import { sendEmail } from "@/lib/email";
 import { bookingConfirmationEmail } from "@/lib/email-templates";
 import { sendWhatsAppMessage } from "@/lib/whatsapp";
 import { bookingConfirmationWhatsApp } from "@/lib/whatsapp-templates";
+import { getGoogleCalendarAccessToken, createGoogleCalendarEvent } from "@/lib/google-calendar";
 import { getStripeClient } from "@/lib/stripe";
 import { getClientFromAccessToken } from "@/lib/client-session";
 import { readAccessToken } from "@/lib/read-session-token";
@@ -69,7 +70,7 @@ export async function POST(request: Request) {
 
   const { data: professional, error: professionalError } = await supabase
     .from("professionals")
-    .select("full_name, price_cents")
+    .select("full_name, price_cents, google_calendar_refresh_token")
     .eq("id", professionalId)
     .single();
 
@@ -98,6 +99,25 @@ export async function POST(request: Request) {
 
   const origin = new URL(request.url).origin;
   const progressUrl = `${origin}/c/dashboard`;
+
+  // Cria o evento na agenda do Google do profissional já aqui, antes da
+  // Stripe — o horário já está reservado no Vero independente de
+  // pagamento, então a agenda externa deve refletir isso também.
+  // Best-effort: nunca bloqueia o agendamento.
+  if (professional.google_calendar_refresh_token) {
+    const calendarAccessToken = await getGoogleCalendarAccessToken(
+      professional.google_calendar_refresh_token
+    );
+    if (calendarAccessToken) {
+      const slotEnd = new Date(slotDate.getTime() + SESSION_DURATION_MINUTES * 60 * 1000);
+      await createGoogleCalendarEvent(calendarAccessToken, {
+        summary: `Sessão com ${client.full_name}`,
+        description: "Agendado via Vero.",
+        startIso: slotDate.toISOString(),
+        endIso: slotEnd.toISOString(),
+      });
+    }
+  }
 
   const stripe = getStripeClient();
   if (stripe && professional.price_cents > 0) {

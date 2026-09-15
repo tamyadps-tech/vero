@@ -25,10 +25,11 @@ export interface ProfessionalAccount {
   website_url: string | null;
   vetting_status: "pendente" | "aprovado" | "rejeitado";
   vetting_notes: string | null;
+  google_calendar_email: string | null;
 }
 
 const ACCOUNT_COLUMNS =
-  "id, full_name, email, category, bio, years_experience, specialties, methods, personality, session_format, location_city, location_state, location_address, price_cents, photo_url, portfolio_photo_urls, instagram_url, whatsapp_url, website_url, vetting_status, vetting_notes";
+  "id, full_name, email, category, bio, years_experience, specialties, methods, personality, session_format, location_city, location_state, location_address, price_cents, photo_url, portfolio_photo_urls, instagram_url, whatsapp_url, website_url, vetting_status, vetting_notes, google_calendar_email";
 
 /**
  * Resolve o profissional logado a partir do access token da sessão

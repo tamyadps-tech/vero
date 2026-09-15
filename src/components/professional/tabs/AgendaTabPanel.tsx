@@ -1,5 +1,6 @@
 import { AvailabilityManager } from "@/components/admin/AvailabilityManager";
 import { AgendaCalendar } from "@/components/professional/tabs/AgendaCalendar";
+import { GoogleCalendarConnect } from "@/components/professional/GoogleCalendarConnect";
 import type { AdminAvailabilitySlot } from "@/lib/booking";
 import type { AdminSession } from "@/lib/admin-sessions";
 
@@ -7,15 +8,19 @@ export function AgendaTabPanel({
   professionalId,
   slots,
   sessions,
+  googleCalendarEmail,
 }: {
   professionalId: string;
   slots: AdminAvailabilitySlot[] | null;
   sessions: AdminSession[] | null;
+  googleCalendarEmail: string | null;
 }) {
   const now = new Date();
 
   return (
     <div className="space-y-10">
+      <GoogleCalendarConnect connectedEmail={googleCalendarEmail} />
+
       <section>
         <h2 className="text-sm font-semibold uppercase tracking-wide text-ink-soft">
           Sessões

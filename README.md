@@ -38,7 +38,13 @@ cliente agenda. O Financeiro tem registro de custos/despesas (descrição,
 valor, data, categoria opcional) e calcula o lucro líquido (recebido −
 despesas) — imposto fica de fora por enquanto, depende do regime
 tributário de cada profissional e entra numa fase futura, decisão
-deliberada.
+deliberada. Na Agenda também dá pra **conectar o Google Calendar**: uma
+vez conectado, o Vero bloqueia horários que já estão ocupados lá e cria
+um evento automaticamente sempre que alguém agenda uma sessão — precisa
+de `GOOGLE_CALENDAR_CLIENT_ID`/`GOOGLE_CALENDAR_CLIENT_SECRET` (ver
+`.env.example`, inclui o aviso de que esse escopo do Google pode
+precisar de verificação antes de funcionar pra qualquer profissional);
+sem isso, o botão só avisa que ainda não está disponível.
 
 Cliente também pode entrar com **login do Google**, além de email/senha
 (`/c/entrar` e `/c/cadastrar`) — precisa configurar o provedor Google no
