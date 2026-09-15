@@ -74,11 +74,11 @@ export default async function ProfissionaisPage({
                 Ainda não temos profissionais aprovados no ar.
               </p>
               <p className="mt-1 text-sm text-ink-soft">
-                Estamos na fase de cadastro e vetting. Deixe seu email na{" "}
-                <Link href="/#lista-espera-cliente" className="text-primary hover:underline">
-                  lista de espera
+                Estamos na fase de cadastro e vetting. Enquanto isso,{" "}
+                <Link href="/c/cadastrar" className="text-primary hover:underline">
+                  crie sua conta
                 </Link>{" "}
-                pra saber quando abrirmos.
+                pra já estar pronto(a) assim que abrirmos.
               </p>
             </div>
           ) : professionals.length === 0 ? (
@@ -89,11 +89,8 @@ export default async function ProfissionaisPage({
                   : "Nenhum profissional encontrado com esses filtros."}
               </p>
               <p className="mt-1 text-sm text-ink-soft">
-                Deixe seu email na{" "}
-                <Link href="/#lista-espera-cliente" className="text-primary hover:underline">
-                  lista de espera
-                </Link>{" "}
-                pra saber quando tivermos novidades.
+                Tente outro filtro, ou volte aqui em breve pra conferir
+                novos profissionais aprovados.
               </p>
             </div>
           ) : (

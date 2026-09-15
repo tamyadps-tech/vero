@@ -1,6 +1,6 @@
 import { test, expect } from "@playwright/test";
 
-test("landing page shows the Vero value proposition and waitlist form", async ({
+test("landing page shows the Vero value proposition and signup CTA", async ({
   page,
 }) => {
   await page.goto("/");
@@ -10,25 +10,12 @@ test("landing page shows the Vero value proposition and waitlist form", async ({
     page.getByRole("heading", { name: /profissionais verificados/i })
   ).toBeVisible();
 
-  const emailInput = page.getByLabel(/seu email/i).first();
-  await expect(emailInput).toBeVisible();
+  await expect(
+    page.getByRole("link", { name: /cadastre-se aqui/i }).first()
+  ).toHaveAttribute("href", "/c/cadastrar");
   await expect(
     page.getByRole("link", { name: /termo de uso/i }).first()
   ).toBeVisible();
-});
-
-test("waitlist form surfaces an error when the backend isn't configured yet", async ({
-  page,
-}) => {
-  await page.goto("/");
-
-  await page.getByLabel(/seu email/i).first().fill("teste@example.com");
-  await page
-    .getByRole("button", { name: /entrar na lista/i })
-    .first()
-    .click();
-
-  await expect(page.getByRole("alert").first()).toBeVisible();
 });
 
 test("legal pages render the Termo de Uso and Política de Privacidade", async ({

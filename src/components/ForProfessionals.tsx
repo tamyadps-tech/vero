@@ -1,4 +1,4 @@
-import { WaitlistForm } from "./WaitlistForm";
+import Link from "next/link";
 
 const perks = [
   "Agenda, prontuário e cobrança num só lugar",
@@ -42,9 +42,14 @@ export function ForProfessionals() {
         </div>
         <div id="lista-espera-profissional" className="flex flex-col justify-center">
           <p className="mb-3 text-sm font-medium text-ink">
-            Cadastre seu interesse no beta:
+            Sem lista de espera — já dá pra se candidatar:
           </p>
-          <WaitlistForm defaultRole="profissional" />
+          <Link
+            href="/profissionais/cadastro"
+            className="inline-flex items-center justify-center rounded-xl bg-primary px-6 py-3 text-sm font-semibold text-paper transition hover:bg-primary-dark"
+          >
+            Cadastre-se aqui
+          </Link>
         </div>
       </div>
     </section>

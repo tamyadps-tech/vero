@@ -1,4 +1,3 @@
-import { AssessmentReleaseToggles } from "@/components/professional/AssessmentReleaseToggles";
 import { ENGAGEMENT_STATUS_LABELS } from "@/lib/client-engagement";
 import type { ProfessionalClient } from "@/lib/professional-clients";
 
@@ -26,9 +25,8 @@ export function CrmTabPanel({ clients }: { clients: ProfessionalClient[] | null 
       <p className="mt-1 text-sm text-ink-soft">
         Quem já passou por sessões com você, com histórico, valor
         vitalício (LTV) e sinal de quem precisa de reengajamento.
-        Autoavaliações (PHQ-9, GAD-7, Roda da Vida) ficam ocultas pro
-        cliente até você liberar — libere só quando fizer sentido
-        clinicamente.
+        Autoavaliações ficam na aba{" "}
+        <span className="font-medium text-ink">Testes</span>.
       </p>
       <div className="mt-4">
         {clients === null ? (
@@ -78,11 +76,6 @@ export function CrmTabPanel({ clients }: { clients: ProfessionalClient[] | null 
                       <p>Última: {dateFormatter.format(new Date(client.lastSessionAt))}</p>
                     )}
                   </div>
-                  <AssessmentReleaseToggles
-                    clientId={client.id}
-                    releasedSlugs={client.releasedAssessmentSlugs}
-                    latestAssessments={client.latestAssessments}
-                  />
                 </div>
               ))}
             </div>

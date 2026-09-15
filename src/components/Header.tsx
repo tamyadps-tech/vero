@@ -33,10 +33,10 @@ export function Header() {
             Entrar
           </Link>
           <Link
-            href="/#lista-espera-cliente"
+            href="/c/cadastrar"
             className="rounded-full bg-primary px-5 py-2.5 text-sm font-semibold text-paper transition hover:bg-primary-dark"
           >
-            Entrar na lista de espera
+            Cadastre-se aqui
           </Link>
         </div>
       </div>

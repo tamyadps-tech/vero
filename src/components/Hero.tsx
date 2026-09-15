@@ -1,4 +1,4 @@
-import { WaitlistForm } from "./WaitlistForm";
+import Link from "next/link";
 
 export function Hero() {
   return (
@@ -22,11 +22,22 @@ export function Hero() {
             na sua própria conta.
           </p>
         </div>
-        <div id="lista-espera-cliente" className="mx-auto mt-10 max-w-md">
-          <WaitlistForm />
-          <p className="mt-3 text-center text-xs text-ink-soft">
-            Sem spam. Avisamos quando abrirmos as primeiras vagas do beta.
-          </p>
+        <div
+          id="lista-espera-cliente"
+          className="mx-auto mt-10 flex max-w-md flex-col items-center justify-center gap-3 sm:flex-row"
+        >
+          <Link
+            href="/c/cadastrar"
+            className="rounded-xl bg-primary px-6 py-3 text-sm font-semibold text-paper transition hover:bg-primary-dark"
+          >
+            Cadastre-se aqui
+          </Link>
+          <Link
+            href="/profissionais"
+            className="text-sm font-medium text-ink-soft hover:text-ink"
+          >
+            ou encontre um profissional
+          </Link>
         </div>
       </div>
     </section>

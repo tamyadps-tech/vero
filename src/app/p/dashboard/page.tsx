@@ -21,6 +21,7 @@ import { MarketingTabPanel } from "@/components/professional/tabs/MarketingTabPa
 import { FinanceiroTabPanel } from "@/components/professional/tabs/FinanceiroTabPanel";
 import { AgendaTabPanel } from "@/components/professional/tabs/AgendaTabPanel";
 import { CrmTabPanel } from "@/components/professional/tabs/CrmTabPanel";
+import { TestesTabPanel } from "@/components/professional/tabs/TestesTabPanel";
 
 export const metadata: Metadata = {
   title: "Meu painel — Vero",
@@ -148,6 +149,7 @@ export default async function ProfessionalDashboardPage() {
               <AgendaTabPanel professionalId={professional.id} slots={slots} sessions={sessions} />
             }
             crm={<CrmTabPanel clients={clients} />}
+            testes={<TestesTabPanel clients={clients} />}
           />
         </section>
       </main>
