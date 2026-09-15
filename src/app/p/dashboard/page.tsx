@@ -22,6 +22,7 @@ import { FinanceiroTabPanel } from "@/components/professional/tabs/FinanceiroTab
 import { AgendaTabPanel } from "@/components/professional/tabs/AgendaTabPanel";
 import { CrmTabPanel } from "@/components/professional/tabs/CrmTabPanel";
 import { TestesTabPanel } from "@/components/professional/tabs/TestesTabPanel";
+import { ExerciciosTabPanel } from "@/components/professional/tabs/ExerciciosTabPanel";
 import { MetodoTabPanel } from "@/components/professional/tabs/MetodoTabPanel";
 
 export const metadata: Metadata = {
@@ -156,6 +157,7 @@ export default async function ProfessionalDashboardPage() {
             }
             crm={<CrmTabPanel clients={clients} />}
             testes={<TestesTabPanel clients={clients} />}
+            exercicios={<ExerciciosTabPanel clients={clients} />}
             metodo={<MetodoTabPanel />}
           />
         </section>

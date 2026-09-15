@@ -7,8 +7,10 @@ import { getClientFromAccessToken } from "@/lib/client-session";
 import { readAccessToken } from "@/lib/read-session-token";
 import { getClientProgress } from "@/lib/client-progress";
 import { listReleasedTemplateSlugsForClient } from "@/lib/assessment-releases";
+import { listReleasedExerciseSlugsForClient } from "@/lib/exercise-releases";
 import { ReviewForm } from "@/components/ReviewForm";
 import { AssessmentsSection } from "@/components/AssessmentsSection";
+import { ExercisesSection } from "@/components/ExercisesSection";
 import { ClientProfileSection } from "@/components/client/ClientProfileSection";
 
 export const metadata: Metadata = {
@@ -60,9 +62,10 @@ export default async function ClientDashboardPage({
     );
   }
 
-  const [progress, releasedSlugs] = await Promise.all([
+  const [progress, releasedSlugs, releasedExerciseSlugs] = await Promise.all([
     getClientProgress(client.id),
     listReleasedTemplateSlugsForClient(client.id),
+    listReleasedExerciseSlugsForClient(client.id),
   ]);
 
   if (!progress) {
@@ -145,6 +148,20 @@ export default async function ClientDashboardPage({
             <AssessmentsSection
               responses={progress.assessmentResponses}
               releasedSlugs={Array.from(releasedSlugs)}
+            />
+          </div>
+
+          <h2 className="mt-10 text-sm font-semibold uppercase tracking-wide text-ink-soft">
+            Exercícios
+          </h2>
+          <p className="mt-1 text-sm text-ink-soft">
+            Espaços de reflexão em texto livre — também só ficam
+            disponíveis depois que seu profissional libera.
+          </p>
+          <div className="mt-4">
+            <ExercisesSection
+              responses={progress.exerciseResponses}
+              releasedSlugs={Array.from(releasedExerciseSlugs)}
             />
           </div>
 

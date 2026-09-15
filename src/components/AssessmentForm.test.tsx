@@ -62,4 +62,23 @@ describe("AssessmentForm", () => {
       answers: new Array(7).fill(0),
     });
   });
+
+  it("previewOnly computes the result locally without calling the API", async () => {
+    const fetchMock = fetch as unknown as ReturnType<typeof vi.fn>;
+    const user = userEvent.setup();
+    render(<AssessmentForm templateSlug="gad7" onClose={() => {}} previewOnly />);
+
+    const neverOptions = screen.getAllByRole("radio", { name: /nunca/i });
+    for (const option of neverOptions) {
+      await user.click(option);
+    }
+
+    await user.click(screen.getByRole("button", { name: /ver resultado/i }));
+
+    await waitFor(() =>
+      expect(screen.getByText(/prévia do resultado/i)).toBeInTheDocument()
+    );
+    expect(screen.getByText(/nada foi salvo/i)).toBeInTheDocument();
+    expect(fetchMock).not.toHaveBeenCalled();
+  });
 });

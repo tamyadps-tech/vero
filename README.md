@@ -25,11 +25,38 @@ perguntas em 6 estilos, resultado é o estilo de maior soma, com
 gráfico de barras por estilo na visão detalhada) — suporte reaproveitado
 pelo Autodiagnóstico de Gestão de Vendas (30 perguntas sim/não em 6
 frentes de gestão) e reaproveitável pros próximos (ex: Múltiplas
-Inteligências). Nova aba "Método" no painel do profissional: uma
-biblioteca de guias práticos (dicas e caminhos pra atuação com
-clientes), com conteúdo escrito originalmente pela equipe Vero —
-`src/lib/method-articles.ts` — mesmo padrão visual dos testes
-(badge de categoria, `<details>` expansível). Também tem avaliações públicas,
+Inteligências). Todo resultado de teste (pro cliente e pro
+profissional) mostra também uma orientação prática de "o que fazer
+com esse resultado", por faixa de severidade ou por dimensão
+dominante. No painel do profissional, o catálogo de testes deixa o
+próprio profissional responder o teste ali mesmo (prévia local, sem
+salvar nada) pra entender como funciona antes de enviar pro cliente.
+
+Nova aba "Exercícios": biblioteca de reflexões em texto livre (sem
+pontuação) — `src/lib/exercises.ts` —, mesmo fluxo de liberação dos
+testes (o profissional libera, o cliente responde), mas guardadas em
+`exercise_responses`/`exercise_releases` (migration 0016). Primeiro
+conjunto é sobre luto (Carta de Despedida, Exercício da Aceitação,
+Boas Recordações, Metáforas, Habilidades de Enfrentamento — com base
+no modelo do processo dual de Stroebe & Schut —, Lidando com a
+Culpa, Minha Rede de Apoio, Psicoeducação do Luto), todo escrito
+originalmente pela equipe Vero. Cada exercício também carrega uma
+nota "pra você, profissional" (objetivo + aplicação) visível só no
+catálogo do profissional.
+
+Nova aba "Método" no painel do profissional: uma biblioteca em
+formato de blog (sem accordion) com guias práticos citando a
+pesquisa por trás de cada técnica (Ekman, Beck, Krippendorff,
+Fairclough, Pennebaker, Rogers) — `src/lib/method-articles.ts`.
+
+Identidade visual por área: fundo verde-claro (`primary-light`) e
+títulos em negrito na cor verde da marca na área do profissional
+(`/p`), fundo laranja-claro (`accent-light`) e títulos em negrito na
+cor laranja da marca na área do cliente (`/c`) — via
+`src/app/p/layout.tsx` / `src/app/c/layout.tsx` + classes
+`.area-profissional`/`.area-cliente` em `globals.css`.
+
+Também tem avaliações públicas,
 email transacional e cobrança via Stripe — todos com fallback gracioso:
 sem alguma chave configurada, essa parte específica cai pro "modo
 grátis/sem email" em vez de quebrar.

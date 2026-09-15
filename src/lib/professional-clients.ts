@@ -2,11 +2,18 @@ import { getSupabaseAdmin } from "@/lib/supabase-admin";
 import { computeEngagementStatus, type EngagementStatus } from "@/lib/client-engagement";
 import { ASSESSMENT_TEMPLATES } from "@/lib/assessments";
 import { fetchReleasedSlugsByClient } from "@/lib/assessment-releases";
+import { EXERCISES } from "@/lib/exercises";
+import { fetchReleasedExerciseSlugsByClient } from "@/lib/exercise-releases";
 
 export interface ClientLatestAssessment {
   templateSlug: string;
   score: number;
   severity: string;
+  createdAt: string;
+}
+
+export interface ClientLatestExercise {
+  templateSlug: string;
   createdAt: string;
 }
 
@@ -24,6 +31,10 @@ export interface ProfessionalClient {
   latestAssessments: ClientLatestAssessment[];
   /** Slugs de teste que este profissional já liberou pra esse cliente. */
   releasedAssessmentSlugs: string[];
+  /** Data da resposta mais recente de cada exercício que o cliente já fez. */
+  latestExercises: ClientLatestExercise[];
+  /** Slugs de exercício que este profissional já liberou pra esse cliente. */
+  releasedExerciseSlugs: string[];
 }
 
 type SessionRow = {
@@ -41,9 +52,19 @@ type AssessmentResponseRow = {
   created_at: string;
 };
 
+type ExerciseResponseRow = {
+  client_id: string;
+  template_slug: string;
+  created_at: string;
+};
+
 type ClientAccumulator = Omit<
   ProfessionalClient,
-  "engagementStatus" | "latestAssessments" | "releasedAssessmentSlugs"
+  | "engagementStatus"
+  | "latestAssessments"
+  | "releasedAssessmentSlugs"
+  | "latestExercises"
+  | "releasedExerciseSlugs"
 >;
 
 /**
@@ -88,6 +109,49 @@ async function fetchLatestAssessmentsByClient(
   }
 
   const templateOrder = ASSESSMENT_TEMPLATES.map((t) => t.slug);
+  for (const list of byClient.values()) {
+    list.sort((a, b) => templateOrder.indexOf(a.templateSlug) - templateOrder.indexOf(b.templateSlug));
+  }
+
+  return byClient;
+}
+
+/**
+ * Busca a resposta mais recente de cada exercício por cliente — mesmo
+ * padrão de `fetchLatestAssessmentsByClient`, mas sem score (o
+ * exercício é texto livre, sem pontuação).
+ */
+async function fetchLatestExercisesByClient(
+  supabase: ReturnType<typeof getSupabaseAdmin>,
+  clientIds: string[]
+): Promise<Map<string, ClientLatestExercise[]>> {
+  const byClient = new Map<string, ClientLatestExercise[]>();
+  if (!supabase || clientIds.length === 0) return byClient;
+
+  const { data, error } = await supabase
+    .from("exercise_responses")
+    .select("client_id, template_slug, created_at")
+    .in("client_id", clientIds)
+    .order("created_at", { ascending: false });
+
+  if (error) {
+    console.error("[professional-clients] Failed to load exercises:", error.message);
+    return byClient;
+  }
+
+  const seenTemplates = new Map<string, Set<string>>();
+  for (const row of (data ?? []) as ExerciseResponseRow[]) {
+    const seen = seenTemplates.get(row.client_id) ?? new Set<string>();
+    if (seen.has(row.template_slug)) continue;
+    seen.add(row.template_slug);
+    seenTemplates.set(row.client_id, seen);
+
+    const list = byClient.get(row.client_id) ?? [];
+    list.push({ templateSlug: row.template_slug, createdAt: row.created_at });
+    byClient.set(row.client_id, list);
+  }
+
+  const templateOrder = EXERCISES.map((e) => e.slug);
   for (const list of byClient.values()) {
     list.sort((a, b) => templateOrder.indexOf(a.templateSlug) - templateOrder.indexOf(b.templateSlug));
   }
@@ -150,10 +214,13 @@ export async function listProfessionalClients(
   }
 
   const clientIds = Array.from(byClient.keys());
-  const [assessmentsByClient, releasedByClient] = await Promise.all([
-    fetchLatestAssessmentsByClient(supabase, clientIds),
-    fetchReleasedSlugsByClient(professionalId, clientIds),
-  ]);
+  const [assessmentsByClient, releasedByClient, exercisesByClient, releasedExercisesByClient] =
+    await Promise.all([
+      fetchLatestAssessmentsByClient(supabase, clientIds),
+      fetchReleasedSlugsByClient(professionalId, clientIds),
+      fetchLatestExercisesByClient(supabase, clientIds),
+      fetchReleasedExerciseSlugsByClient(professionalId, clientIds),
+    ]);
 
   return Array.from(byClient.values())
     .map((entry) => ({
@@ -165,6 +232,8 @@ export async function listProfessionalClients(
       }),
       latestAssessments: assessmentsByClient.get(entry.id) ?? [],
       releasedAssessmentSlugs: Array.from(releasedByClient.get(entry.id) ?? []),
+      latestExercises: exercisesByClient.get(entry.id) ?? [],
+      releasedExerciseSlugs: Array.from(releasedExercisesByClient.get(entry.id) ?? []),
     }))
     .sort((a, b) => (b.lastSessionAt ?? "").localeCompare(a.lastSessionAt ?? ""));
 }

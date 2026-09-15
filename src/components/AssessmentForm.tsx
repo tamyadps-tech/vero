@@ -6,14 +6,23 @@ import {
   getAssessmentTemplate,
   getResponseOptions,
   getDimensionBreakdown,
+  scoreAssessment,
 } from "@/lib/assessments";
 
+/**
+ * `previewOnly` é usado pelo profissional pra fazer o teste ele mesmo
+ * e entender como funciona — calcula o resultado no navegador, sem
+ * chamar a API nem salvar nada (o profissional não tem sessão de
+ * cliente, então a API de fato rejeitaria a chamada).
+ */
 export function AssessmentForm({
   templateSlug,
   onClose,
+  previewOnly = false,
 }: {
   templateSlug: string;
   onClose: () => void;
+  previewOnly?: boolean;
 }) {
   const router = useRouter();
   const template = getAssessmentTemplate(templateSlug);
@@ -40,8 +49,16 @@ export function AssessmentForm({
     setStatus("loading");
     setMessage("");
 
+    const orderedAnswers = template.questions.map((q) => answers[q.id]);
+
+    if (previewOnly) {
+      const scored = scoreAssessment(template, orderedAnswers);
+      setResult({ ...scored, orderedAnswers });
+      setStatus("success");
+      return;
+    }
+
     try {
-      const orderedAnswers = template.questions.map((q) => answers[q.id]);
       const response = await fetch("/api/assessments/submit", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -79,7 +96,7 @@ export function AssessmentForm({
     return (
       <div className="rounded-xl border border-primary/30 bg-primary-light p-5">
         <p className="text-xs font-semibold uppercase tracking-wide text-primary-dark">
-          Seu resultado — {template.name}
+          {previewOnly ? "Prévia do resultado" : "Seu resultado"} — {template.name}
         </p>
 
         <div className="mt-3 flex items-baseline gap-2">
@@ -130,8 +147,9 @@ export function AssessmentForm({
         )}
 
         <p className="mt-4 border-t border-primary/20 pt-3 text-xs text-primary-dark/80">
-          Seu profissional já tem acesso a esse resultado e vai conversar
-          sobre ele com você na próxima sessão.
+          {previewOnly
+            ? "Isso é só uma prévia pra você entender como o teste funciona — nada foi salvo."
+            : "Seu profissional já tem acesso a esse resultado e vai conversar sobre ele com você na próxima sessão."}
         </p>
 
         <button

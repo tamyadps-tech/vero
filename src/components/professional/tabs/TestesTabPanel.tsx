@@ -1,5 +1,6 @@
 import { TestListItem } from "@/components/professional/TestListItem";
-import { ASSESSMENT_TEMPLATES, CATEGORY_LABELS, getResponseOptions } from "@/lib/assessments";
+import { TestPreview } from "@/components/professional/TestPreview";
+import { ASSESSMENT_TEMPLATES, CATEGORY_LABELS } from "@/lib/assessments";
 import type { ProfessionalClient } from "@/lib/professional-clients";
 
 function CategoryBadge({ category }: { category: "clinico" | "coaching" }) {
@@ -20,7 +21,6 @@ function TestCatalog() {
   return (
     <div className="space-y-3">
       {ASSESSMENT_TEMPLATES.map((template) => {
-        const options = getResponseOptions(template.responseType);
         return (
           <details
             key={template.slug}
@@ -33,24 +33,13 @@ function TestCatalog() {
             <p className="mt-2 text-sm text-ink-soft">{template.description}</p>
 
             <p className="mt-5 text-xs font-semibold uppercase tracking-wide text-ink-soft">
-              Prévia do formulário que o cliente responde
+              Faça o teste você mesmo
             </p>
-            <div className="mt-2 divide-y divide-border rounded-lg border border-border bg-paper-alt/40 px-3">
-              {template.questions.map((question) => (
-                <div key={question.id} className="py-3 first:pt-3 last:pb-3">
-                  <p className="text-sm text-ink">{question.text}</p>
-                  <div className="mt-2 flex flex-wrap gap-1.5" aria-hidden="true">
-                    {options.map((option) => (
-                      <span
-                        key={option.value}
-                        className="rounded-lg border border-border bg-paper px-2.5 py-1 text-xs text-ink-soft"
-                      >
-                        {option.label}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              ))}
+            <p className="mt-1 text-xs text-ink-soft">
+              Responde igual o cliente vê — nada é salvo, é só pra você entender o teste.
+            </p>
+            <div className="mt-2">
+              <TestPreview templateSlug={template.slug} />
             </div>
 
             {template.dimensions ? (

@@ -20,10 +20,18 @@ export interface ClientAssessmentResponse {
   created_at: string;
 }
 
+export interface ClientExerciseResponse {
+  id: string;
+  template_slug: string;
+  answers: string[];
+  created_at: string;
+}
+
 export interface ClientProgress {
   full_name: string;
   sessions: ClientProgressSession[];
   assessmentResponses: ClientAssessmentResponse[];
+  exerciseResponses: ClientExerciseResponse[];
 }
 
 /** Retorna null quando o Supabase ainda não está configurado. */
@@ -69,9 +77,23 @@ export async function getClientProgress(clientId: string): Promise<ClientProgres
     );
   }
 
+  const { data: exerciseResponses, error: exercisesError } = await supabase
+    .from("exercise_responses")
+    .select("id, template_slug, answers, created_at")
+    .eq("client_id", client.id)
+    .order("created_at", { ascending: false });
+
+  if (exercisesError) {
+    console.error(
+      "[client-progress] Failed to load exercise responses:",
+      exercisesError.message
+    );
+  }
+
   return {
     full_name: client.full_name,
     sessions: (sessions ?? []) as unknown as ClientProgressSession[],
     assessmentResponses: assessmentResponses ?? [],
+    exerciseResponses: exerciseResponses ?? [],
   };
 }

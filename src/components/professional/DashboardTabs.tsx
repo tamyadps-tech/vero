@@ -9,6 +9,7 @@ const TABS = [
   { key: "agenda", label: "Agenda" },
   { key: "crm", label: "Clientes" },
   { key: "testes", label: "Testes" },
+  { key: "exercicios", label: "Exercícios" },
   { key: "metodo", label: "Método" },
 ] as const;
 

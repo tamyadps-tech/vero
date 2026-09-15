@@ -38,3 +38,19 @@ body {
   color: var(--color-ink);
   font-family: var(--font-sans);
 }
+
+/* Área do profissional (/p): títulos em negrito na cor laranja da marca. */
+.area-profissional h1,
+.area-profissional h2,
+.area-profissional h3 {
+  color: var(--color-accent);
+  font-weight: 700;
+}
+
+/* Área do cliente (/c): títulos em negrito na cor verde da marca. */
+.area-cliente h1,
+.area-cliente h2,
+.area-cliente h3 {
+  color: var(--color-primary);
+  font-weight: 700;
+}
