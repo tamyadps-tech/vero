@@ -4,7 +4,13 @@ import { getProfessionalIdFromAccessToken } from "@/lib/professional-session";
 import { readAccessToken } from "@/lib/read-session-token";
 import { isSessionFormat, type SessionFormat } from "@/lib/session-format";
 import { parseJsonTagField } from "@/lib/tags";
-import { validatePhotoFile, uploadProfessionalPhoto } from "@/lib/photo-upload";
+import {
+  validatePhotoFile,
+  uploadProfessionalPhoto,
+  validatePortfolioFiles,
+  uploadPortfolioPhotos,
+  MAX_PORTFOLIO_PHOTOS,
+} from "@/lib/photo-upload";
 
 const URL_RE = /^https?:\/\/.+/i;
 
@@ -23,6 +29,7 @@ interface ProfilePayload {
   whatsappUrl?: string;
   websiteUrl?: string;
   photo?: File;
+  keepPortfolioUrls: string[];
 }
 
 function validateUrlField(value: unknown, label: string): { value?: string } | { error: string } {
@@ -106,6 +113,24 @@ function validate(body: unknown): { data: ProfilePayload } | { error: string } {
   const photoResult = validatePhotoFile(b.photo);
   if ("error" in photoResult) return { error: photoResult.error };
 
+  let keepPortfolioUrls: string[] = [];
+  if (typeof b.portfolioPhotoUrls === "string" && b.portfolioPhotoUrls) {
+    let parsed: unknown;
+    try {
+      parsed = JSON.parse(b.portfolioPhotoUrls);
+    } catch {
+      return { error: "Lista de fotos de portfólio inválida." };
+    }
+    if (
+      !Array.isArray(parsed) ||
+      parsed.length > MAX_PORTFOLIO_PHOTOS ||
+      parsed.some((item) => typeof item !== "string" || !URL_RE.test(item))
+    ) {
+      return { error: "Lista de fotos de portfólio inválida." };
+    }
+    keepPortfolioUrls = parsed;
+  }
+
   return {
     data: {
       bio,
@@ -122,6 +147,7 @@ function validate(body: unknown): { data: ProfilePayload } | { error: string } {
       whatsappUrl: whatsappResult.value,
       websiteUrl: websiteResult.value,
       photo: photoResult.photo,
+      keepPortfolioUrls,
     },
   };
 }
@@ -137,6 +163,22 @@ export async function PATCH(request: Request) {
   const result = validate(Object.fromEntries(body.entries()));
   if ("error" in result) {
     return NextResponse.json({ error: result.error }, { status: 400 });
+  }
+
+  // Vem em várias entradas com a mesma chave — Object.fromEntries só
+  // pegaria a última, então lê a lista completa direto do FormData.
+  const portfolioFilesResult = validatePortfolioFiles(body.getAll("portfolioPhotos"));
+  if ("error" in portfolioFilesResult) {
+    return NextResponse.json({ error: portfolioFilesResult.error }, { status: 400 });
+  }
+  if (
+    result.data.keepPortfolioUrls.length + portfolioFilesResult.photos.length >
+    MAX_PORTFOLIO_PHOTOS
+  ) {
+    return NextResponse.json(
+      { error: `Você pode ter no máximo ${MAX_PORTFOLIO_PHOTOS} fotos no portfólio.` },
+      { status: 400 }
+    );
   }
 
   const supabase = getSupabaseAdmin();
@@ -155,6 +197,8 @@ export async function PATCH(request: Request) {
 
   const { data } = result;
   const photoUrl = data.photo ? await uploadProfessionalPhoto(supabase, data.photo) : undefined;
+  const newPortfolioUrls = await uploadPortfolioPhotos(supabase, portfolioFilesResult.photos);
+  const portfolioPhotoUrls = [...data.keepPortfolioUrls, ...newPortfolioUrls];
 
   const { error } = await supabase
     .from("professionals")
@@ -172,6 +216,7 @@ export async function PATCH(request: Request) {
       instagram_url: data.instagramUrl ?? null,
       whatsapp_url: data.whatsappUrl ?? null,
       website_url: data.websiteUrl ?? null,
+      portfolio_photo_urls: portfolioPhotoUrls,
       ...(photoUrl ? { photo_url: photoUrl } : {}),
     })
     .eq("id", professionalId);

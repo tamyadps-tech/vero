@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, type ChangeEvent, type FormEvent } from "react";
+import { useState, useRef, type ChangeEvent, type FormEvent } from "react";
 import { useRouter } from "next/navigation";
 import {
   SESSION_FORMATS,
@@ -18,6 +18,7 @@ const labelClass = "mb-1.5 block text-sm font-medium text-ink";
 
 const MAX_PHOTO_BYTES = 4 * 1024 * 1024;
 const ALLOWED_PHOTO_TYPES = ["image/jpeg", "image/png", "image/webp"];
+const MAX_PORTFOLIO_PHOTOS = 10;
 
 function ProfessionalProfileEditForm({
   professional,
@@ -49,10 +50,51 @@ function ProfessionalProfileEditForm({
   const [photo, setPhoto] = useState<File | null>(null);
   const [photoPreview, setPhotoPreview] = useState<string | null>(professional.photo_url);
   const [photoError, setPhotoError] = useState("");
+  const [portfolioUrls, setPortfolioUrls] = useState<string[]>(
+    professional.portfolio_photo_urls
+  );
+  const [newPortfolioFiles, setNewPortfolioFiles] = useState<File[]>([]);
+  const [portfolioError, setPortfolioError] = useState("");
+  const portfolioInputRef = useRef<HTMLInputElement>(null);
   const [status, setStatus] = useState<Status>("idle");
   const [message, setMessage] = useState("");
 
   const needsLocation = sessionFormat !== "online";
+  const totalPortfolioCount = portfolioUrls.length + newPortfolioFiles.length;
+
+  function handlePortfolioChange(event: ChangeEvent<HTMLInputElement>) {
+    const files = Array.from(event.target.files ?? []);
+    setPortfolioError("");
+    if (files.length === 0) return;
+
+    if (totalPortfolioCount + files.length > MAX_PORTFOLIO_PHOTOS) {
+      setPortfolioError(`Você pode ter no máximo ${MAX_PORTFOLIO_PHOTOS} fotos no portfólio.`);
+      event.target.value = "";
+      return;
+    }
+    for (const file of files) {
+      if (!ALLOWED_PHOTO_TYPES.includes(file.type)) {
+        setPortfolioError("As fotos precisam ser JPG, PNG ou WEBP.");
+        event.target.value = "";
+        return;
+      }
+      if (file.size > MAX_PHOTO_BYTES) {
+        setPortfolioError("Cada foto precisa ter no máximo 4MB.");
+        event.target.value = "";
+        return;
+      }
+    }
+    setNewPortfolioFiles((prev) => [...prev, ...files]);
+    event.target.value = "";
+  }
+
+  function removeExistingPortfolioPhoto(url: string) {
+    setPortfolioUrls((prev) => prev.filter((item) => item !== url));
+  }
+
+  function removeNewPortfolioPhoto(index: number) {
+    setNewPortfolioFiles((prev) => prev.filter((_, i) => i !== index));
+  }
 
   function handlePhotoChange(event: ChangeEvent<HTMLInputElement>) {
     const file = event.target.files?.[0] ?? null;
@@ -96,6 +138,10 @@ function ProfessionalProfileEditForm({
     if (whatsappUrl) formData.set("whatsappUrl", whatsappUrl);
     if (websiteUrl) formData.set("websiteUrl", websiteUrl);
     if (photo) formData.set("photo", photo);
+    formData.set("portfolioPhotoUrls", JSON.stringify(portfolioUrls));
+    for (const file of newPortfolioFiles) {
+      formData.append("portfolioPhotos", file);
+    }
 
     try {
       const response = await fetch("/api/professional/profile", {
@@ -147,6 +193,71 @@ function ProfessionalProfileEditForm({
         {photoError && (
           <p role="alert" className="mt-1.5 text-xs text-accent-dark">
             {photoError}
+          </p>
+        )}
+      </div>
+
+      <div>
+        <label className={labelClass}>
+          Portfólio ({totalPortfolioCount}/{MAX_PORTFOLIO_PHOTOS})
+        </label>
+        {totalPortfolioCount > 0 && (
+          <div className="mb-3 flex flex-wrap gap-3">
+            {portfolioUrls.map((url) => (
+              <div key={url} className="group relative h-20 w-20 shrink-0">
+                {/* eslint-disable-next-line @next/next/no-img-element -- prévia de foto já hospedada no Supabase Storage. */}
+                <img
+                  src={url}
+                  alt="Foto do portfólio"
+                  className="h-20 w-20 rounded-lg border border-border object-cover"
+                />
+                <button
+                  type="button"
+                  onClick={() => removeExistingPortfolioPhoto(url)}
+                  aria-label="Remover foto do portfólio"
+                  className="absolute -right-1.5 -top-1.5 flex h-5 w-5 items-center justify-center rounded-full bg-accent text-xs text-paper"
+                >
+                  ×
+                </button>
+              </div>
+            ))}
+            {newPortfolioFiles.map((file, index) => (
+              <div key={`${file.name}-${index}`} className="group relative h-20 w-20 shrink-0">
+                {/* eslint-disable-next-line @next/next/no-img-element -- prévia local (blob URL) de arquivo recém-selecionado. */}
+                <img
+                  src={URL.createObjectURL(file)}
+                  alt="Prévia de nova foto do portfólio"
+                  className="h-20 w-20 rounded-lg border border-border object-cover"
+                />
+                <button
+                  type="button"
+                  onClick={() => removeNewPortfolioPhoto(index)}
+                  aria-label="Remover foto do portfólio"
+                  className="absolute -right-1.5 -top-1.5 flex h-5 w-5 items-center justify-center rounded-full bg-accent text-xs text-paper"
+                >
+                  ×
+                </button>
+              </div>
+            ))}
+          </div>
+        )}
+        <input
+          ref={portfolioInputRef}
+          type="file"
+          multiple
+          accept="image/jpeg,image/png,image/webp"
+          onChange={handlePortfolioChange}
+          disabled={totalPortfolioCount >= MAX_PORTFOLIO_PHOTOS}
+          className="block w-full text-sm text-ink-soft file:mr-3 file:rounded-lg file:border-0 file:bg-primary-light file:px-3 file:py-2 file:text-sm file:font-medium file:text-primary-dark hover:file:bg-primary-light/80 disabled:opacity-60"
+        />
+        <p className="mt-1.5 text-xs text-ink-soft">
+          Fotos do seu espaço de atendimento, certificados, eventos — aparecem em
+          carrossel no seu perfil público. JPG, PNG ou WEBP, até 4MB cada, máximo{" "}
+          {MAX_PORTFOLIO_PHOTOS}.
+        </p>
+        {portfolioError && (
+          <p role="alert" className="mt-1.5 text-xs text-accent-dark">
+            {portfolioError}
           </p>
         )}
       </div>

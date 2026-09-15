@@ -9,6 +9,7 @@ import { getClientProgress } from "@/lib/client-progress";
 import { listReleasedTemplateSlugsForClient } from "@/lib/assessment-releases";
 import { ReviewForm } from "@/components/ReviewForm";
 import { AssessmentsSection } from "@/components/AssessmentsSection";
+import { ClientProfileSection } from "@/components/client/ClientProfileSection";
 
 export const metadata: Metadata = {
   title: "Seu progresso — Vero",
@@ -100,6 +101,10 @@ export default async function ClientDashboardPage({
           <h1 className="mt-4 text-3xl font-semibold tracking-tight text-ink">
             Olá, {progress.full_name.split(" ")[0]}
           </h1>
+
+          <div className="mt-6">
+            <ClientProfileSection fullName={client.full_name} email={client.email} />
+          </div>
 
           {pago === "1" && (
             <div className="mt-4 rounded-xl border border-primary/30 bg-primary-light px-4 py-3">

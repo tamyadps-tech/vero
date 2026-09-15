@@ -5,6 +5,7 @@ export interface ClientAccount {
   id: string;
   full_name: string;
   email: string;
+  auth_user_id: string;
 }
 
 /**
@@ -26,7 +27,7 @@ export async function getClientFromAccessToken(
 
   const { data } = await admin
     .from("clients")
-    .select("id, full_name, email")
+    .select("id, full_name, email, auth_user_id")
     .eq("auth_user_id", userData.user.id)
     .maybeSingle();
 

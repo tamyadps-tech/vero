@@ -61,6 +61,36 @@ describe("PATCH /api/professional/profile", () => {
     expect(response.status).toBe(400);
   });
 
+  it("rejects a malformed portfolioPhotoUrls list", async () => {
+    const formData = new FormData();
+    for (const [key, value] of Object.entries(VALID_BODY)) {
+      formData.set(key, String(value));
+    }
+    formData.set("portfolioPhotoUrls", "not-json");
+    const response = await PATCH(
+      new Request("http://localhost/api/professional/profile", {
+        method: "PATCH",
+        body: formData,
+      })
+    );
+    expect(response.status).toBe(400);
+  });
+
+  it("rejects a portfolioPhotoUrls entry that isn't a valid URL", async () => {
+    const formData = new FormData();
+    for (const [key, value] of Object.entries(VALID_BODY)) {
+      formData.set(key, String(value));
+    }
+    formData.set("portfolioPhotoUrls", JSON.stringify(["not-a-url"]));
+    const response = await PATCH(
+      new Request("http://localhost/api/professional/profile", {
+        method: "PATCH",
+        body: formData,
+      })
+    );
+    expect(response.status).toBe(400);
+  });
+
   it("returns 503 when Supabase isn't configured yet", async () => {
     const response = await PATCH(makeRequest(VALID_BODY));
     expect(response.status).toBe(503);

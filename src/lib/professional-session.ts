@@ -19,6 +19,7 @@ export interface ProfessionalAccount {
   location_address: string | null;
   price_cents: number;
   photo_url: string | null;
+  portfolio_photo_urls: string[];
   instagram_url: string | null;
   whatsapp_url: string | null;
   website_url: string | null;
@@ -27,7 +28,7 @@ export interface ProfessionalAccount {
 }
 
 const ACCOUNT_COLUMNS =
-  "id, full_name, email, category, bio, years_experience, specialties, methods, personality, session_format, location_city, location_state, location_address, price_cents, photo_url, instagram_url, whatsapp_url, website_url, vetting_status, vetting_notes";
+  "id, full_name, email, category, bio, years_experience, specialties, methods, personality, session_format, location_city, location_state, location_address, price_cents, photo_url, portfolio_photo_urls, instagram_url, whatsapp_url, website_url, vetting_status, vetting_notes";
 
 /**
  * Resolve o profissional logado a partir do access token da sessão

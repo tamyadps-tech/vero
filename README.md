@@ -28,7 +28,9 @@ Marketing (divulgação + mensagens), Financeiro, Agenda, Clientes (CRM) e
 Testes (lista por cliente de cada autoavaliação, com o botão de
 enviar/revogar, o resultado mais recente e as respostas completas de
 quem já respondeu) —, com a
-edição de perfil sempre visível no topo. A Agenda tem
+edição de perfil sempre visível no topo — inclui foto de perfil, redes
+sociais e um portfólio de fotos (até 10, upload múltiplo, exibido em
+carrossel no perfil público). A Agenda tem
 calendário com visão dia/semana/mês (clicando num dia no mês você cai na
 visão do dia) e um botão pra reenviar a confirmação por email de
 qualquer sessão — além do email automático que já sai sozinho quando o
@@ -41,7 +43,9 @@ deliberada.
 Cliente também pode entrar com **login do Google**, além de email/senha
 (`/c/entrar` e `/c/cadastrar`) — precisa configurar o provedor Google no
 painel do Supabase (ver `.env.example`); sem isso o botão só avisa que
-ainda não está disponível, sem quebrar o resto do login.
+ainda não está disponível, sem quebrar o resto do login. O painel do
+cliente (`/c/dashboard`) também tem edição de perfil — nome e troca de
+senha (a troca exige a senha atual).
 
 No admin (`/admin/profissionais`), cada candidato pendente tem um campo
 pra marcar data/hora de uma reunião de verificação (com notas), além do

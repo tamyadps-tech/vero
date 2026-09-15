@@ -10,6 +10,7 @@ import { getReviewSummaries, listPublicReviews } from "@/lib/reviews";
 import { BookingWidget } from "@/components/BookingWidget";
 import { RatingBadge } from "@/components/RatingBadge";
 import { VerifiedBadge } from "@/components/VerifiedBadge";
+import { PortfolioCarousel } from "@/components/PortfolioCarousel";
 import { getClientIdFromAccessToken } from "@/lib/client-session";
 import { readAccessToken } from "@/lib/read-session-token";
 
@@ -193,6 +194,8 @@ export default async function ProfessionalProfilePage({
               </div>
             )}
           </div>
+
+          <PortfolioCarousel photoUrls={professional.portfolio_photo_urls} />
 
           <div className="mt-8 rounded-2xl border border-border bg-paper p-6 sm:p-8">
             <div className="mb-5 flex items-center justify-between">
