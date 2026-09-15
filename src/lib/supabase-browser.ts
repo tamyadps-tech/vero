@@ -16,7 +16,14 @@ export function getSupabaseBrowserClient(): SupabaseClient | null {
 
   if (!client) {
     client = createClient(url, anonKey, {
-      auth: { flowType: "pkce" },
+      auth: {
+        flowType: "pkce",
+        // A troca do code pela sessão é feita manualmente em
+        // GoogleCallbackClient — desliga a detecção automática do
+        // Supabase pra ela não competir (e consumir o code sozinha)
+        // com a nossa própria chamada a exchangeCodeForSession.
+        detectSessionInUrl: false,
+      },
     });
   }
   return client;
