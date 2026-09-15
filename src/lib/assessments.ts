@@ -24,11 +24,15 @@ export interface SeverityBand {
   min: number;
   max: number;
   label: string;
+  /** Orientação prática do que fazer com esse resultado — mostrada pro cliente e pro profissional. */
+  guidance: string;
 }
 
 export interface AssessmentDimension {
   key: string;
   label: string;
+  /** Orientação prática do que fazer quando essa dimensão é o resultado dominante. */
+  guidance: string;
 }
 
 export interface AssessmentTemplate {
@@ -105,11 +109,41 @@ const PHQ9: AssessmentTemplate = {
     },
   ],
   severityBands: [
-    { min: 0, max: 4, label: "Mínimo" },
-    { min: 5, max: 9, label: "Leve" },
-    { min: 10, max: 14, label: "Moderado" },
-    { min: 15, max: 19, label: "Moderadamente grave" },
-    { min: 20, max: 27, label: "Grave" },
+    {
+      min: 0,
+      max: 4,
+      label: "Mínimo",
+      guidance:
+        "Sintomas de humor em nível mínimo nas últimas duas semanas. Vale manter o acompanhamento de rotina e observar se algo muda.",
+    },
+    {
+      min: 5,
+      max: 9,
+      label: "Leve",
+      guidance:
+        "Sintomas leves de humor presentes. Boa hora pra conversar sobre o que anda pesando e acompanhar se o quadro se mantém, melhora ou piora nas próximas semanas.",
+    },
+    {
+      min: 10,
+      max: 14,
+      label: "Moderado",
+      guidance:
+        "Sintomas moderados — vale dar atenção prioritária a esse resultado na próxima sessão e considerar, junto com seu profissional, estratégias mais ativas de cuidado.",
+    },
+    {
+      min: 15,
+      max: 19,
+      label: "Moderadamente grave",
+      guidance:
+        "Sintomas de intensidade considerável. Importante priorizar esse tema na próxima sessão e avaliar junto com seu profissional se algum suporte adicional (acompanhamento mais frequente, avaliação médica) faz sentido.",
+    },
+    {
+      min: 20,
+      max: 27,
+      label: "Grave",
+      guidance:
+        "Sintomas em nível grave — esse resultado pede atenção prioritária. Fale com seu profissional o quanto antes e, se em algum momento vier pensamento de se machucar, busque ajuda imediata: CVV (188, ligação gratuita, 24h) ou o pronto-socorro mais próximo.",
+    },
   ],
 };
 
@@ -136,10 +170,34 @@ const GAD7: AssessmentTemplate = {
     },
   ],
   severityBands: [
-    { min: 0, max: 4, label: "Mínimo" },
-    { min: 5, max: 9, label: "Leve" },
-    { min: 10, max: 14, label: "Moderado" },
-    { min: 15, max: 21, label: "Grave" },
+    {
+      min: 0,
+      max: 4,
+      label: "Mínimo",
+      guidance:
+        "Sintomas de ansiedade em nível mínimo nas últimas duas semanas — sinal positivo. Vale seguir de olho ao longo do acompanhamento.",
+    },
+    {
+      min: 5,
+      max: 9,
+      label: "Leve",
+      guidance:
+        "Sintomas leves de ansiedade. Boa hora pra nomear com seu profissional o que anda gerando essa tensão.",
+    },
+    {
+      min: 10,
+      max: 14,
+      label: "Moderado",
+      guidance:
+        "Sintomas moderados de ansiedade — vale priorizar esse tema na próxima sessão e considerar estratégias específicas de manejo (respiração, exposição gradual, reestruturação de pensamentos).",
+    },
+    {
+      min: 15,
+      max: 21,
+      label: "Grave",
+      guidance:
+        "Sintomas de ansiedade em nível grave — esse resultado pede atenção prioritária. Converse com seu profissional o quanto antes sobre reforçar o plano de cuidado.",
+    },
   ],
 };
 
@@ -161,9 +219,27 @@ const WHEEL_OF_LIFE: AssessmentTemplate = {
     { id: "proposito", text: "Propósito / espiritualidade" },
   ],
   severityBands: [
-    { min: 0, max: 4, label: "Baixa satisfação" },
-    { min: 5, max: 7, label: "Satisfação moderada" },
-    { min: 8, max: 10, label: "Alta satisfação" },
+    {
+      min: 0,
+      max: 4,
+      label: "Baixa satisfação",
+      guidance:
+        "Satisfação baixa nessa área agora. Vale entender com seu profissional o que especificamente está pesando e desenhar um primeiro passo pequeno e concreto pra melhorar essa nota.",
+    },
+    {
+      min: 5,
+      max: 7,
+      label: "Satisfação moderada",
+      guidance:
+        "Satisfação moderada — já existe uma base, mas ainda há espaço pra crescer. Boa área pra definir uma meta de curto prazo.",
+    },
+    {
+      min: 8,
+      max: 10,
+      label: "Alta satisfação",
+      guidance:
+        "Satisfação alta nessa área. Vale entender o que está funcionando bem aqui pra tentar replicar em outras áreas da roda.",
+    },
   ],
 };
 
@@ -202,9 +278,27 @@ const LIMITING_BELIEFS: AssessmentTemplate = {
     { id: "b25", text: "Todo rico é mau ou desonesto." },
   ],
   severityBands: [
-    { min: 0, max: 3, label: "Baixo impacto das crenças limitantes" },
-    { min: 4, max: 6, label: "Impacto moderado das crenças limitantes" },
-    { min: 7, max: 10, label: "Alto impacto das crenças limitantes" },
+    {
+      min: 0,
+      max: 3,
+      label: "Baixo impacto das crenças limitantes",
+      guidance:
+        "Essas crenças têm pouco peso na sua relação com dinheiro hoje — sinal de que essa área já está mais resolvida.",
+    },
+    {
+      min: 4,
+      max: 6,
+      label: "Impacto moderado das crenças limitantes",
+      guidance:
+        "Essas crenças ainda pesam de forma moderada. Vale escolher 2 ou 3 das frases que mais ressoaram e trazer pra sessão pra investigar a origem delas.",
+    },
+    {
+      min: 7,
+      max: 10,
+      label: "Alto impacto das crenças limitantes",
+      guidance:
+        "Essas crenças têm um peso alto na sua relação com dinheiro agora. Vale um trabalho mais estruturado com seu profissional pra entender de onde vêm e começar a reescrevê-las.",
+    },
   ],
 };
 
@@ -216,12 +310,42 @@ const LEADERSHIP_STYLES: AssessmentTemplate = {
   category: "coaching",
   responseType: "agreement4",
   dimensions: [
-    { key: "coercitivo", label: "Coercitivo" },
-    { key: "dirigente", label: "Dirigente" },
-    { key: "afetivo", label: "Afetivo" },
-    { key: "democratico", label: "Democrático" },
-    { key: "modelador", label: "Modelador" },
-    { key: "treinador", label: "Treinador" },
+    {
+      key: "coercitivo",
+      label: "Coercitivo",
+      guidance:
+        "Seu estilo dominante hoje é o coercitivo — funciona em crises rápidas, mas usado o tempo todo tende a minar a confiança e a autonomia do time. Vale equilibrar com mais escuta e menos comando no dia a dia.",
+    },
+    {
+      key: "dirigente",
+      label: "Dirigente",
+      guidance:
+        "Seu estilo dominante hoje é o dirigente — bom pra dar clareza de direção quando o time está perdido. Vale garantir espaço pra ouvir o time também, não só orientar.",
+    },
+    {
+      key: "afetivo",
+      label: "Afetivo",
+      guidance:
+        "Seu estilo dominante hoje é o afetivo — cria vínculo e harmonia, mas sozinho pode faltar exigência de resultado. Vale combinar com mais clareza sobre metas e cobrança.",
+    },
+    {
+      key: "democratico",
+      label: "Democrático",
+      guidance:
+        "Seu estilo dominante hoje é o democrático — gera comprometimento pelo consenso, mas pode ser lento em decisões urgentes. Vale ter clareza de quando decidir rápido sozinho também é necessário.",
+    },
+    {
+      key: "modelador",
+      label: "Modelador",
+      guidance:
+        "Seu estilo dominante hoje é o modelador — traz um padrão de excelência pelo exemplo, mas pode sobrecarregar quem ainda não chegou nesse nível. Vale investir mais tempo formando o time, não só exemplificando.",
+    },
+    {
+      key: "treinador",
+      label: "Treinador",
+      guidance:
+        "Seu estilo dominante hoje é o treinador — foca no desenvolvimento de longo prazo de cada pessoa. Vale garantir que isso também esteja conectado com as metas de curto prazo do time.",
+    },
   ],
   questions: [
     {
@@ -358,9 +482,27 @@ const SALES_DIAGNOSTIC: AssessmentTemplate = {
     },
   ],
   severityBands: [
-    { min: 0, max: 10, label: "Processo comercial pouco estruturado" },
-    { min: 11, max: 20, label: "Processo comercial em desenvolvimento" },
-    { min: 21, max: 30, label: "Processo comercial maduro" },
+    {
+      min: 0,
+      max: 10,
+      label: "Processo comercial pouco estruturado",
+      guidance:
+        "Processo comercial ainda pouco estruturado. Comece pelo básico: abordagem, descoberta de necessidades e argumentação por benefício — são a base de tudo o mais.",
+    },
+    {
+      min: 11,
+      max: 20,
+      label: "Processo comercial em desenvolvimento",
+      guidance:
+        "Processo em desenvolvimento — já existe uma base, mas ainda com lacunas. Olhe pros itens marcados como \"não\" e escolha 2 ou 3 pra trabalhar primeiro.",
+    },
+    {
+      min: 21,
+      max: 30,
+      label: "Processo comercial maduro",
+      guidance:
+        "Processo comercial maduro. Vale manter a consistência e passar a olhar pra métricas mais finas de conversão em cada etapa.",
+    },
   ],
 };
 
@@ -372,12 +514,42 @@ const SALES_MANAGEMENT_DIAGNOSTIC: AssessmentTemplate = {
   category: "coaching",
   responseType: "yesno",
   dimensions: [
-    { key: "mudanca", label: "Gestão da Mudança" },
-    { key: "ativacao", label: "Gestão da Ativação" },
-    { key: "metodo", label: "Gestão do Método" },
-    { key: "conhecimento", label: "Gestão do Conhecimento" },
-    { key: "meta", label: "Gestão da Meta" },
-    { key: "tempo", label: "Gestão do Tempo" },
+    {
+      key: "mudanca",
+      label: "Gestão da Mudança",
+      guidance:
+        "Sua frente mais consolidada hoje é a gestão da mudança — você já traduz metas da empresa em planos individuais de desenvolvimento. Olhe no detalhamento acima as frentes com menos \"sim\" marcados e priorize ali.",
+    },
+    {
+      key: "ativacao",
+      label: "Gestão da Ativação",
+      guidance:
+        "Sua frente mais consolidada hoje é a gestão da ativação — você já trabalha a atitude do time de forma intencional. Olhe no detalhamento acima as frentes com menos \"sim\" marcados e priorize ali.",
+    },
+    {
+      key: "metodo",
+      label: "Gestão do Método",
+      guidance:
+        "Sua frente mais consolidada hoje é a gestão do método — o time já tem técnicas de venda claras e praticadas. Olhe no detalhamento acima as frentes com menos \"sim\" marcados e priorize ali.",
+    },
+    {
+      key: "conhecimento",
+      label: "Gestão do Conhecimento",
+      guidance:
+        "Sua frente mais consolidada hoje é a gestão do conhecimento — o time é formado continuamente sobre produto e argumentação. Olhe no detalhamento acima as frentes com menos \"sim\" marcados e priorize ali.",
+    },
+    {
+      key: "meta",
+      label: "Gestão da Meta",
+      guidance:
+        "Sua frente mais consolidada hoje é a gestão da meta — existe processo claro pra diagnosticar e agir sobre indicadores baixos. Olhe no detalhamento acima as frentes com menos \"sim\" marcados e priorize ali.",
+    },
+    {
+      key: "tempo",
+      label: "Gestão do Tempo",
+      guidance:
+        "Sua frente mais consolidada hoje é a gestão do tempo — você já prioriza desenvolver o time em vez de só operacional. Olhe no detalhamento acima as frentes com menos \"sim\" marcados e priorize ali.",
+    },
   ],
   questions: [
     {
@@ -572,9 +744,27 @@ const ENGAGEMENT_DIAGNOSTIC: AssessmentTemplate = {
     },
   ],
   severityBands: [
-    { min: 0, max: 4, label: "Processo de engajamento pouco estruturado" },
-    { min: 5, max: 9, label: "Processo de engajamento em desenvolvimento" },
-    { min: 10, max: 13, label: "Processo de engajamento maduro" },
+    {
+      min: 0,
+      max: 4,
+      label: "Processo de engajamento pouco estruturado",
+      guidance:
+        "Processo de engajamento ainda pouco estruturado. Comece definindo o perfil de vendedor ideal pra sua empresa e o fit cultural — é a base pra todo o resto do processo.",
+    },
+    {
+      min: 5,
+      max: 9,
+      label: "Processo de engajamento em desenvolvimento",
+      guidance:
+        "Processo em desenvolvimento — já existem algumas etapas estruturadas. Olhe pros itens marcados como \"não\" e escolha uma etapa (seleção, integração, experiência ou pós-experiência) pra fortalecer primeiro.",
+    },
+    {
+      min: 10,
+      max: 13,
+      label: "Processo de engajamento maduro",
+      guidance:
+        "Processo de engajamento maduro. Vale manter a consistência e medir o impacto disso na retenção e performance do time ao longo do tempo.",
+    },
   ],
 };
 
@@ -608,6 +798,7 @@ export interface ScoreResult {
   score: number;
   maxScore: number;
   severity: string;
+  guidance: string;
 }
 
 export interface DimensionScore {
@@ -615,6 +806,7 @@ export interface DimensionScore {
   label: string;
   total: number;
   maxTotal: number;
+  guidance: string;
 }
 
 function validateAnswers(template: AssessmentTemplate, answers: number[]) {
@@ -660,6 +852,7 @@ export function getDimensionBreakdown(
         label: dimension.label,
         total: entry.total,
         maxTotal: entry.count * max,
+        guidance: dimension.guidance,
       };
     })
     .sort((a, b) => b.total - a.total);
@@ -681,7 +874,12 @@ export function scoreAssessment(
 
   if (template.dimensions) {
     const [top] = getDimensionBreakdown(template, answers);
-    return { score: top.total, maxScore: top.maxTotal, severity: top.label };
+    return {
+      score: top.total,
+      maxScore: top.maxTotal,
+      severity: top.label,
+      guidance: top.guidance,
+    };
   }
 
   const total =
@@ -696,5 +894,10 @@ export function scoreAssessment(
 
   const band = template.severityBands.find((b) => total >= b.min && total <= b.max);
 
-  return { score: total, maxScore, severity: band?.label ?? "—" };
+  return {
+    score: total,
+    maxScore,
+    severity: band?.label ?? "—",
+    guidance: band?.guidance ?? "",
+  };
 }

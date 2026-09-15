@@ -24,6 +24,7 @@ export function AssessmentForm({
     score: number;
     maxScore: number;
     severity: string;
+    guidance: string;
     orderedAnswers: number[];
   } | null>(null);
 
@@ -56,6 +57,7 @@ export function AssessmentForm({
         score: data.score,
         maxScore: data.maxScore,
         severity: data.severity,
+        guidance: data.guidance,
         orderedAnswers,
       });
       setStatus("success");
@@ -93,6 +95,15 @@ export function AssessmentForm({
         <p className="mt-2 inline-block rounded-full bg-paper px-3 py-1 text-sm font-medium text-primary-dark">
           {result.severity}
         </p>
+
+        {result.guidance && (
+          <div className="mt-4 rounded-lg bg-paper/70 p-3">
+            <p className="text-xs font-semibold uppercase tracking-wide text-primary-dark">
+              O que fazer com esse resultado
+            </p>
+            <p className="mt-1 text-sm text-ink">{result.guidance}</p>
+          </div>
+        )}
 
         {breakdown.length > 0 && (
           <div className="mt-4 space-y-2 border-t border-primary/20 pt-4">

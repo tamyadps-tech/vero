@@ -32,7 +32,13 @@ describe("AssessmentForm", () => {
     const fetchMock = fetch as unknown as ReturnType<typeof vi.fn>;
     fetchMock.mockResolvedValueOnce({
       ok: true,
-      json: async () => ({ ok: true, score: 0, maxScore: 21, severity: "Mínimo" }),
+      json: async () => ({
+        ok: true,
+        score: 0,
+        maxScore: 21,
+        severity: "Mínimo",
+        guidance: "Segue tudo bem — vale manter o acompanhamento.",
+      }),
     });
 
     const user = userEvent.setup();

@@ -4,6 +4,7 @@ import { useState } from "react";
 import {
   getResponseOptions,
   getDimensionBreakdown,
+  scoreAssessment,
   CATEGORY_LABELS,
   type AssessmentTemplate,
 } from "@/lib/assessments";
@@ -130,6 +131,14 @@ export function TestListItem({
             <p className="text-xs text-ink-soft">Carregando…</p>
           ) : detail ? (
             <>
+              <div className="mb-3 rounded-lg bg-paper-alt p-3">
+                <p className="text-xs font-semibold uppercase tracking-wide text-ink-soft">
+                  Orientação
+                </p>
+                <p className="mt-1 text-sm text-ink">
+                  {scoreAssessment(template, detail.answers).guidance}
+                </p>
+              </div>
               {template.dimensions && (
                 <div className="mb-3 space-y-1.5">
                   {getDimensionBreakdown(template, detail.answers).map((dimension) => (

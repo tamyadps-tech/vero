@@ -16,6 +16,7 @@ describe("scoreAssessment", () => {
       score: 0,
       maxScore: 27,
       severity: "Mínimo",
+      guidance: expect.any(String),
     });
 
     const moderate = [2, 2, 1, 2, 1, 1, 1, 0, 0]; // soma = 10
@@ -23,6 +24,7 @@ describe("scoreAssessment", () => {
       score: 10,
       maxScore: 27,
       severity: "Moderado",
+      guidance: expect.any(String),
     });
 
     const allMax = new Array(9).fill(3); // soma = 27
@@ -30,6 +32,7 @@ describe("scoreAssessment", () => {
       score: 27,
       maxScore: 27,
       severity: "Grave",
+      guidance: expect.any(String),
     });
   });
 
@@ -46,6 +49,7 @@ describe("scoreAssessment", () => {
       score: 8,
       maxScore: 10,
       severity: "Alta satisfação",
+      guidance: expect.any(String),
     });
   });
 
@@ -82,6 +86,7 @@ describe("scoreAssessment", () => {
       score: 30,
       maxScore: 30,
       severity: "Processo comercial maduro",
+      guidance: expect.any(String),
     });
 
     const allNo = new Array(30).fill(0);
@@ -102,6 +107,7 @@ describe("scoreAssessment", () => {
       score: 12,
       maxScore: 12,
       severity: "Coercitivo",
+      guidance: expect.any(String),
     });
   });
 
@@ -118,6 +124,7 @@ describe("scoreAssessment", () => {
       label: "Dirigente",
       total: 12,
       maxTotal: 12,
+      guidance: expect.any(String),
     });
     expect(breakdown).toHaveLength(6);
   });
@@ -141,6 +148,7 @@ describe("scoreAssessment", () => {
       score: 5,
       maxScore: 5,
       severity: "Gestão do Método",
+      guidance: expect.any(String),
     });
 
     const breakdown = getDimensionBreakdown(management, answers);
@@ -150,7 +158,19 @@ describe("scoreAssessment", () => {
       label: "Gestão do Método",
       total: 5,
       maxTotal: 5,
+      guidance: expect.any(String),
     });
+  });
+
+  it("every severity band and dimension carries non-empty guidance", () => {
+    for (const template of ASSESSMENT_TEMPLATES) {
+      for (const band of template.severityBands) {
+        expect(band.guidance.trim().length).toBeGreaterThan(0);
+      }
+      for (const dimension of template.dimensions ?? []) {
+        expect(dimension.guidance.trim().length).toBeGreaterThan(0);
+      }
+    }
   });
 
   it("sums yes/no answers for the engagement diagnostic", () => {
@@ -160,6 +180,7 @@ describe("scoreAssessment", () => {
       score: 13,
       maxScore: 13,
       severity: "Processo de engajamento maduro",
+      guidance: expect.any(String),
     });
 
     const allNo = new Array(13).fill(0);

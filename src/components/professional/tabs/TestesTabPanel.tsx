@@ -61,14 +61,12 @@ function TestCatalog() {
                 <p className="mt-1.5 text-sm text-ink-soft">
                   Soma das respostas por dimensão — a de maior soma é o resultado:
                 </p>
-                <div className="mt-2 flex flex-wrap gap-1.5">
+                <div className="mt-2 space-y-2">
                   {template.dimensions.map((dimension) => (
-                    <span
-                      key={dimension.key}
-                      className="rounded-full bg-paper-alt px-2.5 py-1 text-xs text-ink"
-                    >
-                      {dimension.label}
-                    </span>
+                    <div key={dimension.key} className="rounded-lg bg-paper-alt px-3 py-2">
+                      <p className="text-sm font-medium text-ink">{dimension.label}</p>
+                      <p className="mt-0.5 text-xs text-ink-soft">{dimension.guidance}</p>
+                    </div>
                   ))}
                 </div>
               </>
@@ -79,14 +77,14 @@ function TestCatalog() {
                 </p>
                 <div className="mt-2 space-y-1.5">
                   {template.severityBands.map((band) => (
-                    <div
-                      key={band.label}
-                      className="flex items-center gap-2 rounded-lg bg-paper-alt px-3 py-1.5 text-sm"
-                    >
-                      <span className="font-mono text-xs text-ink-soft">
-                        {band.min}–{band.max}
-                      </span>
-                      <span className="text-ink">{band.label}</span>
+                    <div key={band.label} className="rounded-lg bg-paper-alt px-3 py-2">
+                      <div className="flex items-center gap-2 text-sm">
+                        <span className="font-mono text-xs text-ink-soft">
+                          {band.min}–{band.max}
+                        </span>
+                        <span className="font-medium text-ink">{band.label}</span>
+                      </div>
+                      <p className="mt-0.5 text-xs text-ink-soft">{band.guidance}</p>
                     </div>
                   ))}
                 </div>
