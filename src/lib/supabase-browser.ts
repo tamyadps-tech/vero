@@ -15,7 +15,9 @@ export function getSupabaseBrowserClient(): SupabaseClient | null {
   if (!url || !anonKey) return null;
 
   if (!client) {
-    client = createClient(url, anonKey);
+    client = createClient(url, anonKey, {
+      auth: { flowType: "pkce" },
+    });
   }
   return client;
 }
