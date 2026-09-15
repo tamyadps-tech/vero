@@ -1,5 +1,6 @@
 import type { ProfessionalFinance } from "@/lib/professional-finance";
 import type { ProfessionalClient } from "@/lib/professional-clients";
+import type { ProfessionalExpense } from "@/lib/professional-expenses";
 import type { AdminSession, SessionStatus } from "@/lib/admin-sessions";
 import { ENGAGEMENT_STATUS_LABELS } from "@/lib/client-engagement";
 
@@ -85,12 +86,14 @@ export function DashboardTabPanel({
   finance,
   clients,
   sessions,
+  expenses,
 }: {
   finance: ProfessionalFinance | null;
   clients: ProfessionalClient[] | null;
   sessions: AdminSession[] | null;
+  expenses: ProfessionalExpense[] | null;
 }) {
-  if (finance === null || clients === null || sessions === null) {
+  if (finance === null || clients === null || sessions === null || expenses === null) {
     return (
       <section>
         <p className="text-sm text-ink-soft">Supabase ainda não está configurado.</p>
@@ -103,6 +106,8 @@ export function DashboardTabPanel({
   const recompraPct = totalClients > 0 ? Math.round((repeatClients / totalClients) * 100) : 0;
   const ticketMedioCents =
     finance.paidSessionsCount > 0 ? Math.round(finance.receivedCents / finance.paidSessionsCount) : 0;
+  const totalExpensesCents = expenses.reduce((sum, e) => sum + e.amountCents, 0);
+  const netProfitCents = finance.receivedCents - totalExpensesCents;
 
   const sessionStatusCounts = sessions.reduce(
     (acc, s) => {
@@ -150,7 +155,7 @@ export function DashboardTabPanel({
             detail={`${repeatClients} de ${totalClients} voltaram`}
           />
         </div>
-        <div className="mt-4 grid gap-4 sm:grid-cols-2">
+        <div className="mt-4 grid gap-4 sm:grid-cols-3">
           <Kpi
             label="Taxa de conclusão"
             value={`${conclusionPct}%`}
@@ -160,6 +165,11 @@ export function DashboardTabPanel({
             label="Taxa de cancelamento"
             value={`${cancellationPct}%`}
             detail={`${canceledCount} de ${totalSessions} sessões`}
+          />
+          <Kpi
+            label="Lucro líquido"
+            value={formatPrice(netProfitCents)}
+            detail={`Recebido − ${formatPrice(totalExpensesCents)} em despesas`}
           />
         </div>
       </section>

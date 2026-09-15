@@ -10,6 +10,7 @@ import { listAvailabilitySlots } from "@/lib/booking";
 import { listSessionsForProfessional } from "@/lib/admin-sessions";
 import { listProfessionalClients } from "@/lib/professional-clients";
 import { getProfessionalFinance } from "@/lib/professional-finance";
+import { listProfessionalExpenses } from "@/lib/professional-expenses";
 import { getReviewSummaries } from "@/lib/reviews";
 import { CATEGORY_LABELS } from "@/lib/professional-categories";
 import { SESSION_FORMAT_LABELS } from "@/lib/session-format";
@@ -84,14 +85,16 @@ export default async function ProfessionalDashboardPage() {
     );
   }
 
-  const [slots, sessions, clients, finance, reviewSummaries, headersList] = await Promise.all([
-    listAvailabilitySlots(professional.id),
-    listSessionsForProfessional(professional.id),
-    listProfessionalClients(professional.id),
-    getProfessionalFinance(professional.id),
-    getReviewSummaries([professional.id]),
-    headers(),
-  ]);
+  const [slots, sessions, clients, finance, expenses, reviewSummaries, headersList] =
+    await Promise.all([
+      listAvailabilitySlots(professional.id),
+      listSessionsForProfessional(professional.id),
+      listProfessionalClients(professional.id),
+      getProfessionalFinance(professional.id),
+      listProfessionalExpenses(professional.id),
+      getReviewSummaries([professional.id]),
+      headers(),
+    ]);
 
   const origin = `${headersList.get("x-forwarded-proto") ?? "https"}://${headersList.get("host") ?? "vero.app"}`;
   const publicProfileUrl = `${origin}/profissionais/${professional.id}`;
@@ -131,9 +134,16 @@ export default async function ProfessionalDashboardPage() {
           </section>
 
           <DashboardTabs
-            dashboard={<DashboardTabPanel finance={finance} clients={clients} sessions={sessions} />}
+            dashboard={
+              <DashboardTabPanel
+                finance={finance}
+                clients={clients}
+                sessions={sessions}
+                expenses={expenses}
+              />
+            }
             marketing={<MarketingTabPanel publicProfileUrl={publicProfileUrl} clients={clients} />}
-            financeiro={<FinanceiroTabPanel finance={finance} />}
+            financeiro={<FinanceiroTabPanel finance={finance} expenses={expenses} />}
             agenda={
               <AgendaTabPanel professionalId={professional.id} slots={slots} sessions={sessions} />
             }
