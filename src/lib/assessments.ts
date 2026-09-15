@@ -6,7 +6,7 @@
  * BRANDING.md / README para o motivo.
  */
 
-export type ResponseType = "likert4" | "scale0to10" | "agreement4";
+export type ResponseType = "likert4" | "scale0to10" | "agreement4" | "yesno";
 
 export const CATEGORY_LABELS: Record<"clinico" | "coaching", string> = {
   clinico: "Clínico",
@@ -48,10 +48,11 @@ export interface AssessmentTemplate {
   dimensions?: AssessmentDimension[];
 }
 
-const RESPONSE_RANGE: Record<ResponseType, { min: number; max: number }> = {
+export const RESPONSE_RANGE: Record<ResponseType, { min: number; max: number }> = {
   likert4: { min: 0, max: 3 },
   agreement4: { min: 1, max: 4 },
   scale0to10: { min: 0, max: 10 },
+  yesno: { min: 0, max: 1 },
 };
 
 const LIKERT4_OPTIONS = [
@@ -66,6 +67,11 @@ const AGREEMENT4_OPTIONS = [
   { value: 2, label: "Discordo" },
   { value: 3, label: "Concordo" },
   { value: 4, label: "Concordo totalmente" },
+];
+
+const YESNO_OPTIONS = [
+  { value: 0, label: "Não" },
+  { value: 1, label: "Sim" },
 ];
 
 const PHQ9: AssessmentTemplate = {
@@ -300,12 +306,71 @@ const LEADERSHIP_STYLES: AssessmentTemplate = {
   severityBands: [],
 };
 
+const SALES_DIAGNOSTIC: AssessmentTemplate = {
+  slug: "autodiagnostico-vendas",
+  name: "Autodiagnóstico de Vendas",
+  description:
+    "30 perguntas sim/não sobre como a venda é conduzida, da abordagem ao pós-venda — mapeia onde o processo comercial está maduro e onde precisa de atenção.",
+  category: "coaching",
+  responseType: "yesno",
+  questions: [
+    { id: "v1", text: "O vendedor aborda gerando rapport?" },
+    { id: "v2", text: "O vendedor se apresenta falando seu nome?" },
+    { id: "v3", text: "Ele pergunta o nome do cliente?" },
+    { id: "v4", text: "Ele chama o cliente durante todo o atendimento pelo nome?" },
+    {
+      id: "v5",
+      text: "Em caso de ter mais de uma pessoa na venda, ele trata as pessoas da mesma forma?",
+    },
+    { id: "v6", text: "O vendedor descobre as necessidades do cliente?" },
+    { id: "v7", text: "O vendedor descobre as motivações do cliente?" },
+    { id: "v8", text: "O vendedor descobre o que é importante para o cliente (o porquê)?" },
+    { id: "v9", text: "O vendedor identifica como o cliente quer ser atendido?" },
+    { id: "v10", text: "Visualiza quem é importante no processo de decisão?" },
+    { id: "v11", text: "O vendedor fala mais de benefícios do que de características?" },
+    {
+      id: "v12",
+      text: "O vendedor argumenta focando nos benefícios que mais interessam ao cliente?",
+    },
+    {
+      id: "v13",
+      text: "O vendedor faz o cliente sentir/visualizar/experimentar os benefícios do que vende?",
+    },
+    { id: "v14", text: "O vendedor fala dos benefícios da empresa?" },
+    { id: "v15", text: "O vendedor valoriza as vantagens do que vende?" },
+    { id: "v16", text: "O vendedor valoriza na argumentação o preço e a forma de pagamento?" },
+    { id: "v17", text: "O vendedor visualiza o cenário antes de argumentar com o cliente?" },
+    { id: "v18", text: "Frente a objeções, o vendedor mantém a inteligência emocional?" },
+    { id: "v19", text: "O vendedor é persistente na negociação?" },
+    { id: "v20", text: "Identifica os sinais de compra do cliente?" },
+    { id: "v21", text: "Utiliza técnicas de fechamento?" },
+    { id: "v22", text: "É persistente no fechamento?" },
+    { id: "v23", text: "Em caso de objeções, utiliza técnicas de negociação?" },
+    { id: "v24", text: "Ao fechar a venda, agradece o cliente?" },
+    { id: "v25", text: "Registra os dados do cliente?" },
+    { id: "v26", text: "Pede indicação de novos clientes?" },
+    { id: "v27", text: "Entra em contato posteriormente para novas vendas?" },
+    { id: "v28", text: "Quando não fecha, se despede cordialmente do cliente?" },
+    { id: "v29", text: "Analisa o que errou e reconstrói uma estratégia de resgate?" },
+    {
+      id: "v30",
+      text: "Entra em contato de forma persistente pra tentar recuperar a venda que não fechou?",
+    },
+  ],
+  severityBands: [
+    { min: 0, max: 10, label: "Processo comercial pouco estruturado" },
+    { min: 11, max: 20, label: "Processo comercial em desenvolvimento" },
+    { min: 21, max: 30, label: "Processo comercial maduro" },
+  ],
+};
+
 export const ASSESSMENT_TEMPLATES: AssessmentTemplate[] = [
   PHQ9,
   GAD7,
   WHEEL_OF_LIFE,
   LIMITING_BELIEFS,
   LEADERSHIP_STYLES,
+  SALES_DIAGNOSTIC,
 ];
 
 export function getAssessmentTemplate(slug: string): AssessmentTemplate | undefined {
@@ -319,6 +384,7 @@ export function isAssessmentTemplateSlug(value: unknown): value is string {
 export function getResponseOptions(responseType: ResponseType) {
   if (responseType === "likert4") return LIKERT4_OPTIONS;
   if (responseType === "agreement4") return AGREEMENT4_OPTIONS;
+  if (responseType === "yesno") return YESNO_OPTIONS;
   return Array.from({ length: 11 }, (_, value) => ({ value, label: String(value) }));
 }
 

@@ -5,6 +5,7 @@ import {
   getAssessmentTemplate,
   isAssessmentTemplateSlug,
   ASSESSMENT_TEMPLATES,
+  RESPONSE_RANGE,
 } from "./assessments";
 
 describe("scoreAssessment", () => {
@@ -63,16 +64,30 @@ describe("scoreAssessment", () => {
   it("every single-scale template has a severity band covering its full score range", () => {
     for (const template of ASSESSMENT_TEMPLATES) {
       if (template.dimensions) continue;
-      const maxPerQuestion = template.responseType === "likert4" ? 3 : 10;
       const maxTotal =
         template.responseType === "scale0to10"
           ? 10
-          : template.questions.length * maxPerQuestion;
+          : template.questions.length * RESPONSE_RANGE[template.responseType].max;
       const bandsCoverMax = template.severityBands.some((b) => b.max >= maxTotal);
       const bandsCoverMin = template.severityBands.some((b) => b.min <= 0);
       expect(bandsCoverMax).toBe(true);
       expect(bandsCoverMin).toBe(true);
     }
+  });
+
+  it("sums yes/no answers for the sales diagnostic", () => {
+    const sales = getAssessmentTemplate("autodiagnostico-vendas")!;
+    const allYes = new Array(30).fill(1);
+    expect(scoreAssessment(sales, allYes)).toEqual({
+      score: 30,
+      maxScore: 30,
+      severity: "Processo comercial maduro",
+    });
+
+    const allNo = new Array(30).fill(0);
+    expect(scoreAssessment(sales, allNo).severity).toBe(
+      "Processo comercial pouco estruturado"
+    );
   });
 
   it("scores multi-scale templates by the dimension with the highest sum", () => {
