@@ -21,8 +21,13 @@ export interface AdminProfessional {
   vetting_notes: string | null;
   credential_document_url: string | null;
   photo_url: string | null;
+  verification_meeting_at: string | null;
+  verification_meeting_notes: string | null;
   created_at: string;
 }
+
+const PROFESSIONAL_COLUMNS =
+  "id, full_name, email, category, bio, years_experience, specialties, methods, personality, session_format, location_city, location_state, location_address, price_cents, vetting_status, vetting_notes, credential_document_url, photo_url, verification_meeting_at, verification_meeting_notes, created_at";
 
 /** Retorna null quando o Supabase ainda não está configurado. */
 export async function listProfessionals(): Promise<AdminProfessional[] | null> {
@@ -31,9 +36,7 @@ export async function listProfessionals(): Promise<AdminProfessional[] | null> {
 
   const { data, error } = await supabase
     .from("professionals")
-    .select(
-      "id, full_name, email, category, bio, years_experience, specialties, methods, personality, session_format, location_city, location_state, location_address, price_cents, vetting_status, vetting_notes, credential_document_url, photo_url, created_at"
-    )
+    .select(PROFESSIONAL_COLUMNS)
     .order("created_at", { ascending: true });
 
   if (error) {
@@ -54,9 +57,7 @@ export async function getProfessional(id: string): Promise<ProfessionalLookup> {
 
   const { data, error } = await supabase
     .from("professionals")
-    .select(
-      "id, full_name, email, category, bio, years_experience, specialties, methods, personality, session_format, location_city, location_state, location_address, price_cents, vetting_status, vetting_notes, credential_document_url, photo_url, created_at"
-    )
+    .select(PROFESSIONAL_COLUMNS)
     .eq("id", id)
     .maybeSingle();
 

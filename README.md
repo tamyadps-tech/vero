@@ -42,6 +42,12 @@ Cliente também pode entrar com **login do Google**, além de email/senha
 painel do Supabase (ver `.env.example`); sem isso o botão só avisa que
 ainda não está disponível, sem quebrar o resto do login.
 
+No admin (`/admin/profissionais`), cada candidato pendente tem um campo
+pra marcar data/hora de uma reunião de verificação (com notas), além do
+aprovar/rejeitar de sempre — não é obrigatório antes de aprovar, é só
+um registro de apoio pro vetting. Todo profissional aprovado ganha um
+selo "Verificado" visível no card de busca e no perfil público.
+
 ## Stack
 
 Abordagem **híbrida**, escolhida para manter custo próximo de zero

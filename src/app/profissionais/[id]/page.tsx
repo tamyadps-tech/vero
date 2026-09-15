@@ -9,6 +9,7 @@ import { getUpcomingSlotsForProfessional } from "@/lib/booking";
 import { getReviewSummaries, listPublicReviews } from "@/lib/reviews";
 import { BookingWidget } from "@/components/BookingWidget";
 import { RatingBadge } from "@/components/RatingBadge";
+import { VerifiedBadge } from "@/components/VerifiedBadge";
 import { getClientIdFromAccessToken } from "@/lib/client-session";
 import { readAccessToken } from "@/lib/read-session-token";
 
@@ -88,9 +89,12 @@ export default async function ProfessionalProfilePage({
               />
             )}
             <div>
-              <span className="inline-flex items-center gap-2 rounded-full border border-border bg-paper-alt px-4 py-1.5 text-xs font-medium uppercase tracking-wide text-ink-soft">
-                {CATEGORY_LABELS[professional.category]}
-              </span>
+              <div className="flex flex-wrap items-center gap-2">
+                <span className="inline-flex items-center gap-2 rounded-full border border-border bg-paper-alt px-4 py-1.5 text-xs font-medium uppercase tracking-wide text-ink-soft">
+                  {CATEGORY_LABELS[professional.category]}
+                </span>
+                <VerifiedBadge />
+              </div>
               <h1 className="mt-2 text-3xl font-semibold tracking-tight text-ink sm:text-4xl">
                 {professional.full_name}
               </h1>

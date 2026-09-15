@@ -27,4 +27,20 @@ describe("PATCH /api/admin/professionals/[id]", () => {
     });
     expect(response.status).toBe(503);
   });
+
+  it("rejects an invalid meeting date", async () => {
+    const response = await PATCH(
+      makeRequest({ action: "agendar_reuniao", scheduledAt: "not-a-date" }),
+      { params: Promise.resolve({ id: "abc" }) }
+    );
+    expect(response.status).toBe(400);
+  });
+
+  it("returns 503 for a valid meeting request when Supabase isn't configured yet", async () => {
+    const response = await PATCH(
+      makeRequest({ action: "agendar_reuniao", scheduledAt: "2026-06-17T14:00:00.000Z" }),
+      { params: Promise.resolve({ id: "abc" }) }
+    );
+    expect(response.status).toBe(503);
+  });
 });

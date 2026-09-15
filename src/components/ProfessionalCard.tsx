@@ -2,6 +2,7 @@ import Link from "next/link";
 import { CATEGORY_LABELS } from "@/lib/professional-categories";
 import { SESSION_FORMAT_LABELS } from "@/lib/session-format";
 import { RatingBadge } from "@/components/RatingBadge";
+import { VerifiedBadge } from "@/components/VerifiedBadge";
 import type { PublicProfessional } from "@/lib/public-professionals";
 import type { ReviewSummary } from "@/lib/reviews";
 
@@ -44,7 +45,10 @@ export function ProfessionalCard({
             </span>
           )}
           <div>
-            <h3 className="font-semibold text-ink">{professional.full_name}</h3>
+            <div className="flex flex-wrap items-center gap-1.5">
+              <h3 className="font-semibold text-ink">{professional.full_name}</h3>
+              <VerifiedBadge />
+            </div>
             <p className="text-sm text-ink-soft">
               {CATEGORY_LABELS[professional.category]} ·{" "}
               {professional.years_experience} anos de experiência
