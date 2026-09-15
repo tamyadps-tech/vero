@@ -9,6 +9,7 @@ const TABS = [
   { key: "agenda", label: "Agenda" },
   { key: "crm", label: "Clientes" },
   { key: "testes", label: "Testes" },
+  { key: "metodo", label: "Método" },
 ] as const;
 
 type TabKey = (typeof TABS)[number]["key"];

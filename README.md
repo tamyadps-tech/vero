@@ -25,7 +25,11 @@ perguntas em 6 estilos, resultado é o estilo de maior soma, com
 gráfico de barras por estilo na visão detalhada) — suporte reaproveitado
 pelo Autodiagnóstico de Gestão de Vendas (30 perguntas sim/não em 6
 frentes de gestão) e reaproveitável pros próximos (ex: Múltiplas
-Inteligências). Também tem avaliações públicas,
+Inteligências). Nova aba "Método" no painel do profissional: uma
+biblioteca de guias práticos (dicas e caminhos pra atuação com
+clientes), com conteúdo escrito originalmente pela equipe Vero —
+`src/lib/method-articles.ts` — mesmo padrão visual dos testes
+(badge de categoria, `<details>` expansível). Também tem avaliações públicas,
 email transacional e cobrança via Stripe — todos com fallback gracioso:
 sem alguma chave configurada, essa parte específica cai pro "modo
 grátis/sem email" em vez de quebrar.
