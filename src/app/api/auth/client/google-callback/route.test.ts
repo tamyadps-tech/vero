@@ -2,9 +2,8 @@ import { describe, it, expect, beforeEach } from "vitest";
 import { POST } from "./route";
 
 const VALID_BODY = {
-  access_token: "token-abc",
-  refresh_token: "refresh-abc",
-  expires_in: 3600,
+  code: "code-abc",
+  codeVerifier: "verifier-abc",
 };
 
 function makeRequest(body: Record<string, unknown>) {
@@ -21,18 +20,13 @@ describe("POST /api/auth/client/google-callback", () => {
     delete process.env.SUPABASE_ANON_KEY;
   });
 
-  it("rejects a missing access_token", async () => {
-    const response = await POST(makeRequest({ ...VALID_BODY, access_token: undefined }));
+  it("rejects a missing code", async () => {
+    const response = await POST(makeRequest({ ...VALID_BODY, code: undefined }));
     expect(response.status).toBe(400);
   });
 
-  it("rejects a missing refresh_token", async () => {
-    const response = await POST(makeRequest({ ...VALID_BODY, refresh_token: undefined }));
-    expect(response.status).toBe(400);
-  });
-
-  it("rejects a non-numeric expires_in", async () => {
-    const response = await POST(makeRequest({ ...VALID_BODY, expires_in: "3600" }));
+  it("rejects a missing codeVerifier", async () => {
+    const response = await POST(makeRequest({ ...VALID_BODY, codeVerifier: undefined }));
     expect(response.status).toBe(400);
   });
 

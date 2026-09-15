@@ -3,7 +3,32 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
-import { getSupabaseBrowserClient } from "@/lib/supabase-browser";
+
+/**
+ * Lê o code_verifier que o supabase-js guardou no localStorage quando
+ * `signInWithOAuth` foi chamado (fluxo PKCE). Mesma convenção de chave
+ * usada internamente pelo SDK: `sb-<host>-auth-token-code-verifier`,
+ * valor no formato "verifier/redirectType".
+ *
+ * Lemos isso na mão (em vez de chamar `supabase.auth.exchangeCodeForSession`
+ * no navegador) porque, nesse projeto, a troca do code direto no
+ * navegador vem falhando com um erro de baixo nível do próprio Fetch API
+ * do browser antes mesmo de qualquer requisição sair — a troca do code é
+ * feita no servidor em vez disso (ver /api/auth/client/google-callback),
+ * que já é o mesmo caminho comprovadamente funcional do login por senha.
+ */
+function readStoredCodeVerifier(): string | null {
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  if (!url) return null;
+  try {
+    const host = new URL(url).hostname.split(".")[0];
+    const raw = window.localStorage.getItem(`sb-${host}-auth-token-code-verifier`);
+    if (!raw) return null;
+    return raw.split("/")[0] || null;
+  } catch {
+    return null;
+  }
+}
 
 export function GoogleCallbackClient() {
   const router = useRouter();
@@ -14,26 +39,16 @@ export function GoogleCallbackClient() {
     let cancelled = false;
 
     async function run() {
-      const supabase = getSupabaseBrowserClient();
-      if (!supabase) {
-        setError("Login com Google ainda não está configurado.");
-        return;
-      }
-
       const code = searchParams.get("code");
       if (!code) {
         setError("Não foi possível concluir o login com Google.");
         return;
       }
 
-      const { data, error: exchangeError } = await supabase.auth.exchangeCodeForSession(code);
-      if (cancelled) return;
-      if (exchangeError || !data.session) {
-        console.error("[GoogleCallbackClient] exchangeCodeForSession failed:", exchangeError);
+      const codeVerifier = readStoredCodeVerifier();
+      if (!codeVerifier) {
         setError(
-          exchangeError?.message
-            ? `Não foi possível concluir o login com Google (${exchangeError.message}).`
-            : "Não foi possível concluir o login com Google."
+          "Não foi possível concluir o login com Google (sessão de login expirou ou foi aberta em outra aba)."
         );
         return;
       }
@@ -41,11 +56,7 @@ export function GoogleCallbackClient() {
       const response = await fetch("/api/auth/client/google-callback", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          access_token: data.session.access_token,
-          refresh_token: data.session.refresh_token,
-          expires_in: data.session.expires_in,
-        }),
+        body: JSON.stringify({ code, codeVerifier }),
       });
       if (cancelled) return;
 
