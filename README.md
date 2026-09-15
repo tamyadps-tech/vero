@@ -47,7 +47,11 @@ catálogo do profissional.
 Nova aba "Método" no painel do profissional: uma biblioteca em
 formato de blog (sem accordion) com guias práticos citando a
 pesquisa por trás de cada técnica (Ekman, Beck, Krippendorff,
-Fairclough, Pennebaker, Rogers) — `src/lib/method-articles.ts`.
+Fairclough, Pennebaker, Rogers) — `src/lib/method-articles.ts`. Além
+dos artigos, tem "fichas de condução de sessão" (`kind: "ficha"`):
+roteiros de perguntas abertas pro profissional usar ao vivo,
+renderizados como checklist numerado em vez de texto corrido —
+primeira sessão, sessão de luto e fechamento de sessão.
 
 Identidade visual por área: fundo verde-claro (`primary-light`) e
 títulos em negrito na cor verde da marca na área do profissional

@@ -20,6 +20,13 @@ describe("method-articles", () => {
     expect(new Set(slugs).size).toBe(slugs.length);
   });
 
+  it("only uses known kinds and has at least one ficha de condução", () => {
+    for (const article of METHOD_ARTICLES) {
+      expect(["artigo", "ficha"]).toContain(article.kind);
+    }
+    expect(METHOD_ARTICLES.some((article) => article.kind === "ficha")).toBe(true);
+  });
+
   it("finds an article by slug", () => {
     const article = getMethodArticle("leitura-de-respostas-em-sessao");
     expect(article?.title).toBe("Como ler as respostas do seu cliente em sessão");
