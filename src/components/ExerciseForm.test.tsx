@@ -36,12 +36,11 @@ describe("ExerciseForm", () => {
     });
 
     const user = userEvent.setup();
-    render(<ExerciseForm templateSlug="minha-rede-de-apoio" onClose={() => {}} />);
+    render(<ExerciseForm templateSlug="carta-de-despedida" onClose={() => {}} />);
 
     const fields = screen.getAllByRole("textbox");
-    await user.type(fields[0], "Minha mãe");
-    await user.type(fields[1], "Grupo da igreja");
-    await user.type(fields[2], "Ligar pra minha mãe");
+    await user.type(fields[0], "Querida vó, sinto sua falta.");
+    await user.type(fields[1], "Espero me sentir mais leve.");
 
     await user.click(screen.getByRole("button", { name: /^enviar$/i }));
 
@@ -52,8 +51,8 @@ describe("ExerciseForm", () => {
     const [, options] = fetchMock.mock.calls[0];
     const sentBody = JSON.parse(options.body);
     expect(sentBody).toEqual({
-      templateSlug: "minha-rede-de-apoio",
-      answers: ["Minha mãe", "Grupo da igreja", "Ligar pra minha mãe"],
+      templateSlug: "carta-de-despedida",
+      answers: ["Querida vó, sinto sua falta.", "Espero me sentir mais leve."],
     });
   });
 });

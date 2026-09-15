@@ -40,9 +40,12 @@ conjunto é sobre luto (Carta de Despedida, Exercício da Aceitação,
 Boas Recordações, Metáforas, Habilidades de Enfrentamento — com base
 no modelo do processo dual de Stroebe & Schut —, Lidando com a
 Culpa, Minha Rede de Apoio, Psicoeducação do Luto), todo escrito
-originalmente pela equipe Vero. Cada exercício também carrega uma
-nota "pra você, profissional" (objetivo + aplicação) visível só no
-catálogo do profissional.
+originalmente pela equipe Vero e com contexto psicoeducativo
+robusto (ex: os 5 estágios de Kübler-Ross explicados um a um, o
+mapeamento de rede de apoio quebrado nas 8 áreas da vida, 5 pares de
+pensamento/conselho em Lidando com a Culpa). Cada exercício também
+carrega uma nota "pra você, profissional" (objetivo + aplicação)
+visível só no catálogo do profissional.
 
 Nova aba "Método" no painel do profissional: uma biblioteca em
 formato de blog (sem accordion) com guias práticos citando a
