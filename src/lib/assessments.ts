@@ -534,6 +534,50 @@ const SALES_MANAGEMENT_DIAGNOSTIC: AssessmentTemplate = {
   severityBands: [],
 };
 
+const ENGAGEMENT_DIAGNOSTIC: AssessmentTemplate = {
+  slug: "autodiagnostico-engajamento",
+  name: "Autodiagnóstico de Engajamento",
+  description:
+    "13 perguntas sim/não sobre o processo de engajamento do time comercial, da seleção até o pós-período de experiência — mede o quanto esse processo já está estruturado.",
+  category: "coaching",
+  responseType: "yesno",
+  questions: [
+    {
+      id: "e1",
+      text: "Existe um estudo do perfil de vendedor que mais tem sinergia com a sua empresa?",
+    },
+    { id: "e2", text: "O processo seletivo é realizado para encontrar esse perfil específico?" },
+    { id: "e3", text: "Você sabe qual é o \"fit cultural\" da sua empresa?" },
+    { id: "e4", text: "Você traz pessoas que estão alinhadas ao seu fit?" },
+    {
+      id: "e5",
+      text: "O treinamento inicial é desenhado para a pessoa se apaixonar pela empresa?",
+    },
+    { id: "e6", text: "Fica claro como se cresce na empresa?" },
+    { id: "e7", text: "O vendedor sai preparado para vender?" },
+    { id: "e8", text: "Ele é treinado pra ter as atitudes esperadas?" },
+    {
+      id: "e9",
+      text: "O vendedor tem entregas objetivas pra se desenvolver (estudo de produtos/serviços, análise do cliente e do mercado, técnicas de vendas etc.)?",
+    },
+    { id: "e10", text: "Há um processo claro de acompanhamento e desenvolvimento?" },
+    { id: "e11", text: "Há um processo de feedback e pontuação dos avanços?" },
+    {
+      id: "e12",
+      text: "O vendedor encontra estímulos pra continuar progredindo (plano de carreira, campanhas, desafios etc.)?",
+    },
+    {
+      id: "e13",
+      text: "O vendedor tem treinamentos periódicos pras suas principais dificuldades?",
+    },
+  ],
+  severityBands: [
+    { min: 0, max: 4, label: "Processo de engajamento pouco estruturado" },
+    { min: 5, max: 9, label: "Processo de engajamento em desenvolvimento" },
+    { min: 10, max: 13, label: "Processo de engajamento maduro" },
+  ],
+};
+
 export const ASSESSMENT_TEMPLATES: AssessmentTemplate[] = [
   PHQ9,
   GAD7,
@@ -542,6 +586,7 @@ export const ASSESSMENT_TEMPLATES: AssessmentTemplate[] = [
   LEADERSHIP_STYLES,
   SALES_DIAGNOSTIC,
   SALES_MANAGEMENT_DIAGNOSTIC,
+  ENGAGEMENT_DIAGNOSTIC,
 ];
 
 export function getAssessmentTemplate(slug: string): AssessmentTemplate | undefined {

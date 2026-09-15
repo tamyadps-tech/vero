@@ -152,6 +152,21 @@ describe("scoreAssessment", () => {
       maxTotal: 5,
     });
   });
+
+  it("sums yes/no answers for the engagement diagnostic", () => {
+    const engagement = getAssessmentTemplate("autodiagnostico-engajamento")!;
+    const allYes = new Array(13).fill(1);
+    expect(scoreAssessment(engagement, allYes)).toEqual({
+      score: 13,
+      maxScore: 13,
+      severity: "Processo de engajamento maduro",
+    });
+
+    const allNo = new Array(13).fill(0);
+    expect(scoreAssessment(engagement, allNo).severity).toBe(
+      "Processo de engajamento pouco estruturado"
+    );
+  });
 });
 
 describe("isAssessmentTemplateSlug", () => {
