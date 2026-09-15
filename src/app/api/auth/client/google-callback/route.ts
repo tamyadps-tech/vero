@@ -74,7 +74,9 @@ export async function POST(request: Request) {
   );
   if (exchangeError || !tokenData?.access_token || !tokenData.refresh_token || !tokenData.user) {
     return NextResponse.json(
-      { error: "Não foi possível concluir o login com Google. Tente novamente." },
+      {
+        error: `Não foi possível concluir o login com Google. Tente novamente. (${exchangeError ?? "resposta incompleta do Supabase"})`,
+      },
       { status: 401 }
     );
   }
