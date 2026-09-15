@@ -25,8 +25,9 @@ O painel do profissional (`/p/dashboard`) é dividido em abas — Dashboard
 (KPIs reais: recebido, ticket médio, recompra, taxas de conclusão/
 cancelamento, lucro líquido, faturamento por mês e sessões por status),
 Marketing (divulgação + mensagens), Financeiro, Agenda, Clientes (CRM) e
-Testes (visão de todos os clientes num quadro só, com toggle de
-liberar/revogar cada autoavaliação e o resultado mais recente) —, com a
+Testes (lista por cliente de cada autoavaliação, com o botão de
+enviar/revogar, o resultado mais recente e as respostas completas de
+quem já respondeu) —, com a
 edição de perfil sempre visível no topo. A Agenda tem
 calendário com visão dia/semana/mês (clicando num dia no mês você cai na
 visão do dia) e um botão pra reenviar a confirmação por email de

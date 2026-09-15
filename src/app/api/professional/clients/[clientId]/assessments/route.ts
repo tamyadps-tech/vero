@@ -3,7 +3,54 @@ import { getSupabaseAdmin } from "@/lib/supabase-admin";
 import { getProfessionalIdFromAccessToken } from "@/lib/professional-session";
 import { readAccessToken } from "@/lib/read-session-token";
 import { isAssessmentTemplateSlug } from "@/lib/assessments";
-import { setAssessmentRelease } from "@/lib/assessment-releases";
+import { setAssessmentRelease, professionalHasClient } from "@/lib/assessment-releases";
+
+export async function GET(
+  request: Request,
+  { params }: { params: Promise<{ clientId: string }> }
+) {
+  const { clientId } = await params;
+  const templateSlug = new URL(request.url).searchParams.get("templateSlug");
+
+  if (!isAssessmentTemplateSlug(templateSlug)) {
+    return NextResponse.json({ error: "Teste inválido." }, { status: 400 });
+  }
+
+  const supabase = getSupabaseAdmin();
+  if (!supabase) {
+    return NextResponse.json(
+      { error: "Supabase ainda não está configurado." },
+      { status: 503 }
+    );
+  }
+
+  const accessToken = await readAccessToken("professional");
+  const professionalId = await getProfessionalIdFromAccessToken(accessToken);
+  if (!professionalId) {
+    return NextResponse.json({ error: "Faça login novamente." }, { status: 401 });
+  }
+
+  const hasClient = await professionalHasClient(professionalId, clientId);
+  if (!hasClient) {
+    return NextResponse.json({ error: "Cliente não encontrado." }, { status: 403 });
+  }
+
+  const { data, error } = await supabase
+    .from("assessment_responses")
+    .select("answers, score, severity, created_at")
+    .eq("client_id", clientId)
+    .eq("template_slug", templateSlug)
+    .order("created_at", { ascending: false })
+    .limit(1)
+    .maybeSingle();
+
+  if (error) {
+    console.error("[professional/clients/assessments] Failed to load response:", error.message);
+    return NextResponse.json({ error: "Não foi possível carregar agora." }, { status: 500 });
+  }
+
+  return NextResponse.json({ response: data ?? null });
+}
 
 export async function POST(
   request: Request,

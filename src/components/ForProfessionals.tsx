@@ -42,7 +42,8 @@ export function ForProfessionals() {
         </div>
         <div id="lista-espera-profissional" className="flex flex-col justify-center">
           <p className="mb-3 text-sm font-medium text-ink">
-            Sem lista de espera — já dá pra se candidatar:
+            Candidate-se e aguarde a aprovação da equipe — todo perfil
+            precisa ser verificado antes de ir ao ar:
           </p>
           <Link
             href="/profissionais/cadastro"
