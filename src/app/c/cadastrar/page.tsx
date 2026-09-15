@@ -3,6 +3,7 @@ import Link from "next/link";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { ClientSignupForm } from "@/components/auth/ClientSignupForm";
+import { GoogleLoginButton } from "@/components/auth/GoogleLoginButton";
 
 export const metadata: Metadata = {
   title: "Criar conta — Vero",
@@ -22,8 +23,14 @@ export default function ClientSignupPage() {
             Pra agendar sessões e acompanhar seu progresso.
           </p>
           <div className="mt-8">
-            <ClientSignupForm redirectTo="/c/dashboard" />
+            <GoogleLoginButton redirectTo="/c/dashboard" />
           </div>
+          <div className="my-6 flex items-center gap-3 text-xs text-ink-soft">
+            <span className="h-px flex-1 bg-border" />
+            ou
+            <span className="h-px flex-1 bg-border" />
+          </div>
+          <ClientSignupForm redirectTo="/c/dashboard" />
           <p className="mt-6 text-center text-sm text-ink-soft">
             Já tem conta?{" "}
             <Link href="/c/entrar" className="text-primary hover:underline">

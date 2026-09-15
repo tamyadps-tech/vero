@@ -35,6 +35,11 @@ despesas) — imposto fica de fora por enquanto, depende do regime
 tributário de cada profissional e entra numa fase futura, decisão
 deliberada.
 
+Cliente também pode entrar com **login do Google**, além de email/senha
+(`/c/entrar` e `/c/cadastrar`) — precisa configurar o provedor Google no
+painel do Supabase (ver `.env.example`); sem isso o botão só avisa que
+ainda não está disponível, sem quebrar o resto do login.
+
 ## Stack
 
 Abordagem **híbrida**, escolhida para manter custo próximo de zero
