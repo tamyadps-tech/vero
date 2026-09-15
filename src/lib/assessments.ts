@@ -8,6 +8,11 @@
 
 export type ResponseType = "likert4" | "scale0to10";
 
+export const CATEGORY_LABELS: Record<"clinico" | "coaching", string> = {
+  clinico: "Clínico",
+  coaching: "Coaching",
+};
+
 export interface AssessmentQuestion {
   id: string;
   text: string;
@@ -129,7 +134,53 @@ const WHEEL_OF_LIFE: AssessmentTemplate = {
   ],
 };
 
-export const ASSESSMENT_TEMPLATES: AssessmentTemplate[] = [PHQ9, GAD7, WHEEL_OF_LIFE];
+const LIMITING_BELIEFS: AssessmentTemplate = {
+  slug: "crencas-limitantes",
+  name: "Crenças Limitantes sobre Dinheiro",
+  description:
+    "Nota de 0 a 10 pra quanto cada crença abaixo ainda ressoa em você — autoconhecimento sobre o que pode estar travando sua relação com dinheiro.",
+  category: "coaching",
+  responseType: "scale0to10",
+  questions: [
+    { id: "b1", text: "Tenho de trabalhar duro para ter dinheiro suficiente para viver." },
+    { id: "b2", text: "Sem sofrimento e perdas não há ganho." },
+    { id: "b3", text: "Tenho de ser rico para ser feliz." },
+    { id: "b4", text: "Dinheiro é sujo." },
+    { id: "b5", text: "Nunca terei dinheiro suficiente." },
+    { id: "b6", text: "Sou pobre, mas sou honesto." },
+    { id: "b7", text: "Não me acho capaz de conseguir um trabalho melhor." },
+    { id: "b8", text: "A maioria das pessoas é melhor do que eu." },
+    { id: "b9", text: "Não sei quando vou morrer. É melhor gastar tudo agora." },
+    { id: "b10", text: "Se eu não tiver o que mostrar aos outros, não terei valor." },
+    { id: "b11", text: "Pau que nasce torto morre torto." },
+    { id: "b12", text: "Não sou capaz de cobrar o justo pelo meu trabalho." },
+    { id: "b13", text: "Não sou merecedor de coisas boas, nem de mais dinheiro." },
+    { id: "b14", text: "Não tenho formação acadêmica, como posso ter sucesso?" },
+    { id: "b15", text: "Dinheiro não é importante. Amar, sim, é importante." },
+    { id: "b16", text: "A água só corre para o mar. Dinheiro só vai para quem já tem." },
+    { id: "b17", text: "Não mereço ter sucesso." },
+    { id: "b18", text: "Não se pode confiar em ninguém." },
+    { id: "b19", text: "Sou assim mesmo. Fazer o quê, né?" },
+    { id: "b20", text: "Dinheiro não traz felicidade." },
+    { id: "b21", text: "Dinheiro não dá em árvores." },
+    { id: "b22", text: "Não tenho. Não posso. Está pensando que a vida é fácil?" },
+    { id: "b23", text: "Pessoas ricas não herdam o reino dos céus." },
+    { id: "b24", text: "É bonito, é legal ser pobre e \"superar\" problemas financeiros." },
+    { id: "b25", text: "Todo rico é mau ou desonesto." },
+  ],
+  severityBands: [
+    { min: 0, max: 3, label: "Baixo impacto das crenças limitantes" },
+    { min: 4, max: 6, label: "Impacto moderado das crenças limitantes" },
+    { min: 7, max: 10, label: "Alto impacto das crenças limitantes" },
+  ],
+};
+
+export const ASSESSMENT_TEMPLATES: AssessmentTemplate[] = [
+  PHQ9,
+  GAD7,
+  WHEEL_OF_LIFE,
+  LIMITING_BELIEFS,
+];
 
 export function getAssessmentTemplate(slug: string): AssessmentTemplate | undefined {
   return ASSESSMENT_TEMPLATES.find((t) => t.slug === slug);

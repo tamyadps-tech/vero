@@ -1,6 +1,20 @@
 import { TestListItem } from "@/components/professional/TestListItem";
-import { ASSESSMENT_TEMPLATES, getResponseOptions } from "@/lib/assessments";
+import { ASSESSMENT_TEMPLATES, CATEGORY_LABELS, getResponseOptions } from "@/lib/assessments";
 import type { ProfessionalClient } from "@/lib/professional-clients";
+
+function CategoryBadge({ category }: { category: "clinico" | "coaching" }) {
+  return (
+    <span
+      className={`rounded-full px-2 py-0.5 text-[10px] font-medium uppercase tracking-wide ${
+        category === "coaching"
+          ? "bg-primary-light text-primary-dark"
+          : "bg-accent-light text-accent-dark"
+      }`}
+    >
+      {CATEGORY_LABELS[category]}
+    </span>
+  );
+}
 
 function TestCatalog() {
   return (
@@ -12,8 +26,9 @@ function TestCatalog() {
             key={template.slug}
             className="rounded-xl border border-border bg-paper p-4"
           >
-            <summary className="cursor-pointer font-medium text-ink">
+            <summary className="flex cursor-pointer flex-wrap items-center gap-2 font-medium text-ink">
               {template.name}
+              <CategoryBadge category={template.category} />
             </summary>
             <p className="mt-2 text-sm text-ink-soft">{template.description}</p>
 

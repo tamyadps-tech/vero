@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { ASSESSMENT_TEMPLATES } from "@/lib/assessments";
+import { ASSESSMENT_TEMPLATES, CATEGORY_LABELS } from "@/lib/assessments";
 import { AssessmentForm } from "@/components/AssessmentForm";
 import type { ClientAssessmentResponse } from "@/lib/client-progress";
 
@@ -32,8 +32,19 @@ export function AssessmentsSection({
           >
             <div className="flex flex-wrap items-start justify-between gap-2">
               <div>
-                <h3 className="font-semibold text-ink">{template.name}</h3>
-                <p className="text-xs text-ink-soft">{template.description}</p>
+                <div className="flex flex-wrap items-center gap-2">
+                  <h3 className="font-semibold text-ink">{template.name}</h3>
+                  <span
+                    className={`rounded-full px-2 py-0.5 text-[10px] font-medium uppercase tracking-wide ${
+                      template.category === "coaching"
+                        ? "bg-primary-light text-primary-dark"
+                        : "bg-accent-light text-accent-dark"
+                    }`}
+                  >
+                    {CATEGORY_LABELS[template.category]}
+                  </span>
+                </div>
+                <p className="mt-0.5 text-xs text-ink-soft">{template.description}</p>
               </div>
               {isReleased ? (
                 openSlug !== template.slug && (

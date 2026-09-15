@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { getResponseOptions, type AssessmentTemplate } from "@/lib/assessments";
+import { getResponseOptions, CATEGORY_LABELS, type AssessmentTemplate } from "@/lib/assessments";
 
 const dateFormatter = new Intl.DateTimeFormat("pt-BR", { dateStyle: "short" });
 
@@ -77,7 +77,18 @@ export function TestListItem({
     <div className="rounded-xl border border-border p-3 sm:p-4">
       <div className="flex flex-wrap items-center justify-between gap-2">
         <div>
-          <p className="font-medium text-ink">{template.name}</p>
+          <div className="flex flex-wrap items-center gap-1.5">
+            <p className="font-medium text-ink">{template.name}</p>
+            <span
+              className={`rounded-full px-1.5 py-0.5 text-[10px] font-medium uppercase tracking-wide ${
+                template.category === "coaching"
+                  ? "bg-primary-light text-primary-dark"
+                  : "bg-accent-light text-accent-dark"
+              }`}
+            >
+              {CATEGORY_LABELS[template.category]}
+            </span>
+          </div>
           <p className="text-xs text-ink-soft">{status}</p>
         </div>
         <div className="flex items-center gap-2">

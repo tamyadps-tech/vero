@@ -20,7 +20,9 @@ export function AssessmentForm({
 
   if (!template) return null;
   const options = getResponseOptions(template.responseType);
-  const allAnswered = template.questions.every((q) => answers[q.id] !== undefined);
+  const answeredCount = template.questions.filter((q) => answers[q.id] !== undefined).length;
+  const allAnswered = answeredCount === template.questions.length;
+  const progressPct = Math.round((answeredCount / template.questions.length) * 100);
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -73,10 +75,25 @@ export function AssessmentForm({
 
   return (
     <form onSubmit={handleSubmit} className="rounded-xl border border-border bg-paper p-4">
-      <div className="space-y-4">
+      <div className="mb-4">
+        <div className="flex items-center justify-between text-xs text-ink-soft">
+          <span>
+            {answeredCount} de {template.questions.length} respondidas
+          </span>
+          <span>{progressPct}%</span>
+        </div>
+        <div className="mt-1.5 h-1.5 overflow-hidden rounded-full bg-paper-alt">
+          <div
+            className="h-full rounded-full bg-primary transition-[width]"
+            style={{ width: `${progressPct}%` }}
+          />
+        </div>
+      </div>
+
+      <div className="divide-y divide-border">
         {template.questions.map((question) => (
-          <div key={question.id}>
-            <p className="mb-1.5 text-sm text-ink">{question.text}</p>
+          <div key={question.id} className="py-3 first:pt-0 last:pb-0">
+            <p className="mb-2 text-sm text-ink">{question.text}</p>
             <div className="flex flex-wrap gap-1.5" role="radiogroup" aria-label={question.text}>
               {options.map((option) => (
                 <button
@@ -87,10 +104,10 @@ export function AssessmentForm({
                   onClick={() =>
                     setAnswers((prev) => ({ ...prev, [question.id]: option.value }))
                   }
-                  className={`rounded-lg border px-2.5 py-1 text-xs ${
+                  className={`rounded-lg border px-2.5 py-1 text-xs transition ${
                     answers[question.id] === option.value
                       ? "border-primary bg-primary-light text-primary-dark"
-                      : "border-border text-ink-soft"
+                      : "border-border text-ink-soft hover:border-primary/40"
                   }`}
                 >
                   {option.label}
