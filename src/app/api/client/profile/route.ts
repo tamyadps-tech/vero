@@ -3,6 +3,7 @@ import { getSupabaseAdmin } from "@/lib/supabase-admin";
 import { getClientFromAccessToken } from "@/lib/client-session";
 import { readAccessToken } from "@/lib/read-session-token";
 import { performLogin } from "@/lib/perform-login";
+import { isValidPhoneNumber } from "@/lib/whatsapp";
 
 const MIN_PASSWORD_LENGTH = 8;
 
@@ -14,8 +15,9 @@ export async function PATCH(request: Request) {
     return NextResponse.json({ error: "Corpo inválido." }, { status: 400 });
   }
 
-  const { fullName, currentPassword, newPassword } = (body ?? {}) as {
+  const { fullName, phoneNumber, currentPassword, newPassword } = (body ?? {}) as {
     fullName?: unknown;
+    phoneNumber?: unknown;
     currentPassword?: unknown;
     newPassword?: unknown;
   };
@@ -23,6 +25,14 @@ export async function PATCH(request: Request) {
   const name = typeof fullName === "string" ? fullName.trim() : "";
   if (fullName !== undefined && name.length < 3) {
     return NextResponse.json({ error: "Informe seu nome completo." }, { status: 400 });
+  }
+
+  const phone = typeof phoneNumber === "string" ? phoneNumber.trim() : "";
+  if (phoneNumber !== undefined && phone && !isValidPhoneNumber(phone)) {
+    return NextResponse.json(
+      { error: "Telefone inválido — use o formato +5511999998888." },
+      { status: 400 }
+    );
   }
 
   const wantsPasswordChange = newPassword !== undefined;
@@ -75,13 +85,14 @@ export async function PATCH(request: Request) {
     }
   }
 
-  if (fullName !== undefined) {
-    const { error } = await supabase
-      .from("clients")
-      .update({ full_name: name })
-      .eq("id", client.id);
+  if (fullName !== undefined || phoneNumber !== undefined) {
+    const update: Record<string, string | null> = {};
+    if (fullName !== undefined) update.full_name = name;
+    if (phoneNumber !== undefined) update.phone_number = phone || null;
+
+    const { error } = await supabase.from("clients").update(update).eq("id", client.id);
     if (error) {
-      console.error("[client/profile] Failed to update name:", error.message);
+      console.error("[client/profile] Failed to update profile:", error.message);
       return NextResponse.json(
         { error: "Não foi possível salvar agora." },
         { status: 500 }

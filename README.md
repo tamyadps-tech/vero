@@ -44,8 +44,16 @@ Cliente também pode entrar com **login do Google**, além de email/senha
 (`/c/entrar` e `/c/cadastrar`) — precisa configurar o provedor Google no
 painel do Supabase (ver `.env.example`); sem isso o botão só avisa que
 ainda não está disponível, sem quebrar o resto do login. O painel do
-cliente (`/c/dashboard`) também tem edição de perfil — nome e troca de
-senha (a troca exige a senha atual).
+cliente (`/c/dashboard`) também tem edição de perfil — nome, telefone
+(WhatsApp) e troca de senha (a troca exige a senha atual).
+
+Confirmação de agendamento e lembrete de sessão (véspera) também saem
+por **WhatsApp** via Twilio, além do email — precisa configurar
+`TWILIO_ACCOUNT_SID`/`TWILIO_AUTH_TOKEN`/`TWILIO_WHATSAPP_FROM` (ver
+`.env.example`) e o cliente ter cadastrado o telefone no próprio
+perfil; sem isso, só o email sai, sem quebrar nada. O lembrete roda uma
+vez por dia via Vercel Cron (`vercel.json` →
+`/api/cron/session-reminders`, protegido por `CRON_SECRET`).
 
 No admin (`/admin/profissionais`), cada candidato pendente tem um campo
 pra marcar data/hora de uma reunião de verificação (com notas), além do

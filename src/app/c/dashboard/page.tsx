@@ -103,7 +103,11 @@ export default async function ClientDashboardPage({
           </h1>
 
           <div className="mt-6">
-            <ClientProfileSection fullName={client.full_name} email={client.email} />
+            <ClientProfileSection
+              fullName={client.full_name}
+              email={client.email}
+              phoneNumber={client.phone_number}
+            />
           </div>
 
           {pago === "1" && (

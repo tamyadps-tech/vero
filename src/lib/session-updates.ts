@@ -1,5 +1,7 @@
 import { sendEmail } from "@/lib/email";
 import { sessionSummaryEmail, bookingConfirmationEmail } from "@/lib/email-templates";
+import { sendWhatsAppMessage } from "@/lib/whatsapp";
+import { bookingConfirmationWhatsApp } from "@/lib/whatsapp-templates";
 import { getSupabaseAdmin } from "@/lib/supabase-admin";
 
 const VALID_STATUSES = new Set([
@@ -126,14 +128,14 @@ export async function sendSessionConfirmation(
   const { data: fullSession } = await supabase
     .from("sessions")
     .select(
-      "scheduled_at, professional:professionals(full_name), client:clients(full_name, email)"
+      "scheduled_at, professional:professionals(full_name), client:clients(full_name, email, phone_number)"
     )
     .eq("id", sessionId)
     .eq("professional_id", professionalId)
     .single();
 
   const client = fullSession?.client as unknown as
-    | { full_name: string; email: string }
+    | { full_name: string; email: string; phone_number: string | null }
     | undefined;
   const professional = fullSession?.professional as unknown as
     | { full_name: string }
@@ -150,5 +152,13 @@ export async function sendSessionConfirmation(
     progressUrl: `${origin}/c/dashboard`,
   });
   const result = await sendEmail({ to: client.email, subject, html });
+  await sendWhatsAppMessage(
+    client.phone_number,
+    bookingConfirmationWhatsApp({
+      clientName: client.full_name,
+      professionalName: professional.full_name,
+      scheduledAt: fullSession.scheduled_at,
+    })
+  );
   return result.sent ? { sent: true, reason: "" } : { sent: false, reason: result.reason };
 }

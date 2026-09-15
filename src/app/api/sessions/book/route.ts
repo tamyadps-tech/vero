@@ -3,6 +3,8 @@ import { getSupabaseAdmin } from "@/lib/supabase-admin";
 import { getUpcomingSlotsForProfessional } from "@/lib/booking";
 import { sendEmail } from "@/lib/email";
 import { bookingConfirmationEmail } from "@/lib/email-templates";
+import { sendWhatsAppMessage } from "@/lib/whatsapp";
+import { bookingConfirmationWhatsApp } from "@/lib/whatsapp-templates";
 import { getStripeClient } from "@/lib/stripe";
 import { getClientFromAccessToken } from "@/lib/client-session";
 import { readAccessToken } from "@/lib/read-session-token";
@@ -152,6 +154,14 @@ export async function POST(request: Request) {
     progressUrl,
   });
   await sendEmail({ to: client.email, subject, html });
+  await sendWhatsAppMessage(
+    client.phone_number,
+    bookingConfirmationWhatsApp({
+      clientName: client.full_name,
+      professionalName: professional.full_name,
+      scheduledAt: slotDate.toISOString(),
+    })
+  );
 
   return NextResponse.json({ ok: true });
 }

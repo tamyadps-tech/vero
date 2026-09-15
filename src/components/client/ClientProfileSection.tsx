@@ -12,14 +12,17 @@ const labelClass = "mb-1.5 block text-sm font-medium text-ink";
 function ClientProfileEditForm({
   fullName,
   email,
+  phoneNumber,
   onClose,
 }: {
   fullName: string;
   email: string;
+  phoneNumber: string;
   onClose: () => void;
 }) {
   const router = useRouter();
   const [name, setName] = useState(fullName);
+  const [phone, setPhone] = useState(phoneNumber);
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [status, setStatus] = useState<Status>("idle");
@@ -32,6 +35,7 @@ function ClientProfileEditForm({
 
     const body: Record<string, string> = {};
     if (name.trim() !== fullName) body.fullName = name.trim();
+    if (phone.trim() !== phoneNumber) body.phoneNumber = phone.trim();
     if (newPassword) {
       body.currentPassword = currentPassword;
       body.newPassword = newPassword;
@@ -80,6 +84,24 @@ function ClientProfileEditForm({
       <div>
         <label className={labelClass}>Email</label>
         <p className="text-sm text-ink-soft">{email}</p>
+      </div>
+
+      <div>
+        <label className={labelClass} htmlFor="client-phone">
+          WhatsApp
+        </label>
+        <input
+          id="client-phone"
+          type="tel"
+          placeholder="+5511999998888"
+          value={phone}
+          onChange={(event) => setPhone(event.target.value)}
+          className={fieldClass}
+        />
+        <p className="mt-1.5 text-xs text-ink-soft">
+          Com DDI e DDD, ex: +5511999998888 — usado só pra confirmação e
+          lembrete de sessão. Opcional.
+        </p>
       </div>
 
       <div className="rounded-xl border border-border bg-paper p-4">
@@ -141,15 +163,22 @@ function ClientProfileEditForm({
 export function ClientProfileSection({
   fullName,
   email,
+  phoneNumber,
 }: {
   fullName: string;
   email: string;
+  phoneNumber: string | null;
 }) {
   const [isEditing, setIsEditing] = useState(false);
 
   if (isEditing) {
     return (
-      <ClientProfileEditForm fullName={fullName} email={email} onClose={() => setIsEditing(false)} />
+      <ClientProfileEditForm
+        fullName={fullName}
+        email={email}
+        phoneNumber={phoneNumber ?? ""}
+        onClose={() => setIsEditing(false)}
+      />
     );
   }
 

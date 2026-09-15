@@ -31,6 +31,11 @@ describe("PATCH /api/client/profile", () => {
     expect(response.status).toBe(400);
   });
 
+  it("rejects an invalid phone number", async () => {
+    const response = await PATCH(makeRequest({ phoneNumber: "11999998888" }));
+    expect(response.status).toBe(400);
+  });
+
   it("returns 503 when Supabase isn't configured yet", async () => {
     const response = await PATCH(makeRequest({ fullName: "Maria Silva" }));
     expect(response.status).toBe(503);

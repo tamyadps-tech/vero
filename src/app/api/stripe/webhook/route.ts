@@ -3,6 +3,8 @@ import { getStripeClient } from "@/lib/stripe";
 import { getSupabaseAdmin } from "@/lib/supabase-admin";
 import { sendEmail } from "@/lib/email";
 import { bookingConfirmationEmail } from "@/lib/email-templates";
+import { sendWhatsAppMessage } from "@/lib/whatsapp";
+import { bookingConfirmationWhatsApp } from "@/lib/whatsapp-templates";
 import type Stripe from "stripe";
 
 export async function POST(request: Request) {
@@ -63,13 +65,13 @@ export async function POST(request: Request) {
     const { data: session } = await supabase
       .from("sessions")
       .select(
-        "scheduled_at, professional:professionals(full_name), client:clients(full_name, email)"
+        "scheduled_at, professional:professionals(full_name), client:clients(full_name, email, phone_number)"
       )
       .eq("id", payment.session_id)
       .single();
 
     const client = session?.client as unknown as
-      | { full_name: string; email: string }
+      | { full_name: string; email: string; phone_number: string | null }
       | undefined;
     const professional = session?.professional as unknown as
       | { full_name: string }
@@ -83,6 +85,14 @@ export async function POST(request: Request) {
         progressUrl: `${new URL(request.url).origin}/c/dashboard`,
       });
       await sendEmail({ to: client.email, subject, html });
+      await sendWhatsAppMessage(
+        client.phone_number,
+        bookingConfirmationWhatsApp({
+          clientName: client.full_name,
+          professionalName: professional.full_name,
+          scheduledAt: session.scheduled_at,
+        })
+      );
     }
   }
 
