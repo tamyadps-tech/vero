@@ -1,6 +1,7 @@
 import { describe, it, expect } from "vitest";
 import {
   scoreAssessment,
+  getDimensionBreakdown,
   getAssessmentTemplate,
   isAssessmentTemplateSlug,
   ASSESSMENT_TEMPLATES,
@@ -59,8 +60,9 @@ describe("scoreAssessment", () => {
     expect(() => scoreAssessment(phq9, answers)).toThrow();
   });
 
-  it("every template has a severity band covering its full score range", () => {
+  it("every single-scale template has a severity band covering its full score range", () => {
     for (const template of ASSESSMENT_TEMPLATES) {
+      if (template.dimensions) continue;
       const maxPerQuestion = template.responseType === "likert4" ? 3 : 10;
       const maxTotal =
         template.responseType === "scale0to10"
@@ -71,6 +73,43 @@ describe("scoreAssessment", () => {
       expect(bandsCoverMax).toBe(true);
       expect(bandsCoverMin).toBe(true);
     }
+  });
+
+  it("scores multi-scale templates by the dimension with the highest sum", () => {
+    const leadership = getAssessmentTemplate("estilos-lideranca")!;
+    // Todas as 3 perguntas do "coercitivo" (primeiras 3) no máximo, resto no mínimo.
+    const answers = new Array(18).fill(1);
+    answers[0] = 4;
+    answers[1] = 4;
+    answers[2] = 4;
+
+    expect(scoreAssessment(leadership, answers)).toEqual({
+      score: 12,
+      maxScore: 12,
+      severity: "Coercitivo",
+    });
+  });
+
+  it("computes the full dimension breakdown sorted by total", () => {
+    const leadership = getAssessmentTemplate("estilos-lideranca")!;
+    const answers = new Array(18).fill(1);
+    answers[3] = 4;
+    answers[4] = 4;
+    answers[5] = 4;
+
+    const breakdown = getDimensionBreakdown(leadership, answers);
+    expect(breakdown[0]).toEqual({
+      key: "dirigente",
+      label: "Dirigente",
+      total: 12,
+      maxTotal: 12,
+    });
+    expect(breakdown).toHaveLength(6);
+  });
+
+  it("returns an empty breakdown for single-scale templates", () => {
+    const phq9 = getAssessmentTemplate("phq9")!;
+    expect(getDimensionBreakdown(phq9, new Array(9).fill(0))).toEqual([]);
   });
 });
 

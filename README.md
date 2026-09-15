@@ -15,10 +15,15 @@ verdade, foto de perfil e edição de perfil no próprio painel (bio, preço,
 especialidades, redes sociais — Instagram/WhatsApp/site), busca/perfil
 público, agendamento de sessão (exige cliente logado), prontuário
 compartilhado, progresso acompanhado no painel, autoavaliações (PHQ-9,
-GAD-7, Roda da Vida, Crenças Limitantes sobre Dinheiro) — liberadas
-teste a teste pelo profissional, o cliente só vê depois que o
-profissional libera —, cada teste com badge de categoria (Clínico/
-Coaching) e barra de progresso no formulário, avaliações públicas,
+GAD-7, Roda da Vida, Crenças Limitantes sobre Dinheiro, Estilos de
+Liderança) — liberadas teste a teste pelo profissional, o cliente só
+vê depois que o profissional libera —, cada teste com badge de
+categoria (Clínico/Coaching) e barra de progresso no formulário. O
+Estilos de Liderança é o primeiro teste de "múltiplas escalas" (18
+perguntas em 6 estilos, resultado é o estilo de maior soma, com
+gráfico de barras por estilo na visão detalhada) — suporte novo no
+sistema de testes, reaproveitável pros próximos (ex: Múltiplas
+Inteligências). Também tem avaliações públicas,
 email transacional e cobrança via Stripe — todos com fallback gracioso:
 sem alguma chave configurada, essa parte específica cai pro "modo
 grátis/sem email" em vez de quebrar.

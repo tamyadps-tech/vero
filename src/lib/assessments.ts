@@ -6,7 +6,7 @@
  * BRANDING.md / README para o motivo.
  */
 
-export type ResponseType = "likert4" | "scale0to10";
+export type ResponseType = "likert4" | "scale0to10" | "agreement4";
 
 export const CATEGORY_LABELS: Record<"clinico" | "coaching", string> = {
   clinico: "Clínico",
@@ -16,11 +16,18 @@ export const CATEGORY_LABELS: Record<"clinico" | "coaching", string> = {
 export interface AssessmentQuestion {
   id: string;
   text: string;
+  /** Só usado em testes de múltiplas escalas (ex: estilos de liderança) — a que dimensão essa pergunta pertence. */
+  dimension?: string;
 }
 
 export interface SeverityBand {
   min: number;
   max: number;
+  label: string;
+}
+
+export interface AssessmentDimension {
+  key: string;
   label: string;
 }
 
@@ -31,14 +38,34 @@ export interface AssessmentTemplate {
   category: "clinico" | "coaching";
   responseType: ResponseType;
   questions: AssessmentQuestion[];
+  /** Ignorado quando `dimensions` está definido. */
   severityBands: SeverityBand[];
+  /**
+   * Testes de múltiplas escalas (cada pergunta pertence a uma dimensão,
+   * ex: 6 estilos de liderança): soma por dimensão, resultado é a
+   * dimensão de maior soma — em vez de uma nota única com faixa.
+   */
+  dimensions?: AssessmentDimension[];
 }
+
+const RESPONSE_RANGE: Record<ResponseType, { min: number; max: number }> = {
+  likert4: { min: 0, max: 3 },
+  agreement4: { min: 1, max: 4 },
+  scale0to10: { min: 0, max: 10 },
+};
 
 const LIKERT4_OPTIONS = [
   { value: 0, label: "Nunca" },
   { value: 1, label: "Vários dias" },
   { value: 2, label: "Mais da metade dos dias" },
   { value: 3, label: "Quase todos os dias" },
+];
+
+const AGREEMENT4_OPTIONS = [
+  { value: 1, label: "Discordo totalmente" },
+  { value: 2, label: "Discordo" },
+  { value: 3, label: "Concordo" },
+  { value: 4, label: "Concordo totalmente" },
 ];
 
 const PHQ9: AssessmentTemplate = {
@@ -175,11 +202,110 @@ const LIMITING_BELIEFS: AssessmentTemplate = {
   ],
 };
 
+const LEADERSHIP_STYLES: AssessmentTemplate = {
+  slug: "estilos-lideranca",
+  name: "Estilos de Liderança",
+  description:
+    "18 afirmações sobre como você lidera — o resultado mostra qual dos 6 estilos mais te representa hoje.",
+  category: "coaching",
+  responseType: "agreement4",
+  dimensions: [
+    { key: "coercitivo", label: "Coercitivo" },
+    { key: "dirigente", label: "Dirigente" },
+    { key: "afetivo", label: "Afetivo" },
+    { key: "democratico", label: "Democrático" },
+    { key: "modelador", label: "Modelador" },
+    { key: "treinador", label: "Treinador" },
+  ],
+  questions: [
+    {
+      id: "l1",
+      text: "Sinto que às vezes provoco medo ou ansiedade nas pessoas do time.",
+      dimension: "coercitivo",
+    },
+    {
+      id: "l2",
+      text: "O exercício da liderança ocorre por meio de forte e constante cobrança sobre as pessoas.",
+      dimension: "coercitivo",
+    },
+    {
+      id: "l3",
+      text: "Mandar é mais fácil do que compartilhar ou obter consenso.",
+      dimension: "coercitivo",
+    },
+    { id: "l4", text: "Costumo dar direções claras para o time.", dimension: "dirigente" },
+    {
+      id: "l5",
+      text: "Procuro o engajamento dos colegas para que eles se sintam mais à vontade para jogar ou treinar.",
+      dimension: "dirigente",
+    },
+    {
+      id: "l6",
+      text: "Meus companheiros sabem exatamente o que espero delas.",
+      dimension: "dirigente",
+    },
+    {
+      id: "l7",
+      text: "Dou muito valor à lealdade dos colegas para com a liderança.",
+      dimension: "afetivo",
+    },
+    { id: "l8", text: "Trato bem as pessoas. Gosto delas genuinamente.", dimension: "afetivo" },
+    {
+      id: "l9",
+      text: "Crio um ambiente de harmonia e proximidade com os colegas de time.",
+      dimension: "afetivo",
+    },
+    {
+      id: "l10",
+      text: "Meus colegas de equipe sabem que são corresponsáveis pelo resultado.",
+      dimension: "democratico",
+    },
+    {
+      id: "l11",
+      text: "Procuro criar ambientes de alta performance.",
+      dimension: "democratico",
+    },
+    {
+      id: "l12",
+      text: "Acredito que pessoas que já têm alguma experiência no time podem contribuir mais para o desempenho.",
+      dimension: "democratico",
+    },
+    {
+      id: "l13",
+      text: "Acredito que liderança tem a ver com formar pessoas.",
+      dimension: "modelador",
+    },
+    {
+      id: "l14",
+      text: "Sou exigente porque dou instruções claras sobre o trabalho e sobre o que espero dos colegas.",
+      dimension: "modelador",
+    },
+    {
+      id: "l15",
+      text: "Penso que meus colegas terão melhor desempenho na medida que pensarem e agirem de forma semelhante a mim.",
+      dimension: "modelador",
+    },
+    {
+      id: "l16",
+      text: "Invisto tempo e esforço para compreender os pontos fortes e de melhoria de cada colega de time.",
+      dimension: "treinador",
+    },
+    {
+      id: "l17",
+      text: "Me interesso em conhecer cada pessoa do time.",
+      dimension: "treinador",
+    },
+    { id: "l18", text: "Gosto de formar novos líderes.", dimension: "treinador" },
+  ],
+  severityBands: [],
+};
+
 export const ASSESSMENT_TEMPLATES: AssessmentTemplate[] = [
   PHQ9,
   GAD7,
   WHEEL_OF_LIFE,
   LIMITING_BELIEFS,
+  LEADERSHIP_STYLES,
 ];
 
 export function getAssessmentTemplate(slug: string): AssessmentTemplate | undefined {
@@ -192,6 +318,7 @@ export function isAssessmentTemplateSlug(value: unknown): value is string {
 
 export function getResponseOptions(responseType: ResponseType) {
   if (responseType === "likert4") return LIKERT4_OPTIONS;
+  if (responseType === "agreement4") return AGREEMENT4_OPTIONS;
   return Array.from({ length: 11 }, (_, value) => ({ value, label: String(value) }));
 }
 
@@ -201,24 +328,78 @@ export interface ScoreResult {
   severity: string;
 }
 
+export interface DimensionScore {
+  key: string;
+  label: string;
+  total: number;
+  maxTotal: number;
+}
+
+function validateAnswers(template: AssessmentTemplate, answers: number[]) {
+  if (answers.length !== template.questions.length) {
+    throw new Error("Número de respostas não bate com o número de perguntas.");
+  }
+
+  const { min, max } = RESPONSE_RANGE[template.responseType];
+  for (const answer of answers) {
+    if (!Number.isInteger(answer) || answer < min || answer > max) {
+      throw new Error("Resposta fora da faixa permitida.");
+    }
+  }
+}
+
+/**
+ * Soma das respostas por dimensão — só faz sentido pra testes de
+ * múltiplas escalas (`template.dimensions` definido). Ordenado da maior
+ * pra menor soma.
+ */
+export function getDimensionBreakdown(
+  template: AssessmentTemplate,
+  answers: number[]
+): DimensionScore[] {
+  if (!template.dimensions) return [];
+  validateAnswers(template, answers);
+
+  const totals = new Map<string, { total: number; count: number }>();
+  template.questions.forEach((question, index) => {
+    if (!question.dimension) return;
+    const entry = totals.get(question.dimension) ?? { total: 0, count: 0 };
+    entry.total += answers[index];
+    entry.count += 1;
+    totals.set(question.dimension, entry);
+  });
+
+  const { max } = RESPONSE_RANGE[template.responseType];
+  return template.dimensions
+    .map((dimension) => {
+      const entry = totals.get(dimension.key) ?? { total: 0, count: 0 };
+      return {
+        key: dimension.key,
+        label: dimension.label,
+        total: entry.total,
+        maxTotal: entry.count * max,
+      };
+    })
+    .sort((a, b) => b.total - a.total);
+}
+
 /**
  * Calcula o score a partir das respostas (uma por pergunta, na mesma
  * ordem de `template.questions`). Nunca confiar em score calculado no
  * cliente — sempre recalcular aqui no servidor.
+ *
+ * Testes de múltiplas escalas (`template.dimensions`) retornam a
+ * dimensão de maior soma como `severity`, em vez de buscar uma faixa.
  */
 export function scoreAssessment(
   template: AssessmentTemplate,
   answers: number[]
 ): ScoreResult {
-  if (answers.length !== template.questions.length) {
-    throw new Error("Número de respostas não bate com o número de perguntas.");
-  }
+  validateAnswers(template, answers);
 
-  const maxPerQuestion = template.responseType === "likert4" ? 3 : 10;
-  for (const answer of answers) {
-    if (!Number.isInteger(answer) || answer < 0 || answer > maxPerQuestion) {
-      throw new Error("Resposta fora da faixa permitida.");
-    }
+  if (template.dimensions) {
+    const [top] = getDimensionBreakdown(template, answers);
+    return { score: top.total, maxScore: top.maxTotal, severity: top.label };
   }
 
   const total =
@@ -227,7 +408,9 @@ export function scoreAssessment(
       : answers.reduce((sum, a) => sum + a, 0);
 
   const maxScore =
-    template.responseType === "scale0to10" ? 10 : template.questions.length * 3;
+    template.responseType === "scale0to10"
+      ? 10
+      : template.questions.length * RESPONSE_RANGE[template.responseType].max;
 
   const band = template.severityBands.find((b) => total >= b.min && total <= b.max);
 

@@ -48,16 +48,30 @@ function TestCatalog() {
               {options.map((option) => option.label).join(" · ")}
             </p>
 
-            <p className="mt-4 text-xs font-semibold uppercase tracking-wide text-ink-soft">
-              Faixas de resultado
-            </p>
-            <ul className="mt-1.5 space-y-0.5 text-sm text-ink-soft">
-              {template.severityBands.map((band) => (
-                <li key={band.label}>
-                  {band.min}–{band.max}: {band.label}
-                </li>
-              ))}
-            </ul>
+            {template.dimensions ? (
+              <>
+                <p className="mt-4 text-xs font-semibold uppercase tracking-wide text-ink-soft">
+                  Resultado
+                </p>
+                <p className="mt-1 text-sm text-ink-soft">
+                  Soma das respostas por dimensão — a de maior soma é o
+                  resultado: {template.dimensions.map((d) => d.label).join(", ")}.
+                </p>
+              </>
+            ) : (
+              <>
+                <p className="mt-4 text-xs font-semibold uppercase tracking-wide text-ink-soft">
+                  Faixas de resultado
+                </p>
+                <ul className="mt-1.5 space-y-0.5 text-sm text-ink-soft">
+                  {template.severityBands.map((band) => (
+                    <li key={band.label}>
+                      {band.min}–{band.max}: {band.label}
+                    </li>
+                  ))}
+                </ul>
+              </>
+            )}
           </details>
         );
       })}

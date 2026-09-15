@@ -1,7 +1,12 @@
 "use client";
 
 import { useState } from "react";
-import { getResponseOptions, CATEGORY_LABELS, type AssessmentTemplate } from "@/lib/assessments";
+import {
+  getResponseOptions,
+  getDimensionBreakdown,
+  CATEGORY_LABELS,
+  type AssessmentTemplate,
+} from "@/lib/assessments";
 
 const dateFormatter = new Intl.DateTimeFormat("pt-BR", { dateStyle: "short" });
 
@@ -124,14 +129,38 @@ export function TestListItem({
           {loadingDetail ? (
             <p className="text-xs text-ink-soft">Carregando…</p>
           ) : detail ? (
-            template.questions.map((question, index) => (
-              <div key={question.id} className="text-sm">
-                <p className="text-ink-soft">{question.text}</p>
-                <p className="font-medium text-ink">
-                  {options.find((o) => o.value === detail.answers[index])?.label ?? "—"}
-                </p>
-              </div>
-            ))
+            <>
+              {template.dimensions && (
+                <div className="mb-3 space-y-1.5">
+                  {getDimensionBreakdown(template, detail.answers).map((dimension) => (
+                    <div key={dimension.key}>
+                      <div className="flex items-center justify-between text-xs">
+                        <span className="text-ink">{dimension.label}</span>
+                        <span className="text-ink-soft">
+                          {dimension.total}/{dimension.maxTotal}
+                        </span>
+                      </div>
+                      <div className="mt-0.5 h-1.5 overflow-hidden rounded-full bg-paper-alt">
+                        <div
+                          className="h-full rounded-full bg-primary"
+                          style={{
+                            width: `${(dimension.total / dimension.maxTotal) * 100}%`,
+                          }}
+                        />
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+              {template.questions.map((question, index) => (
+                <div key={question.id} className="text-sm">
+                  <p className="text-ink-soft">{question.text}</p>
+                  <p className="font-medium text-ink">
+                    {options.find((o) => o.value === detail.answers[index])?.label ?? "—"}
+                  </p>
+                </div>
+              ))}
+            </>
           ) : (
             <p className="text-xs text-ink-soft">Não foi possível carregar as respostas.</p>
           )}
