@@ -16,13 +16,15 @@ especialidades, redes sociais — Instagram/WhatsApp/site), busca/perfil
 público, agendamento de sessão (exige cliente logado), prontuário
 compartilhado, progresso acompanhado no painel, autoavaliações (PHQ-9,
 GAD-7, Roda da Vida, Crenças Limitantes sobre Dinheiro, Estilos de
-Liderança, Autodiagnóstico de Vendas) — liberadas teste a teste pelo profissional, o cliente só
+Liderança, Autodiagnóstico de Vendas, Autodiagnóstico de Gestão de
+Vendas) — liberadas teste a teste pelo profissional, o cliente só
 vê depois que o profissional libera —, cada teste com badge de
 categoria (Clínico/Coaching) e barra de progresso no formulário. O
 Estilos de Liderança é o primeiro teste de "múltiplas escalas" (18
 perguntas em 6 estilos, resultado é o estilo de maior soma, com
-gráfico de barras por estilo na visão detalhada) — suporte novo no
-sistema de testes, reaproveitável pros próximos (ex: Múltiplas
+gráfico de barras por estilo na visão detalhada) — suporte reaproveitado
+pelo Autodiagnóstico de Gestão de Vendas (30 perguntas sim/não em 6
+frentes de gestão) e reaproveitável pros próximos (ex: Múltiplas
 Inteligências). Também tem avaliações públicas,
 email transacional e cobrança via Stripe — todos com fallback gracioso:
 sem alguma chave configurada, essa parte específica cai pro "modo

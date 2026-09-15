@@ -364,6 +364,176 @@ const SALES_DIAGNOSTIC: AssessmentTemplate = {
   ],
 };
 
+const SALES_MANAGEMENT_DIAGNOSTIC: AssessmentTemplate = {
+  slug: "autodiagnostico-gestao-vendas",
+  name: "Autodiagnóstico de Gestão de Vendas",
+  description:
+    "30 perguntas sim/não sobre como você gerencia o time comercial — mapeia qual das 6 frentes de gestão está mais consolidada e quais precisam de mais atenção.",
+  category: "coaching",
+  responseType: "yesno",
+  dimensions: [
+    { key: "mudanca", label: "Gestão da Mudança" },
+    { key: "ativacao", label: "Gestão da Ativação" },
+    { key: "metodo", label: "Gestão do Método" },
+    { key: "conhecimento", label: "Gestão do Conhecimento" },
+    { key: "meta", label: "Gestão da Meta" },
+    { key: "tempo", label: "Gestão do Tempo" },
+  ],
+  questions: [
+    {
+      id: "g1",
+      text: "Você identifica o sonho do vendedor, traduz em indicadores de vendas e constrói um plano pra ele superar a meta da empresa?",
+      dimension: "mudanca",
+    },
+    {
+      id: "g2",
+      text: "Cada vendedor possui um plano de desenvolvimento individual, com o que precisa aprender de técnicas, produtos/serviços e qual indicador focar?",
+      dimension: "mudanca",
+    },
+    {
+      id: "g3",
+      text: "Todos os meses o plano individual é revisitado e atualizado sobre avanços, pontos de melhoria e novas missões?",
+      dimension: "mudanca",
+    },
+    {
+      id: "g4",
+      text: "O planejamento estratégico da empresa foi traduzido em linguagem prática pra operação, com todas as funções treinadas pra executar sua parte?",
+      dimension: "mudanca",
+    },
+    {
+      id: "g5",
+      text: "Você investe em si mesmo pra se tornar um gestor de alto nível que bate metas todos os meses?",
+      dimension: "mudanca",
+    },
+    {
+      id: "g6",
+      text: "Você está capacitado pra saber, de forma científica, a desenvolver a atitude dos vendedores?",
+      dimension: "ativacao",
+    },
+    {
+      id: "g7",
+      text: "Está claro pra cada vendedor qual atitude especificamente deve desenvolver pra bater mais metas?",
+      dimension: "ativacao",
+    },
+    {
+      id: "g8",
+      text: "O vendedor é desenvolvido na atitude que mais lhe falta?",
+      dimension: "ativacao",
+    },
+    {
+      id: "g9",
+      text: "Semanalmente é detectada a atitude mais necessária pra bater a meta, e você implanta estratégias pra ativá-la?",
+      dimension: "ativacao",
+    },
+    {
+      id: "g10",
+      text: "Você mesmo é desenvolvido de forma estruturada pra também evoluir em sua atitude?",
+      dimension: "ativacao",
+    },
+    {
+      id: "g11",
+      text: "Vendedores praticam um método de vendas claro, com técnicas definidas pra online e offline?",
+      dimension: "metodo",
+    },
+    {
+      id: "g12",
+      text: "Vendedores têm uma estratégia praticada rotineiramente pra aumentar o índice de recompra dos clientes?",
+      dimension: "metodo",
+    },
+    {
+      id: "g13",
+      text: "Vendedores praticam rotineiramente a solicitação de indicação de novos clientes?",
+      dimension: "metodo",
+    },
+    {
+      id: "g14",
+      text: "Os principais erros do time são mapeados com uma ferramenta de diagnóstico e treinados semanalmente?",
+      dimension: "metodo",
+    },
+    {
+      id: "g15",
+      text: "Existe um processo de formação do novo vendedor pra que ele já saiba vender desde o início, sem aprender errando com o cliente?",
+      dimension: "metodo",
+    },
+    {
+      id: "g16",
+      text: "As campanhas de marketing vêm acompanhadas de treinamento pros vendedores ofertarem produtos/serviços complementares?",
+      dimension: "conhecimento",
+    },
+    {
+      id: "g17",
+      text: "Os vendedores são formados continuamente pra vender produtos/serviços de maior valor agregado, aumentando o ticket médio?",
+      dimension: "conhecimento",
+    },
+    {
+      id: "g18",
+      text: "Os vendedores dominam as vantagens dos produtos/serviços pra negociar com mais propriedade e aumentar a margem?",
+      dimension: "conhecimento",
+    },
+    {
+      id: "g19",
+      text: "Os vendedores são treinados pra customizar a linguagem dos benefícios pra cada perfil de cliente, aumentando a conversão?",
+      dimension: "conhecimento",
+    },
+    {
+      id: "g20",
+      text: "Existe um calendário de desenvolvimento do time, claro sobre o que será treinado a cada semana?",
+      dimension: "conhecimento",
+    },
+    {
+      id: "g21",
+      text: "Pra cada indicador de vendas existe um processo claro sobre como diagnosticar o motivo dele estar baixo e como resolver?",
+      dimension: "meta",
+    },
+    {
+      id: "g22",
+      text: "Os vendedores têm rotina de levar seus indicadores, com diagnóstico do que lhes falta, pra debater com você?",
+      dimension: "meta",
+    },
+    {
+      id: "g23",
+      text: "Você tem um plano de ação atualizado sobre o que fazer semanalmente com os vendedores de baixa performance?",
+      dimension: "meta",
+    },
+    {
+      id: "g24",
+      text: "Está claro pra todos os vendedores quais técnicas praticar pra aumentar cada indicador?",
+      dimension: "meta",
+    },
+    {
+      id: "g25",
+      text: "Você tem um processo claro sobre como bater a meta em cada indicador?",
+      dimension: "meta",
+    },
+    {
+      id: "g26",
+      text: "Vendedores em baixo fluxo prospectam clientes, ativam clientes inativos ou criam conteúdo pra internet?",
+      dimension: "tempo",
+    },
+    {
+      id: "g27",
+      text: "Você passa mais tempo desenvolvendo vendedores do que em tarefas operacionais?",
+      dimension: "tempo",
+    },
+    {
+      id: "g28",
+      text: "Os erros mais comuns que geram retrabalho são pauta de formação e melhoria contínua?",
+      dimension: "tempo",
+    },
+    {
+      id: "g29",
+      text: "A forma como o tempo é gerido na empresa hoje te leva na direção da sua meta pessoal?",
+      dimension: "tempo",
+    },
+    {
+      id: "g30",
+      text: "Você reconhece que precisa evoluir em método de gestão pra atingir sua meta pessoal?",
+      dimension: "tempo",
+    },
+  ],
+  severityBands: [],
+};
+
 export const ASSESSMENT_TEMPLATES: AssessmentTemplate[] = [
   PHQ9,
   GAD7,
@@ -371,6 +541,7 @@ export const ASSESSMENT_TEMPLATES: AssessmentTemplate[] = [
   LIMITING_BELIEFS,
   LEADERSHIP_STYLES,
   SALES_DIAGNOSTIC,
+  SALES_MANAGEMENT_DIAGNOSTIC,
 ];
 
 export function getAssessmentTemplate(slug: string): AssessmentTemplate | undefined {

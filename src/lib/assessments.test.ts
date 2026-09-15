@@ -126,6 +126,32 @@ describe("scoreAssessment", () => {
     const phq9 = getAssessmentTemplate("phq9")!;
     expect(getDimensionBreakdown(phq9, new Array(9).fill(0))).toEqual([]);
   });
+
+  it("scores the sales management diagnostic (yes/no) by dominant dimension", () => {
+    const management = getAssessmentTemplate("autodiagnostico-gestao-vendas")!;
+    // Todas as 5 perguntas de "metodo" (g11-g15, índices 10-14) em "sim", resto em "não".
+    const answers = new Array(30).fill(0);
+    answers[10] = 1;
+    answers[11] = 1;
+    answers[12] = 1;
+    answers[13] = 1;
+    answers[14] = 1;
+
+    expect(scoreAssessment(management, answers)).toEqual({
+      score: 5,
+      maxScore: 5,
+      severity: "Gestão do Método",
+    });
+
+    const breakdown = getDimensionBreakdown(management, answers);
+    expect(breakdown).toHaveLength(6);
+    expect(breakdown[0]).toEqual({
+      key: "metodo",
+      label: "Gestão do Método",
+      total: 5,
+      maxTotal: 5,
+    });
+  });
 });
 
 describe("isAssessmentTemplateSlug", () => {
