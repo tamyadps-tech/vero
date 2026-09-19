@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import { AdTrackingScripts } from "@/components/AdTrackingScripts";
 
 export const metadata: Metadata = {
   title: "Vero — Profissionais verificados. Progresso que se vê.",
@@ -15,6 +16,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html lang="pt-BR" className="h-full antialiased">
       <body className="min-h-full flex flex-col bg-paper text-ink">
+        <AdTrackingScripts />
         {children}
       </body>
     </html>

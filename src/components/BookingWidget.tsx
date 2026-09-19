@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { trackBooking } from "@/lib/ad-tracking";
 
 type Status = "picking" | "confirm" | "loading" | "success" | "error";
 
@@ -51,6 +52,7 @@ export function BookingWidget({
       }
 
       setStatus("success");
+      trackBooking();
     } catch (error) {
       setStatus("error");
       setMessage(

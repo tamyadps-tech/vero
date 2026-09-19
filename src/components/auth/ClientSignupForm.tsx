@@ -2,6 +2,7 @@
 
 import { useState, type FormEvent } from "react";
 import { useRouter } from "next/navigation";
+import { trackClientSignup } from "@/lib/ad-tracking";
 
 const fieldClass =
   "w-full rounded-xl border border-border bg-paper px-4 py-3 text-sm text-ink placeholder:text-ink-soft/70 focus:border-primary focus:outline-none";
@@ -32,6 +33,7 @@ export function ClientSignupForm({ redirectTo }: { redirectTo: string }) {
         throw new Error(data.error ?? "Não foi possível criar sua conta agora.");
       }
 
+      trackClientSignup();
       router.push(redirectTo);
       router.refresh();
     } catch (error) {

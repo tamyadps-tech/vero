@@ -323,6 +323,19 @@ e2e/              # testes Playwright
   imposto, revisar o preço periodicamente). Também tem meta de receita
   mensal editável (orçado), o quanto já foi recebido no mês corrente
   (realizado) e uma projeção linear de onde o mês termina no ritmo atual
+- Rastreamento de conversão pra tráfego pago (Meta Pixel + Conversions
+  API, e Google Ads via gtag): dispara automaticamente quando alguém
+  entra na lista de espera, cria conta, se candidata como profissional,
+  agenda uma sessão ou paga (esse último via webhook do servidor, não
+  depende do navegador do cliente no momento do pagamento). Isso não cria
+  nem gerencia anúncio nenhum — você continua criando e rodando a
+  campanha direto no Gerenciador de Anúncios da Meta e no Google Ads;
+  isso só avisa as duas plataformas quando alguém converteu de verdade,
+  pra elas otimizarem quem vê o anúncio com base em resultado real. Sem
+  as chaves configuradas (`NEXT_PUBLIC_META_PIXEL_ID`,
+  `META_CONVERSIONS_API_TOKEN`, `NEXT_PUBLIC_GOOGLE_ADS_ID` e os 4
+  rótulos de conversão), nenhum script de terceiro carrega — ver
+  `.env.example` pro passo a passo
 
 Tudo isso funciona sem quebrar mesmo sem alguma das chaves configurada:
 as rotas respondem 503 ou seguem em modo grátis/sem email, nunca com erro.

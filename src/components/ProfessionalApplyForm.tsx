@@ -13,6 +13,7 @@ import {
   type SessionFormat,
 } from "@/lib/session-format";
 import { parseTagList } from "@/lib/tags";
+import { trackProfessionalApplication } from "@/lib/ad-tracking";
 
 type Status = "idle" | "loading" | "success" | "error";
 
@@ -111,6 +112,7 @@ export function ProfessionalApplyForm() {
       setMessage(
         "Candidatura recebida! Vamos verificar suas credenciais e avisar em até 7 dias úteis."
       );
+      trackProfessionalApplication();
     } catch (error) {
       setStatus("error");
       setMessage(

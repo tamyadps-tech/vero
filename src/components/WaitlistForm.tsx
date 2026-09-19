@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, type FormEvent } from "react";
+import { trackWaitlistSignup } from "@/lib/ad-tracking";
 
 type Role = "cliente" | "profissional";
 type Status = "idle" | "loading" | "success" | "error";
@@ -35,6 +36,7 @@ export function WaitlistForm({
       setStatus("success");
       setMessage("Pronto! Você está na lista. Avisaremos por email.");
       setEmail("");
+      trackWaitlistSignup();
     } catch (error) {
       setStatus("error");
       setMessage(

@@ -5,6 +5,7 @@ import { sendEmail } from "@/lib/email";
 import { bookingConfirmationEmail } from "@/lib/email-templates";
 import { sendWhatsAppMessage } from "@/lib/whatsapp";
 import { bookingConfirmationWhatsApp } from "@/lib/whatsapp-templates";
+import { sendMetaPurchaseEvent } from "@/lib/meta-conversions-api";
 import type Stripe from "stripe";
 
 export async function POST(request: Request) {
@@ -60,6 +61,15 @@ export async function POST(request: Request) {
       // 200 mesmo assim: retentativa da Stripe não vai resolver um dado
       // que não existe do nosso lado.
       return NextResponse.json({ ok: true });
+    }
+
+    // Evento de compra pro Meta — disparado do servidor (não depende do
+    // navegador do cliente estar na página no momento do pagamento).
+    if (typeof checkoutSession.amount_total === "number") {
+      await sendMetaPurchaseEvent({
+        amountCents: checkoutSession.amount_total,
+        eventId: checkoutSession.id,
+      });
     }
 
     const { data: session } = await supabase
