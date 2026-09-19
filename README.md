@@ -307,13 +307,17 @@ e2e/              # testes Playwright
   calculadora de comissão — hoje a Vero não cobra comissão nem assinatura
   ainda, então a tela é honesta sobre isso (mostra o volume processado
   como "repassado ao profissional", não receita própria) e serve pra
-  decidir que comissão cobraria pra cobrir os custos
+  decidir que comissão cobraria pra cobrir os custos. Também mostra
+  orçado × realizado × projeção do custo do mês (custo fixo cadastrado
+  vs. despesas já lançadas esse mês vs. projeção linear até o fim do mês)
 - No painel do profissional, a aba Financeiro agora também calcula margem
   de contribuição, ponto de equilíbrio e preço sugerido (a partir dos
   custos fixos/variáveis cadastrados), com uma calculadora interativa e
   um manual explicando cada termo (margem, custo fixo/variável, ponto de
   equilíbrio...) e cuidados práticos (não subprecificar, separar % pro
-  imposto, revisar o preço periodicamente)
+  imposto, revisar o preço periodicamente). Também tem meta de receita
+  mensal editável (orçado), o quanto já foi recebido no mês corrente
+  (realizado) e uma projeção linear de onde o mês termina no ritmo atual
 
 Tudo isso funciona sem quebrar mesmo sem alguma das chaves configurada:
 as rotas respondem 503 ou seguem em modo grátis/sem email, nunca com erro.

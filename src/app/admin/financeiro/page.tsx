@@ -5,6 +5,7 @@ import { FinancialGlossary } from "@/components/FinancialGlossary";
 import { getAdminMetrics } from "@/lib/admin-metrics";
 import { listAdminExpenses } from "@/lib/admin-expenses";
 import { computeFinancialHealth } from "@/lib/financial-health";
+import { getMonthProgress, projectMonthEnd, isInCurrentMonth } from "@/lib/financial-projection";
 
 export const dynamic = "force-dynamic";
 
@@ -29,6 +30,13 @@ export default async function AdminFinanceiroPage() {
     variableCostPerUnitCents: variableCostPerSessionCents,
     pricePerUnitCents: 0,
   });
+
+  const realizedThisMonthCents =
+    expenses
+      ?.filter((e) => isInCurrentMonth(e.expenseDate))
+      .reduce((sum, e) => sum + e.amountCents, 0) ?? 0;
+  const monthProgress = getMonthProgress();
+  const projectedCostCents = projectMonthEnd(realizedThisMonthCents, monthProgress);
 
   return (
     <>
@@ -105,6 +113,43 @@ export default async function AdminFinanceiroPage() {
                 ) : (
                   <ExpensesManager expenses={expenses} apiBasePath="/api/admin/expenses" />
                 )}
+              </div>
+            </section>
+
+            <section className="mt-10">
+              <h2 className="text-sm font-semibold uppercase tracking-wide text-ink-soft">
+                Custo do mês: orçado × realizado × projeção
+              </h2>
+              <p className="mt-1 text-sm text-ink-soft">
+                Orçado é o custo fixo mensal cadastrado acima. Realizado é o que já foi
+                registrado com data neste mês (fixo e variável). Projeção estica esse ritmo
+                até o fim do mês.
+              </p>
+              <div className="mt-4 grid gap-4 sm:grid-cols-3">
+                <div className="rounded-2xl border border-border bg-paper-alt/40 p-5">
+                  <p className="text-xs font-medium uppercase tracking-wide text-ink-soft">
+                    Orçado
+                  </p>
+                  <p className="mt-2 text-2xl font-semibold tracking-tight text-ink">
+                    {formatPrice(fixedMonthlyCostsCents)}
+                  </p>
+                </div>
+                <div className="rounded-2xl border border-border bg-paper-alt/40 p-5">
+                  <p className="text-xs font-medium uppercase tracking-wide text-ink-soft">
+                    Realizado (mês)
+                  </p>
+                  <p className="mt-2 text-2xl font-semibold tracking-tight text-ink">
+                    {formatPrice(realizedThisMonthCents)}
+                  </p>
+                </div>
+                <div className="rounded-2xl border border-border bg-paper-alt/40 p-5">
+                  <p className="text-xs font-medium uppercase tracking-wide text-ink-soft">
+                    Projeção (fim do mês)
+                  </p>
+                  <p className="mt-2 text-2xl font-semibold tracking-tight text-ink">
+                    {formatPrice(projectedCostCents)}
+                  </p>
+                </div>
               </div>
             </section>
 

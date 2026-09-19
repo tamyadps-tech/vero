@@ -157,6 +157,7 @@ export default async function ProfessionalDashboardPage() {
                 finance={finance}
                 expenses={expenses}
                 pricePerSessionCents={professional.price_cents}
+                monthlyRevenueGoalCents={professional.monthly_revenue_goal_cents}
               />
             }
             agenda={

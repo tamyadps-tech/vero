@@ -1,7 +1,9 @@
 import { ExpensesManager } from "@/components/professional/ExpensesManager";
 import { FinancialHealthCalculator } from "@/components/FinancialHealthCalculator";
 import { FinancialGlossary } from "@/components/FinancialGlossary";
+import { MonthlyGoalTracker } from "@/components/MonthlyGoalTracker";
 import { computeFinancialHealth } from "@/lib/financial-health";
+import { getMonthProgress, projectMonthEnd, isInCurrentMonth } from "@/lib/financial-projection";
 import type { ProfessionalFinance } from "@/lib/professional-finance";
 import type { ProfessionalExpense } from "@/lib/professional-expenses";
 
@@ -18,13 +20,22 @@ export function FinanceiroTabPanel({
   finance,
   expenses,
   pricePerSessionCents,
+  monthlyRevenueGoalCents,
 }: {
   finance: ProfessionalFinance | null;
   expenses: ProfessionalExpense[] | null;
   pricePerSessionCents: number;
+  monthlyRevenueGoalCents: number | null;
 }) {
   const totalExpensesCents = expenses?.reduce((sum, e) => sum + e.amountCents, 0) ?? 0;
   const netProfitCents = finance ? finance.receivedCents - totalExpensesCents : 0;
+
+  const realizedThisMonthCents =
+    finance?.transactions
+      .filter((tx) => tx.status === "pago" && isInCurrentMonth(tx.scheduledAt))
+      .reduce((sum, tx) => sum + tx.amountCents, 0) ?? 0;
+  const monthProgress = getMonthProgress();
+  const projectedRevenueCents = projectMonthEnd(realizedThisMonthCents, monthProgress);
 
   const fixedMonthlyCostsCents =
     expenses?.filter((e) => e.kind === "fixo").reduce((sum, e) => sum + e.amountCents, 0) ?? 0;
@@ -78,6 +89,15 @@ export function FinanceiroTabPanel({
               </p>
             </div>
           </div>
+
+          <div className="mt-6">
+            <MonthlyGoalTracker
+              goalCents={monthlyRevenueGoalCents}
+              realizedCents={realizedThisMonthCents}
+              projectedCents={projectedRevenueCents}
+            />
+          </div>
+
           <p className="mt-3 text-xs text-ink-soft">
             Sem Stripe Connect ainda: o valor cai na conta da Vero e o repasse é
             manual, como descrito no Termo de Uso. Imposto não entra nessa
