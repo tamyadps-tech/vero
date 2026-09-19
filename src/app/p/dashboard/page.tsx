@@ -11,6 +11,7 @@ import { listSessionsForProfessional } from "@/lib/admin-sessions";
 import { listProfessionalClients } from "@/lib/professional-clients";
 import { getProfessionalFinance } from "@/lib/professional-finance";
 import { listProfessionalExpenses } from "@/lib/professional-expenses";
+import { getProfessionalTemplateOverrides } from "@/lib/professional-message-templates";
 import { getReviewSummaries } from "@/lib/reviews";
 import { CATEGORY_LABELS } from "@/lib/professional-categories";
 import { SESSION_FORMAT_LABELS } from "@/lib/session-format";
@@ -88,13 +89,14 @@ export default async function ProfessionalDashboardPage() {
     );
   }
 
-  const [slots, sessions, clients, finance, expenses, reviewSummaries, headersList] =
+  const [slots, sessions, clients, finance, expenses, templateOverrides, reviewSummaries, headersList] =
     await Promise.all([
       listAvailabilitySlots(professional.id),
       listSessionsForProfessional(professional.id),
       listProfessionalClients(professional.id),
       getProfessionalFinance(professional.id),
       listProfessionalExpenses(professional.id),
+      getProfessionalTemplateOverrides(professional.id),
       getReviewSummaries([professional.id]),
       headers(),
     ]);
@@ -147,9 +149,9 @@ export default async function ProfessionalDashboardPage() {
             }
             marketing={
               <MarketingTabPanel
-                professionalName={professional.full_name}
                 publicProfileUrl={publicProfileUrl}
                 clients={clients}
+                templateOverrides={templateOverrides}
               />
             }
             financeiro={

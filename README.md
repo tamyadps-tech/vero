@@ -267,8 +267,10 @@ e2e/              # testes Playwright
   (tópicos, tarefa, próxima sessão), vê a lista dos próprios clientes com
   histórico, valor vitalício (LTV) e status de engajamento
   (ativo/em risco/inativo), manda mensagem livre ou campanha com modelo
-  pronto (convite, reengajamento, cuidado) por email ou WhatsApp pros
-  próprios clientes — tudo de dentro da Vero, sem precisar abrir conta em
+  pronto e editável (convite, reengajamento, cuidado) por email ou
+  WhatsApp pros próprios clientes — pra WhatsApp, seleciona quem já tem
+  telefone no CRM (sem precisar copiar número) e ainda dá pra colar
+  contato avulso; tudo de dentro da Vero, sem precisar abrir conta em
   outra plataforma — acompanha o financeiro completo (recebido/pendente,
   custos fixos e variáveis, margem de contribuição, ponto de equilíbrio e
   preço sugerido, com manual explicando cada termo) e tem o link do
@@ -299,9 +301,12 @@ e2e/              # testes Playwright
   própria por enquanto, os demais do PRD original (DASS-21, Rosenberg
   etc.) ficam de fora até verificar licenciamento
 - Em `/admin/marketing`, o admin divulga a própria Vero (não o negócio de
-  um profissional) com os mesmos modelos de campanha (convite,
-  acompanhamento, pós-venda) por email ou WhatsApp — reaproveitando o
-  Resend e o Twilio já conectados, sem plataforma nova
+  um profissional) com os mesmos modelos de campanha, editáveis
+  (convite, acompanhamento, pós-venda) por email ou WhatsApp —
+  reaproveitando o Resend e o Twilio já conectados, sem plataforma nova.
+  O texto de cada modelo (assunto, corpo, WhatsApp) pode ser editado e
+  fica salvo — o link (do perfil ou da Vero) é sempre adicionado
+  automaticamente no fim, quem edita não precisa se preocupar com isso
 - Em `/admin/financeiro`, o admin acompanha a saúde financeira da própria
   Vero: custos operacionais fixos/variáveis, margem de contribuição e uma
   calculadora de comissão — hoje a Vero não cobra comissão nem assinatura

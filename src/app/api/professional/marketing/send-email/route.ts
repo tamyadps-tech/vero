@@ -2,7 +2,12 @@ import { NextResponse } from "next/server";
 import { getSupabaseAdmin } from "@/lib/supabase-admin";
 import { getProfessionalIdFromAccessToken } from "@/lib/professional-session";
 import { readAccessToken } from "@/lib/read-session-token";
-import { getProfessionalCampaignTemplate } from "@/lib/professional-campaign-templates";
+import {
+  getProfessionalCampaignTemplateMeta,
+  DEFAULT_PROFESSIONAL_TEMPLATE_CONTENT,
+  renderProfessionalTemplate,
+} from "@/lib/professional-campaign-templates";
+import { getProfessionalTemplateOverrides } from "@/lib/professional-message-templates";
 import { sendBulkMarketingEmail } from "@/lib/marketing-integrations";
 
 export async function POST(request: Request) {
@@ -18,8 +23,9 @@ export async function POST(request: Request) {
     clientIds?: unknown;
   };
 
-  const template = typeof templateId === "string" ? getProfessionalCampaignTemplate(templateId) : undefined;
-  if (!template) {
+  const templateMeta =
+    typeof templateId === "string" ? getProfessionalCampaignTemplateMeta(templateId) : undefined;
+  if (!templateMeta) {
     return NextResponse.json({ error: "Modelo de campanha inválido." }, { status: 400 });
   }
 
@@ -41,12 +47,6 @@ export async function POST(request: Request) {
   if (!professionalId) {
     return NextResponse.json({ error: "Faça login novamente." }, { status: 401 });
   }
-
-  const { data: professional } = await supabase
-    .from("professionals")
-    .select("full_name")
-    .eq("id", professionalId)
-    .single();
 
   // Nunca confia em email vindo do corpo — só manda pra quem de fato já
   // teve sessão com esse profissional (mesma checagem de
@@ -78,10 +78,11 @@ export async function POST(request: Request) {
 
   const origin = new URL(request.url).origin;
   const profileUrl = `${origin}/profissionais/${professionalId}`;
-  const professionalName = professional?.full_name ?? "Seu profissional na Vero";
-  const { subject, html } = template.email(professionalName, profileUrl);
+  const overrides = await getProfessionalTemplateOverrides(professionalId);
+  const content = overrides[templateMeta.id] ?? DEFAULT_PROFESSIONAL_TEMPLATE_CONTENT[templateMeta.id];
+  const { email } = renderProfessionalTemplate(templateMeta, content, profileUrl);
 
-  const result = await sendBulkMarketingEmail(Array.from(recipientEmails), { subject, html });
+  const result = await sendBulkMarketingEmail(Array.from(recipientEmails), email);
 
   return NextResponse.json({ ok: true, recipientCount: recipientEmails.size, ...result });
 }

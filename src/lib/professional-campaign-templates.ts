@@ -1,114 +1,125 @@
-import { shell, button } from "@/lib/email-templates";
+import { shell, button, textToParagraphsHtml } from "@/lib/email-templates";
 
 /**
- * Modelos de campanha pro profissional mandar pros PRÓPRIOS clientes —
- * diferente de marketing-campaign-templates.ts, que é a Vero se
- * divulgando. Aqui quem "fala" é o profissional.
+ * Modelos de campanha pro profissional mandar pros PRÓPRIOS clientes.
+ * Cada modelo tem um "conteúdo" editável (assunto, texto do email, texto
+ * do WhatsApp) — o profissional pode personalizar sem mexer em código,
+ * ver professional-message-templates.ts pra como a edição é persistida.
+ * O link pro perfil é sempre adicionado automaticamente na hora de
+ * enviar, então quem edita não precisa se preocupar com isso.
  */
 
 export type ProfessionalCampaignTemplateId = "convite" | "reengajamento" | "cuidado";
 
-export interface ProfessionalCampaignTemplate {
+export interface CampaignTemplateContent {
+  emailSubject: string;
+  /** Texto puro (sem HTML) — vira parágrafos automaticamente ao enviar. */
+  emailBodyText: string;
+  /** Texto puro — o link do perfil é adicionado no fim automaticamente. */
+  whatsapp: string;
+}
+
+export interface ProfessionalCampaignTemplateMeta {
   id: ProfessionalCampaignTemplateId;
   label: string;
   goal: string;
-  email: (professionalName: string, profileUrl: string) => { subject: string; html: string };
-  whatsapp: (professionalName: string, profileUrl: string) => string;
 }
 
-export const PROFESSIONAL_CAMPAIGN_TEMPLATES: ProfessionalCampaignTemplate[] = [
+export const PROFESSIONAL_CAMPAIGN_TEMPLATE_META: ProfessionalCampaignTemplateMeta[] = [
   {
     id: "convite",
     label: "Convite pra agendar",
     goal: "Atrair quem ainda não marcou sessão nenhuma, ou convidar indicações.",
-    email: (professionalName, profileUrl) => {
-      const body = `
-        <p style="font-size:16px;">Olá,</p>
-        <p style="font-size:14px;line-height:1.6;color:#5b6763;">
-          Aqui é <strong>${professionalName}</strong>. Quero te convidar a marcar uma
-          sessão comigo pela Vero — é rápido, dá pra escolher o horário que funciona
-          pra você e o pagamento fica combinado direto por lá.
-        </p>
-        <p style="margin:24px 0;">${button(profileUrl, "Ver horários disponíveis")}</p>
-      `;
-      return {
-        subject: `${professionalName} tem horários disponíveis`,
-        html: shell(`Convite de ${professionalName}`, body),
-      };
-    },
-    whatsapp: (professionalName, profileUrl) =>
-      `Oi! Aqui é ${professionalName}. Tenho horários disponíveis pra sessão — dá uma olhada e escolha o melhor pra você: ${profileUrl}`,
   },
   {
     id: "reengajamento",
     label: "Reengajamento de quem sumiu",
     goal: "Pra clientes que já vieram antes mas não voltam há um tempo.",
-    email: (professionalName, profileUrl) => {
-      const body = `
-        <p style="font-size:16px;">Olá,</p>
-        <p style="font-size:14px;line-height:1.6;color:#5b6763;">
-          Aqui é <strong>${professionalName}</strong>. Faz um tempo que a gente não se
-          encontra, e queria saber como você está. Se fizer sentido retomar as sessões,
-          os horários continuam abertos — sem compromisso, é só ver o que combina com
-          sua agenda.
-        </p>
-        <p style="margin:24px 0;">${button(profileUrl, "Ver horários e agendar")}</p>
-      `;
-      return {
-        subject: `Sentimos sua falta — ${professionalName}`,
-        html: shell(`Vamos retomar?`, body),
-      };
-    },
-    whatsapp: (professionalName, profileUrl) =>
-      `Oi! Aqui é ${professionalName}. Faz um tempo que não nos vemos — se quiser retomar as sessões, os horários continuam abertos: ${profileUrl}`,
   },
   {
     id: "cuidado",
     label: "Cuidado com quem já é cliente ativo",
     goal: "Pra quem já está em acompanhamento — reforça vínculo, não é venda.",
-    email: (professionalName, profileUrl) => {
-      const body = `
-        <p style="font-size:16px;">Olá,</p>
-        <p style="font-size:14px;line-height:1.6;color:#5b6763;">
-          Aqui é <strong>${professionalName}</strong>. Só passando pra saber como você
-          está entre uma sessão e outra. Se algo mudou ou se precisar antecipar nossa
-          próxima conversa, é só me chamar.
-        </p>
-        <p style="margin:24px 0;">${button(profileUrl, "Ver minha agenda com você")}</p>
-      `;
-      return {
-        subject: `Como você está? — ${professionalName}`,
-        html: shell("Um cuidado com você", body),
-      };
-    },
-    whatsapp: (professionalName) =>
-      `Oi! Aqui é ${professionalName}. Só passando pra saber como você está — qualquer coisa antes da nossa próxima sessão, me chama por aqui.`,
   },
 ];
 
-export function getProfessionalCampaignTemplate(
-  id: string
-): ProfessionalCampaignTemplate | undefined {
-  return PROFESSIONAL_CAMPAIGN_TEMPLATES.find((template) => template.id === id);
-}
+export const DEFAULT_PROFESSIONAL_TEMPLATE_CONTENT: Record<
+  ProfessionalCampaignTemplateId,
+  CampaignTemplateContent
+> = {
+  convite: {
+    emailSubject: "Tenho um horário pra você essa semana",
+    emailBodyText:
+      "Separei um tempo na agenda e lembrei de você. Se fizer sentido marcarmos uma conversa, dá uma olhada nos horários e escolha o que encaixar melhor na sua rotina.",
+    whatsapp: "Oi! Separei um horário essa semana — se quiser marcar, escolha o dia que funciona pra você:",
+  },
+  reengajamento: {
+    emailSubject: "Faz tempo que a gente não se fala",
+    emailBodyText:
+      "Fiquei pensando em você e percebi que já faz um tempo desde nossa última conversa. Se fizer sentido retomar, os horários continuam abertos — sem pressa, no seu tempo.",
+    whatsapp: "Oi! Faz tempo que a gente não se fala — se quiser retomar, os horários continuam abertos, sem pressa:",
+  },
+  cuidado: {
+    emailSubject: "Só passando pra saber como você está",
+    emailBodyText:
+      "Entre uma sessão e outra, queria só deixar um recado: estou pensando em você. Se precisar de alguma coisa antes do nosso próximo encontro, é só chamar.",
+    whatsapp: "Oi! Só passando pra saber como você está — qualquer coisa antes da nossa próxima sessão, me chama.",
+  },
+};
 
 export interface ResolvedProfessionalCampaignTemplate {
   id: ProfessionalCampaignTemplateId;
   label: string;
   goal: string;
+  content: CampaignTemplateContent;
   email: { subject: string; html: string };
   whatsapp: string;
 }
 
-export function resolveProfessionalCampaignTemplates(
-  professionalName: string,
+/** Junta o conteúdo (padrão ou editado) com o link do perfil, pronto pra enviar. */
+export function renderProfessionalTemplate(
+  meta: ProfessionalCampaignTemplateMeta,
+  content: CampaignTemplateContent,
   profileUrl: string
+): ResolvedProfessionalCampaignTemplate {
+  const body = `
+    ${textToParagraphsHtml(content.emailBodyText)}
+    <p style="margin:24px 0;">${button(profileUrl, "Ver horários e agendar")}</p>
+  `;
+  return {
+    id: meta.id,
+    label: meta.label,
+    goal: meta.goal,
+    content,
+    email: {
+      subject: content.emailSubject,
+      html: shell(content.emailSubject, body),
+    },
+    whatsapp: `${content.whatsapp} ${profileUrl}`,
+  };
+}
+
+export function resolveProfessionalCampaignTemplates(
+  profileUrl: string,
+  overrides?: Partial<Record<ProfessionalCampaignTemplateId, CampaignTemplateContent>>
 ): ResolvedProfessionalCampaignTemplate[] {
-  return PROFESSIONAL_CAMPAIGN_TEMPLATES.map((template) => ({
-    id: template.id,
-    label: template.label,
-    goal: template.goal,
-    email: template.email(professionalName, profileUrl),
-    whatsapp: template.whatsapp(professionalName, profileUrl),
-  }));
+  return PROFESSIONAL_CAMPAIGN_TEMPLATE_META.map((meta) =>
+    renderProfessionalTemplate(
+      meta,
+      overrides?.[meta.id] ?? DEFAULT_PROFESSIONAL_TEMPLATE_CONTENT[meta.id],
+      profileUrl
+    )
+  );
+}
+
+export function getProfessionalCampaignTemplateMeta(
+  id: string
+): ProfessionalCampaignTemplateMeta | undefined {
+  return PROFESSIONAL_CAMPAIGN_TEMPLATE_META.find((meta) => meta.id === id);
+}
+
+export function isProfessionalCampaignTemplateId(
+  id: string
+): id is ProfessionalCampaignTemplateId {
+  return id in DEFAULT_PROFESSIONAL_TEMPLATE_CONTENT;
 }

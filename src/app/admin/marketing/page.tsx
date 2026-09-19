@@ -6,6 +6,7 @@ import { MarketingCampaignSender } from "@/components/admin/MarketingCampaignSen
 import { WhatsAppCampaignSender } from "@/components/admin/WhatsAppCampaignSender";
 import { getEmailMarketingStatus, getWhatsAppMarketingStatus } from "@/lib/marketing-integrations";
 import { resolveCampaignTemplates } from "@/lib/marketing-campaign-templates";
+import { getAdminTemplateOverrides } from "@/lib/admin-message-templates";
 import { RECIPIENT_SEGMENTS } from "@/lib/marketing-recipients";
 
 export const dynamic = "force-dynamic";
@@ -16,7 +17,8 @@ export default async function AdminMarketingPage() {
 
   const emailStatus = getEmailMarketingStatus();
   const whatsappStatus = getWhatsAppMarketingStatus();
-  const templates = resolveCampaignTemplates(siteUrl);
+  const templateOverrides = await getAdminTemplateOverrides();
+  const templates = resolveCampaignTemplates(siteUrl, templateOverrides);
 
   return (
     <>

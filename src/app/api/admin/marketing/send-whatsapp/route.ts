@@ -1,5 +1,10 @@
 import { NextResponse } from "next/server";
-import { getCampaignTemplate } from "@/lib/marketing-campaign-templates";
+import {
+  getCampaignTemplateMeta,
+  DEFAULT_CAMPAIGN_TEMPLATE_CONTENT,
+  renderCampaignTemplate,
+} from "@/lib/marketing-campaign-templates";
+import { getAdminTemplateOverrides } from "@/lib/admin-message-templates";
 import { sendBulkWhatsAppMessages } from "@/lib/marketing-integrations";
 
 export async function POST(request: Request) {
@@ -15,8 +20,8 @@ export async function POST(request: Request) {
     phones?: unknown;
   };
 
-  const template = typeof templateId === "string" ? getCampaignTemplate(templateId) : undefined;
-  if (!template) {
+  const templateMeta = typeof templateId === "string" ? getCampaignTemplateMeta(templateId) : undefined;
+  if (!templateMeta) {
     return NextResponse.json({ error: "Modelo de campanha inválido." }, { status: 400 });
   }
 
@@ -34,8 +39,11 @@ export async function POST(request: Request) {
   }
 
   const origin = new URL(request.url).origin;
-  const text = template.whatsapp(origin);
-  const result = await sendBulkWhatsAppMessages(cleanedPhones, text);
+  const overrides = await getAdminTemplateOverrides();
+  const content = overrides[templateMeta.id] ?? DEFAULT_CAMPAIGN_TEMPLATE_CONTENT[templateMeta.id];
+  const { whatsapp } = renderCampaignTemplate(templateMeta, content, origin);
+
+  const result = await sendBulkWhatsAppMessages(cleanedPhones, whatsapp);
 
   return NextResponse.json({ ok: true, recipientCount: cleanedPhones.length, ...result });
 }

@@ -1,5 +1,10 @@
 import { NextResponse } from "next/server";
-import { getCampaignTemplate } from "@/lib/marketing-campaign-templates";
+import {
+  getCampaignTemplateMeta,
+  DEFAULT_CAMPAIGN_TEMPLATE_CONTENT,
+  renderCampaignTemplate,
+} from "@/lib/marketing-campaign-templates";
+import { getAdminTemplateOverrides } from "@/lib/admin-message-templates";
 import { sendBulkMarketingEmail } from "@/lib/marketing-integrations";
 import {
   listRecipientEmails,
@@ -23,8 +28,8 @@ export async function POST(request: Request) {
     manualEmails?: unknown;
   };
 
-  const template = typeof templateId === "string" ? getCampaignTemplate(templateId) : undefined;
-  if (!template) {
+  const templateMeta = typeof templateId === "string" ? getCampaignTemplateMeta(templateId) : undefined;
+  if (!templateMeta) {
     return NextResponse.json({ error: "Modelo de campanha inválido." }, { status: 400 });
   }
 
@@ -58,8 +63,10 @@ export async function POST(request: Request) {
   }
 
   const origin = new URL(request.url).origin;
-  const { subject, html } = template.email(origin);
-  const result = await sendBulkMarketingEmail(recipients, { subject, html });
+  const overrides = await getAdminTemplateOverrides();
+  const content = overrides[templateMeta.id] ?? DEFAULT_CAMPAIGN_TEMPLATE_CONTENT[templateMeta.id];
+  const { email } = renderCampaignTemplate(templateMeta, content, origin);
+  const result = await sendBulkMarketingEmail(recipients, email);
 
   return NextResponse.json({ ok: true, recipientCount: recipients.length, ...result });
 }

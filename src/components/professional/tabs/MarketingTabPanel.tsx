@@ -1,19 +1,23 @@
 import { ShareProfileLink } from "@/components/professional/ShareProfileLink";
 import { SendMessageForm } from "@/components/professional/SendMessageForm";
 import { ProfessionalCampaignComposer } from "@/components/professional/ProfessionalCampaignComposer";
-import { resolveProfessionalCampaignTemplates } from "@/lib/professional-campaign-templates";
+import {
+  resolveProfessionalCampaignTemplates,
+  type ProfessionalCampaignTemplateId,
+  type CampaignTemplateContent,
+} from "@/lib/professional-campaign-templates";
 import type { ProfessionalClient } from "@/lib/professional-clients";
 
 export function MarketingTabPanel({
-  professionalName,
   publicProfileUrl,
   clients,
+  templateOverrides,
 }: {
-  professionalName: string;
   publicProfileUrl: string;
   clients: ProfessionalClient[] | null;
+  templateOverrides: Partial<Record<ProfessionalCampaignTemplateId, CampaignTemplateContent>>;
 }) {
-  const campaignTemplates = resolveProfessionalCampaignTemplates(professionalName, publicProfileUrl);
+  const campaignTemplates = resolveProfessionalCampaignTemplates(publicProfileUrl, templateOverrides);
 
   return (
     <div className="space-y-10">
@@ -60,7 +64,12 @@ export function MarketingTabPanel({
           ) : (
             <ProfessionalCampaignComposer
               templates={campaignTemplates}
-              clients={clients.map((c) => ({ id: c.id, full_name: c.full_name, email: c.email }))}
+              clients={clients.map((c) => ({
+                id: c.id,
+                full_name: c.full_name,
+                email: c.email,
+                phone_number: c.phone_number,
+              }))}
             />
           )}
         </div>

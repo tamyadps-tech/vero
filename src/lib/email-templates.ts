@@ -1,4 +1,4 @@
-function escapeHtml(value: string): string {
+export function escapeHtml(value: string): string {
   return value
     .replace(/&/g, "&amp;")
     .replace(/</g, "&lt;")
@@ -36,6 +36,23 @@ export function shell(title: string, bodyHtml: string): string {
 
 export function button(href: string, label: string): string {
   return `<a href="${escapeHtml(href)}" style="display:inline-block;background:#0f6e64;color:#fbf8f3;padding:12px 24px;border-radius:6px;text-decoration:none;font-weight:600;font-size:14px;">${escapeHtml(label)}</a>`;
+}
+
+/**
+ * Texto livre (digitado por quem edita um modelo de campanha) → parágrafos
+ * HTML seguros. Linha em branco separa parágrafos; quebra de linha simples
+ * vira <br>. Sempre escapa o texto — nunca confia em HTML vindo do editor.
+ */
+export function textToParagraphsHtml(text: string): string {
+  return text
+    .split(/\n{2,}/)
+    .map((paragraph) => paragraph.trim())
+    .filter(Boolean)
+    .map(
+      (paragraph) =>
+        `<p style="font-size:14px;line-height:1.6;color:#5b6763;">${escapeHtml(paragraph).replace(/\n/g, "<br>")}</p>`
+    )
+    .join("\n");
 }
 
 export function bookingConfirmationEmail({

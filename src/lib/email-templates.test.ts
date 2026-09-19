@@ -1,5 +1,30 @@
 import { describe, it, expect } from "vitest";
-import { bookingConfirmationEmail, sessionSummaryEmail } from "./email-templates";
+import { bookingConfirmationEmail, sessionSummaryEmail, textToParagraphsHtml } from "./email-templates";
+
+describe("textToParagraphsHtml", () => {
+  it("splits on blank lines into separate <p> tags", () => {
+    const html = textToParagraphsHtml("Primeiro parágrafo.\n\nSegundo parágrafo.");
+    expect(html.match(/<p /g)).toHaveLength(2);
+    expect(html).toContain("Primeiro parágrafo.");
+    expect(html).toContain("Segundo parágrafo.");
+  });
+
+  it("converts a single line break within a paragraph to <br>", () => {
+    const html = textToParagraphsHtml("Linha um\nLinha dois");
+    expect(html).toContain("Linha um<br>Linha dois");
+  });
+
+  it("escapes HTML so user-edited text can't inject markup", () => {
+    const html = textToParagraphsHtml('<img src=x onerror="alert(1)">');
+    expect(html).not.toContain("<img src=x");
+    expect(html).toContain("&lt;img");
+  });
+
+  it("drops empty paragraphs from extra blank lines", () => {
+    const html = textToParagraphsHtml("Um\n\n\n\nDois");
+    expect(html.match(/<p /g)).toHaveLength(2);
+  });
+});
 
 describe("bookingConfirmationEmail", () => {
   it("includes the professional name in the subject and the progress link", () => {

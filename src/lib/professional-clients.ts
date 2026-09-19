@@ -21,6 +21,7 @@ export interface ProfessionalClient {
   id: string;
   full_name: string;
   email: string;
+  phone_number: string | null;
   sessionCount: number;
   lastSessionAt: string | null;
   /** Data da primeira sessão — usado pra calcular CAC (cliente "novo" num período). */
@@ -42,7 +43,7 @@ export interface ProfessionalClient {
 type SessionRow = {
   scheduled_at: string;
   status: string;
-  client: { id: string; full_name: string; email: string } | null;
+  client: { id: string; full_name: string; email: string; phone_number: string | null } | null;
   payment: { status: string; amount_cents: number } | null;
 };
 
@@ -175,7 +176,7 @@ export async function listProfessionalClients(
   const { data, error } = await supabase
     .from("sessions")
     .select(
-      "scheduled_at, status, client:clients(id, full_name, email), payment:payments(status, amount_cents)"
+      "scheduled_at, status, client:clients(id, full_name, email, phone_number), payment:payments(status, amount_cents)"
     )
     .eq("professional_id", professionalId)
     .order("scheduled_at", { ascending: false });
@@ -195,6 +196,7 @@ export async function listProfessionalClients(
       id: client.id,
       full_name: client.full_name,
       email: client.email,
+      phone_number: client.phone_number,
       sessionCount: 0,
       lastSessionAt: null,
       firstSessionAt: null,

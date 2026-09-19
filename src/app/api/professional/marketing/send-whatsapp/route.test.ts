@@ -16,19 +16,19 @@ describe("POST /api/professional/marketing/send-whatsapp", () => {
 
   it("rejects an invalid template id", async () => {
     const response = await POST(
-      makeRequest({ templateId: "nao-existe", phones: ["+5511999999999"] })
+      makeRequest({ templateId: "nao-existe", manualPhones: ["+5511999999999"] })
     );
     expect(response.status).toBe(400);
   });
 
-  it("rejects an empty phone list", async () => {
-    const response = await POST(makeRequest({ templateId: "convite", phones: [] }));
+  it("rejects when neither clientIds nor manualPhones are given", async () => {
+    const response = await POST(makeRequest({ templateId: "convite", manualPhones: [] }));
     expect(response.status).toBe(400);
   });
 
   it("returns 503 when Supabase isn't configured yet", async () => {
     const response = await POST(
-      makeRequest({ templateId: "convite", phones: ["+5511999999999"] })
+      makeRequest({ templateId: "convite", manualPhones: ["+5511999999999"] })
     );
     expect(response.status).toBe(503);
   });
