@@ -145,8 +145,20 @@ export default async function ProfessionalDashboardPage() {
                 expenses={expenses}
               />
             }
-            marketing={<MarketingTabPanel publicProfileUrl={publicProfileUrl} clients={clients} />}
-            financeiro={<FinanceiroTabPanel finance={finance} expenses={expenses} />}
+            marketing={
+              <MarketingTabPanel
+                professionalName={professional.full_name}
+                publicProfileUrl={publicProfileUrl}
+                clients={clients}
+              />
+            }
+            financeiro={
+              <FinanceiroTabPanel
+                finance={finance}
+                expenses={expenses}
+                pricePerSessionCents={professional.price_cents}
+              />
+            }
             agenda={
               <AgendaTabPanel
                 professionalId={professional.id}

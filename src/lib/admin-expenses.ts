@@ -1,32 +1,28 @@
 import { getSupabaseAdmin } from "@/lib/supabase-admin";
+import type { ExpenseKind } from "@/lib/professional-expenses";
 
-export type ExpenseKind = "fixo" | "variavel";
-
-export interface ProfessionalExpense {
+export interface AdminExpense {
   id: string;
   description: string;
   amountCents: number;
-  /** 'fixo' = valor mensal (aluguel...); 'variavel' = valor por sessão. */
+  /** 'fixo' = valor mensal (Supabase, Vercel...); 'variavel' = valor por sessão processada. */
   kind: ExpenseKind;
   expenseDate: string;
   category: string | null;
 }
 
 /** Retorna null quando o Supabase ainda não está configurado. */
-export async function listProfessionalExpenses(
-  professionalId: string
-): Promise<ProfessionalExpense[] | null> {
+export async function listAdminExpenses(): Promise<AdminExpense[] | null> {
   const supabase = getSupabaseAdmin();
   if (!supabase) return null;
 
   const { data, error } = await supabase
-    .from("professional_expenses")
+    .from("admin_expenses")
     .select("id, description, amount_cents, kind, expense_date, category")
-    .eq("professional_id", professionalId)
     .order("expense_date", { ascending: false });
 
   if (error) {
-    console.error("[professional-expenses] Failed to list expenses:", error.message);
+    console.error("[admin-expenses] Failed to list expenses:", error.message);
     return [];
   }
 

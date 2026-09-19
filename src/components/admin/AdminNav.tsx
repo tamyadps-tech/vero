@@ -5,6 +5,8 @@ const links = [
   { href: "/admin", label: "Visão geral" },
   { href: "/admin/profissionais", label: "Profissionais" },
   { href: "/admin/assinaturas", label: "Assinaturas" },
+  { href: "/admin/marketing", label: "Marketing" },
+  { href: "/admin/financeiro", label: "Financeiro" },
 ];
 
 export function AdminNav({ active }: { active: string }) {

@@ -1,7 +1,5 @@
 import { NextResponse } from "next/server";
 import { getSupabaseAdmin } from "@/lib/supabase-admin";
-import { getProfessionalIdFromAccessToken } from "@/lib/professional-session";
-import { readAccessToken } from "@/lib/read-session-token";
 
 const DATE_RE = /^\d{4}-\d{2}-\d{2}$/;
 const MAX_DESCRIPTION_LENGTH = 200;
@@ -62,14 +60,7 @@ export async function POST(request: Request) {
     );
   }
 
-  const accessToken = await readAccessToken("professional");
-  const professionalId = await getProfessionalIdFromAccessToken(accessToken);
-  if (!professionalId) {
-    return NextResponse.json({ error: "Faça login novamente." }, { status: 401 });
-  }
-
-  const { error } = await supabase.from("professional_expenses").insert({
-    professional_id: professionalId,
+  const { error } = await supabase.from("admin_expenses").insert({
     description: trimmedDescription,
     amount_cents: amountCents,
     kind,
@@ -78,7 +69,7 @@ export async function POST(request: Request) {
   });
 
   if (error) {
-    console.error("[professional/expenses] insert failed:", error.message);
+    console.error("[admin/expenses] insert failed:", error.message);
     return NextResponse.json(
       { error: "Não foi possível salvar agora." },
       { status: 500 }

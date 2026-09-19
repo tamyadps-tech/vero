@@ -266,8 +266,12 @@ e2e/              # testes Playwright
   disponibilidade semanal recorrente, registra o prontuário de cada sessão
   (tópicos, tarefa, próxima sessão), vê a lista dos próprios clientes com
   histórico, valor vitalício (LTV) e status de engajamento
-  (ativo/em risco/inativo), manda mensagem em massa pros próprios clientes,
-  acompanha o financeiro (recebido/pendente por sessão) e tem o link do
+  (ativo/em risco/inativo), manda mensagem livre ou campanha com modelo
+  pronto (convite, reengajamento, cuidado) por email ou WhatsApp pros
+  próprios clientes — tudo de dentro da Vero, sem precisar abrir conta em
+  outra plataforma — acompanha o financeiro completo (recebido/pendente,
+  custos fixos e variáveis, margem de contribuição, ponto de equilíbrio e
+  preço sugerido, com manual explicando cada termo) e tem o link do
   próprio perfil público pronto pra divulgar
 - Cliente cria conta em `/c/cadastrar` (ou entra em `/c/entrar`) e só
   então consegue agendar — escolhe um horário no perfil público e
@@ -294,6 +298,22 @@ e2e/              # testes Playwright
   ao longo do tempo — só instrumentos de domínio público ou de autoria
   própria por enquanto, os demais do PRD original (DASS-21, Rosenberg
   etc.) ficam de fora até verificar licenciamento
+- Em `/admin/marketing`, o admin divulga a própria Vero (não o negócio de
+  um profissional) com os mesmos modelos de campanha (convite,
+  acompanhamento, pós-venda) por email ou WhatsApp — reaproveitando o
+  Resend e o Twilio já conectados, sem plataforma nova
+- Em `/admin/financeiro`, o admin acompanha a saúde financeira da própria
+  Vero: custos operacionais fixos/variáveis, margem de contribuição e uma
+  calculadora de comissão — hoje a Vero não cobra comissão nem assinatura
+  ainda, então a tela é honesta sobre isso (mostra o volume processado
+  como "repassado ao profissional", não receita própria) e serve pra
+  decidir que comissão cobraria pra cobrir os custos
+- No painel do profissional, a aba Financeiro agora também calcula margem
+  de contribuição, ponto de equilíbrio e preço sugerido (a partir dos
+  custos fixos/variáveis cadastrados), com uma calculadora interativa e
+  um manual explicando cada termo (margem, custo fixo/variável, ponto de
+  equilíbrio...) e cuidados práticos (não subprecificar, separar % pro
+  imposto, revisar o preço periodicamente)
 
 Tudo isso funciona sem quebrar mesmo sem alguma das chaves configurada:
 as rotas respondem 503 ou seguem em modo grátis/sem email, nunca com erro.

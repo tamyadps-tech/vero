@@ -2,7 +2,16 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import type { ProfessionalExpense } from "@/lib/professional-expenses";
+import type { ExpenseKind } from "@/lib/professional-expenses";
+
+interface ExpenseItem {
+  id: string;
+  description: string;
+  amountCents: number;
+  kind: ExpenseKind;
+  expenseDate: string;
+  category: string | null;
+}
 
 function formatPrice(cents: number) {
   return (cents / 100).toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
@@ -16,10 +25,26 @@ function todayIsoDate() {
   return `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())}`;
 }
 
-export function ExpensesManager({ expenses }: { expenses: ProfessionalExpense[] }) {
+const KIND_LABEL: Record<ExpenseKind, string> = {
+  fixo: "Fixo (mensal)",
+  variavel: "Variável (por sessão)",
+};
+
+/**
+ * Gerencia despesas — usado tanto pelo profissional (/api/professional/expenses)
+ * quanto pelo admin (/api/admin/expenses), por isso recebe o endpoint como prop.
+ */
+export function ExpensesManager({
+  expenses,
+  apiBasePath,
+}: {
+  expenses: ExpenseItem[];
+  apiBasePath: string;
+}) {
   const router = useRouter();
   const [description, setDescription] = useState("");
   const [amount, setAmount] = useState("");
+  const [kind, setKind] = useState<ExpenseKind>("fixo");
   const [expenseDate, setExpenseDate] = useState(todayIsoDate());
   const [category, setCategory] = useState("");
   const [pending, setPending] = useState(false);
@@ -39,12 +64,13 @@ export function ExpensesManager({ expenses }: { expenses: ProfessionalExpense[] 
     setPending(true);
     setError("");
     try {
-      const response = await fetch("/api/professional/expenses", {
+      const response = await fetch(apiBasePath, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           description: description.trim(),
           amountCents,
+          kind,
           expenseDate,
           category: category.trim() || undefined,
         }),
@@ -68,7 +94,7 @@ export function ExpensesManager({ expenses }: { expenses: ProfessionalExpense[] 
     setPending(true);
     setError("");
     try {
-      const response = await fetch(`/api/professional/expenses/${expenseId}`, {
+      const response = await fetch(`${apiBasePath}/${expenseId}`, {
         method: "DELETE",
       });
       if (!response.ok) {
@@ -97,6 +123,20 @@ export function ExpensesManager({ expenses }: { expenses: ProfessionalExpense[] 
             placeholder="Aluguel do consultório"
             className="w-full rounded-xl border border-border bg-paper px-3 py-2 text-sm text-ink"
           />
+        </div>
+        <div>
+          <label className="mb-1.5 block text-xs font-medium text-ink" htmlFor="expense-kind">
+            Tipo
+          </label>
+          <select
+            id="expense-kind"
+            value={kind}
+            onChange={(event) => setKind(event.target.value as ExpenseKind)}
+            className="rounded-xl border border-border bg-paper px-3 py-2 text-sm text-ink"
+          >
+            <option value="fixo">Fixo (valor mensal)</option>
+            <option value="variavel">Variável (valor por sessão)</option>
+          </select>
         </div>
         <div>
           <label className="mb-1.5 block text-xs font-medium text-ink" htmlFor="expense-amount">
@@ -146,6 +186,11 @@ export function ExpensesManager({ expenses }: { expenses: ProfessionalExpense[] 
           Adicionar
         </button>
       </div>
+      <p className="mt-2 text-xs text-ink-soft">
+        Custo <strong>fixo</strong>: informe o valor mensal (ex: aluguel, assinatura).
+        Custo <strong>variável</strong>: informe o valor por sessão (ex: material, taxa de
+        pagamento) — é isso que entra na margem e no preço sugerido abaixo.
+      </p>
 
       {error && (
         <p role="alert" className="mt-2 text-sm text-accent-dark">
@@ -164,6 +209,9 @@ export function ExpensesManager({ expenses }: { expenses: ProfessionalExpense[] 
           >
             <div>
               <span className="text-ink">{expense.description}</span>
+              <span className="ml-2 rounded-full bg-paper-alt px-2 py-0.5 text-xs text-ink-soft">
+                {KIND_LABEL[expense.kind]}
+              </span>
               {expense.category && (
                 <span className="ml-2 rounded-full bg-paper-alt px-2 py-0.5 text-xs text-ink-soft">
                   {expense.category}
