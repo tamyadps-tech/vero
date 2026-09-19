@@ -23,6 +23,8 @@ export interface ProfessionalClient {
   email: string;
   sessionCount: number;
   lastSessionAt: string | null;
+  /** Data da primeira sessão — usado pra calcular CAC (cliente "novo" num período). */
+  firstSessionAt: string | null;
   /** Valor pago (histórico) por esse cliente — o "lifetime value" dele. */
   totalPaidCents: number;
   hasUpcomingSession: boolean;
@@ -195,6 +197,7 @@ export async function listProfessionalClients(
       email: client.email,
       sessionCount: 0,
       lastSessionAt: null,
+      firstSessionAt: null,
       totalPaidCents: 0,
       hasUpcomingSession: false,
     };
@@ -202,6 +205,9 @@ export async function listProfessionalClients(
     entry.sessionCount += 1;
     if (!entry.lastSessionAt || row.scheduled_at > entry.lastSessionAt) {
       entry.lastSessionAt = row.scheduled_at;
+    }
+    if (!entry.firstSessionAt || row.scheduled_at < entry.firstSessionAt) {
+      entry.firstSessionAt = row.scheduled_at;
     }
     if (row.payment?.status === "pago") {
       entry.totalPaidCents += row.payment.amount_cents;
