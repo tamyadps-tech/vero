@@ -6,6 +6,11 @@ import { bookingConfirmationEmail } from "@/lib/email-templates";
 import { sendWhatsAppMessage } from "@/lib/whatsapp";
 import { bookingConfirmationWhatsApp } from "@/lib/whatsapp-templates";
 import { sendMetaPurchaseEvent } from "@/lib/meta-conversions-api";
+import {
+  applySubscriptionEvent,
+  mapStripeSubscriptionStatus,
+} from "@/lib/professional-subscription";
+import { isSubscriptionPlanId } from "@/lib/subscription-plans";
 import type Stripe from "stripe";
 
 export async function POST(request: Request) {
@@ -42,7 +47,7 @@ export async function POST(request: Request) {
     );
   }
 
-  if (event.type === "checkout.session.completed") {
+  if (event.type === "checkout.session.completed" && (event.data.object as Stripe.Checkout.Session).mode === "payment") {
     const checkoutSession = event.data.object as Stripe.Checkout.Session;
 
     const { data: payment, error: paymentError } = await supabase
@@ -106,12 +111,48 @@ export async function POST(request: Request) {
     }
   }
 
-  if (event.type === "checkout.session.expired") {
+  if (event.type === "checkout.session.expired" && (event.data.object as Stripe.Checkout.Session).mode === "payment") {
     const checkoutSession = event.data.object as Stripe.Checkout.Session;
     await supabase
       .from("payments")
       .update({ status: "falhou", updated_at: new Date().toISOString() })
       .eq("stripe_checkout_session_id", checkoutSession.id);
+  }
+
+  // Assinatura do profissional (planos Básico/Pro/Premium) — os três
+  // eventos carregam o objeto Subscription completo, com o professionalId
+  // e o plano no metadata (setado na criação do Checkout em modo
+  // "subscription"). Sem esse metadata, o evento não é nosso — ignora.
+  if (
+    event.type === "customer.subscription.created" ||
+    event.type === "customer.subscription.updated" ||
+    event.type === "customer.subscription.deleted"
+  ) {
+    const subscription = event.data.object as Stripe.Subscription;
+    const professionalId = subscription.metadata?.professionalId;
+
+    if (professionalId) {
+      const planMeta = subscription.metadata?.plan;
+      const status =
+        event.type === "customer.subscription.deleted"
+          ? "cancelada"
+          : mapStripeSubscriptionStatus(subscription.status);
+      const currentPeriodEndUnix = subscription.items.data[0]?.current_period_end;
+
+      await applySubscriptionEvent({
+        professionalId,
+        stripeCustomerId:
+          typeof subscription.customer === "string"
+            ? subscription.customer
+            : subscription.customer.id,
+        stripeSubscriptionId: subscription.id,
+        status,
+        plan: isSubscriptionPlanId(planMeta) ? planMeta : null,
+        currentPeriodEnd: currentPeriodEndUnix
+          ? new Date(currentPeriodEndUnix * 1000).toISOString()
+          : null,
+      });
+    }
   }
 
   return NextResponse.json({ ok: true });

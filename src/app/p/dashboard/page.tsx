@@ -15,11 +15,14 @@ import { getProfessionalTemplateOverrides } from "@/lib/professional-message-tem
 import { getReviewSummaries } from "@/lib/reviews";
 import { CATEGORY_LABELS } from "@/lib/professional-categories";
 import { SESSION_FORMAT_LABELS } from "@/lib/session-format";
+import { hasPlanAccess } from "@/lib/subscription-plans";
 import { ProfessionalProfileSection } from "@/components/professional/ProfessionalProfileSection";
 import { DashboardTabs } from "@/components/professional/DashboardTabs";
+import { PlanLockedPanel } from "@/components/professional/PlanLockedPanel";
 import { DashboardTabPanel } from "@/components/professional/tabs/DashboardTabPanel";
 import { MarketingTabPanel } from "@/components/professional/tabs/MarketingTabPanel";
 import { FinanceiroTabPanel } from "@/components/professional/tabs/FinanceiroTabPanel";
+import { SubscriptionTabPanel } from "@/components/professional/tabs/SubscriptionTabPanel";
 import { AgendaTabPanel } from "@/components/professional/tabs/AgendaTabPanel";
 import { CrmTabPanel } from "@/components/professional/tabs/CrmTabPanel";
 import { TestesTabPanel } from "@/components/professional/tabs/TestesTabPanel";
@@ -148,18 +151,33 @@ export default async function ProfessionalDashboardPage() {
               />
             }
             marketing={
-              <MarketingTabPanel
-                publicProfileUrl={publicProfileUrl}
-                clients={clients}
-                templateOverrides={templateOverrides}
-              />
+              hasPlanAccess(professional.subscription_plan, professional.subscription_status, "pro") ? (
+                <MarketingTabPanel
+                  publicProfileUrl={publicProfileUrl}
+                  clients={clients}
+                  templateOverrides={templateOverrides}
+                />
+              ) : (
+                <PlanLockedPanel requiredPlan="pro" featureName="Marketing" />
+              )
             }
             financeiro={
-              <FinanceiroTabPanel
-                finance={finance}
-                expenses={expenses}
-                pricePerSessionCents={professional.price_cents}
-                monthlyRevenueGoalCents={professional.monthly_revenue_goal_cents}
+              hasPlanAccess(professional.subscription_plan, professional.subscription_status, "premium") ? (
+                <FinanceiroTabPanel
+                  finance={finance}
+                  expenses={expenses}
+                  pricePerSessionCents={professional.price_cents}
+                  monthlyRevenueGoalCents={professional.monthly_revenue_goal_cents}
+                />
+              ) : (
+                <PlanLockedPanel requiredPlan="premium" featureName="Financeiro" />
+              )
+            }
+            assinatura={
+              <SubscriptionTabPanel
+                currentPlan={professional.subscription_plan}
+                currentStatus={professional.subscription_status}
+                currentPeriodEnd={professional.subscription_current_period_end}
               />
             }
             agenda={

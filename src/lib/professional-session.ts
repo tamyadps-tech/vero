@@ -2,6 +2,7 @@ import { getSupabaseAdmin } from "@/lib/supabase-admin";
 import { getSupabaseAnon } from "@/lib/supabase-anon";
 import type { ProfessionalCategory } from "@/lib/professional-categories";
 import type { SessionFormat } from "@/lib/session-format";
+import type { SubscriptionPlanId, SubscriptionStatus } from "@/lib/subscription-plans";
 
 export interface ProfessionalAccount {
   id: string;
@@ -27,10 +28,13 @@ export interface ProfessionalAccount {
   vetting_notes: string | null;
   google_calendar_email: string | null;
   monthly_revenue_goal_cents: number | null;
+  subscription_plan: SubscriptionPlanId | null;
+  subscription_status: SubscriptionStatus | null;
+  subscription_current_period_end: string | null;
 }
 
 const ACCOUNT_COLUMNS =
-  "id, full_name, email, category, bio, years_experience, specialties, methods, personality, session_format, location_city, location_state, location_address, price_cents, photo_url, portfolio_photo_urls, instagram_url, whatsapp_url, website_url, vetting_status, vetting_notes, google_calendar_email, monthly_revenue_goal_cents";
+  "id, full_name, email, category, bio, years_experience, specialties, methods, personality, session_format, location_city, location_state, location_address, price_cents, photo_url, portfolio_photo_urls, instagram_url, whatsapp_url, website_url, vetting_status, vetting_notes, google_calendar_email, monthly_revenue_goal_cents, subscription_plan, subscription_status, subscription_current_period_end";
 
 /**
  * Resolve o profissional logado a partir do access token da sessão

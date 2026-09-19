@@ -309,12 +309,24 @@ e2e/              # testes Playwright
   automaticamente no fim, quem edita não precisa se preocupar com isso
 - Em `/admin/financeiro`, o admin acompanha a saúde financeira da própria
   Vero: custos operacionais fixos/variáveis, margem de contribuição e uma
-  calculadora de comissão — hoje a Vero não cobra comissão nem assinatura
-  ainda, então a tela é honesta sobre isso (mostra o volume processado
-  como "repassado ao profissional", não receita própria) e serve pra
-  decidir que comissão cobraria pra cobrir os custos. Também mostra
-  orçado × realizado × projeção do custo do mês (custo fixo cadastrado
-  vs. despesas já lançadas esse mês vs. projeção linear até o fim do mês)
+  calculadora de comissão — a Vero ainda não cobra comissão por sessão,
+  então a tela é honesta sobre isso (mostra o volume processado como
+  "repassado ao profissional", não receita própria) e serve pra decidir
+  que comissão cobraria pra cobrir os custos. Também mostra orçado ×
+  realizado × projeção do custo do mês (custo fixo cadastrado vs.
+  despesas já lançadas esse mês vs. projeção linear até o fim do mês)
+- Assinatura do profissional (Básico R$99, Pro R$179, Premium R$299/mês),
+  cobrada via Stripe Checkout em modo assinatura. Básico é o essencial
+  (agenda, prontuário, CRM automático, dashboard); Pro adiciona a aba
+  Marketing (campanhas de email/WhatsApp); Premium adiciona a aba
+  Financeiro completa (calculadora de margem/preço sugerido, orçado ×
+  realizado × projeção). Sem assinatura ativa no plano certo, a aba
+  correspondente mostra um convite pra assinar em vez do conteúdo. O
+  profissional assina/troca de plano e cancela pela aba "Assinatura" no
+  próprio painel (`/p/dashboard`), com um botão "Gerenciar assinatura"
+  que abre o Customer Portal da própria Stripe. O admin acompanha tudo
+  em `/admin/assinaturas`: lista de assinantes, status (ativa/
+  inadimplente/cancelada) e MRR calculado automaticamente
 - No painel do profissional, a aba Financeiro agora também calcula margem
   de contribuição, ponto de equilíbrio e preço sugerido (a partir dos
   custos fixos/variáveis cadastrados), com uma calculadora interativa e

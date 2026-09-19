@@ -21,10 +21,10 @@ export default async function AdminFinanceiroPage() {
   const variableCostPerSessionCents =
     expenses?.filter((e) => e.kind === "variavel").reduce((sum, e) => sum + e.amountCents, 0) ?? 0;
 
-  // Hoje não existe comissão nem assinatura real — a "comissão" abaixo é
-  // 0 de propósito, pra mostrar honestamente que com o preço atual (R$0
-  // de receita própria) a Vero só acumula custo. É o ponto de partida
-  // pra decidir que comissão cobrar.
+  // A Vero já tem receita de assinatura (ver /admin/assinaturas pro MRR
+  // real), mas ainda não cobra comissão por sessão — a "comissão" abaixo
+  // é 0 de propósito, pra simular quanto cobrar cobriria os custos além
+  // do que a assinatura já cobre.
   const health = computeFinancialHealth({
     fixedMonthlyCostsCents,
     variableCostPerUnitCents: variableCostPerSessionCents,
@@ -55,10 +55,15 @@ export default async function AdminFinanceiroPage() {
           <>
             <section className="mt-8">
               <div className="rounded-2xl border border-amber-200 bg-amber-50 p-4 text-sm text-amber-900">
-                <strong>Importante:</strong> a Vero ainda não cobra comissão por sessão nem
-                assinatura — o valor abaixo é o volume processado no Stripe (que é repassado
-                ao profissional), não receita própria. Hoje, o que sustenta a operação são só
-                os custos abaixo, sem nenhuma receita entrando ainda.
+                <strong>Importante:</strong> a Vero ainda não cobra comissão por sessão — o
+                valor abaixo é o volume processado no Stripe (que é repassado ao profissional),
+                não receita própria. A Vero já cobra assinatura dos profissionais (planos
+                Básico/Pro/Premium); veja o MRR real em{" "}
+                <a href="/admin/assinaturas" className="underline">
+                  /admin/assinaturas
+                </a>
+                . A simulação de comissão abaixo é só pra decidir se vale cobrar algo a mais
+                por sessão além da assinatura.
               </div>
 
               <div className="mt-4 grid gap-4 sm:grid-cols-3">
