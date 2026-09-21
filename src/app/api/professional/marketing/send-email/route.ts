@@ -9,6 +9,7 @@ import {
 } from "@/lib/professional-campaign-templates";
 import { getProfessionalTemplateOverrides } from "@/lib/professional-message-templates";
 import { sendBulkMarketingEmail } from "@/lib/marketing-integrations";
+import { logClientMessages } from "@/lib/professional-client-messages";
 
 export async function POST(request: Request) {
   let body: unknown;
@@ -63,10 +64,14 @@ export async function POST(request: Request) {
   }
 
   const recipientEmails = new Set<string>();
+  const recipientClientIds = new Set<string>();
   for (const row of (ownedSessions ?? []) as unknown as Array<{
     client: { id: string; email: string } | null;
   }>) {
-    if (row.client) recipientEmails.add(row.client.email);
+    if (row.client) {
+      recipientEmails.add(row.client.email);
+      recipientClientIds.add(row.client.id);
+    }
   }
 
   if (recipientEmails.size === 0) {
@@ -83,6 +88,7 @@ export async function POST(request: Request) {
   const { email } = renderProfessionalTemplate(templateMeta, content, profileUrl);
 
   const result = await sendBulkMarketingEmail(Array.from(recipientEmails), email);
+  await logClientMessages(professionalId, Array.from(recipientClientIds), "email", templateMeta.id);
 
   return NextResponse.json({ ok: true, recipientCount: recipientEmails.size, ...result });
 }

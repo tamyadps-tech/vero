@@ -9,6 +9,7 @@ import { readAccessToken } from "@/lib/read-session-token";
 import { listAvailabilitySlots } from "@/lib/booking";
 import { listSessionsForProfessional } from "@/lib/admin-sessions";
 import { listProfessionalClients } from "@/lib/professional-clients";
+import { listProfessionalContacts } from "@/lib/professional-crm";
 import { getProfessionalFinance } from "@/lib/professional-finance";
 import { listProfessionalExpenses } from "@/lib/professional-expenses";
 import { getProfessionalTemplateOverrides } from "@/lib/professional-message-templates";
@@ -92,11 +93,12 @@ export default async function ProfessionalDashboardPage() {
     );
   }
 
-  const [slots, sessions, clients, finance, expenses, templateOverrides, reviewSummaries, headersList] =
+  const [slots, sessions, clients, contacts, finance, expenses, templateOverrides, reviewSummaries, headersList] =
     await Promise.all([
       listAvailabilitySlots(professional.id),
       listSessionsForProfessional(professional.id),
       listProfessionalClients(professional.id),
+      listProfessionalContacts(professional.id),
       getProfessionalFinance(professional.id),
       listProfessionalExpenses(professional.id),
       getProfessionalTemplateOverrides(professional.id),
@@ -188,7 +190,7 @@ export default async function ProfessionalDashboardPage() {
                 googleCalendarEmail={professional.google_calendar_email}
               />
             }
-            crm={<CrmTabPanel clients={clients} />}
+            crm={<CrmTabPanel contacts={contacts} />}
             testes={<TestesTabPanel clients={clients} />}
             exercicios={<ExerciciosTabPanel clients={clients} />}
             metodo={<MetodoTabPanel />}

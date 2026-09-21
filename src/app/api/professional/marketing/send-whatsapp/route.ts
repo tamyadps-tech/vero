@@ -9,6 +9,7 @@ import {
 } from "@/lib/professional-campaign-templates";
 import { getProfessionalTemplateOverrides } from "@/lib/professional-message-templates";
 import { sendBulkWhatsAppMessages } from "@/lib/marketing-integrations";
+import { logClientMessages } from "@/lib/professional-client-messages";
 
 export async function POST(request: Request) {
   let body: unknown;
@@ -58,6 +59,7 @@ export async function POST(request: Request) {
   }
 
   const recipientPhones = new Set<string>(cleanedManualPhones);
+  const recipientClientIds = new Set<string>();
 
   if (cleanedClientIds.length > 0) {
     // Nunca confia no telefone vindo do corpo pra clientes selecionados —
@@ -77,7 +79,10 @@ export async function POST(request: Request) {
     for (const row of (ownedSessions ?? []) as unknown as Array<{
       client: { id: string; phone_number: string | null } | null;
     }>) {
-      if (row.client?.phone_number) recipientPhones.add(row.client.phone_number);
+      if (row.client?.phone_number) {
+        recipientPhones.add(row.client.phone_number);
+        recipientClientIds.add(row.client.id);
+      }
     }
   }
 
@@ -95,6 +100,7 @@ export async function POST(request: Request) {
   const { whatsapp } = renderProfessionalTemplate(templateMeta, content, profileUrl);
 
   const result = await sendBulkWhatsAppMessages(Array.from(recipientPhones), whatsapp);
+  await logClientMessages(professionalId, Array.from(recipientClientIds), "whatsapp", templateMeta.id);
 
   return NextResponse.json({ ok: true, recipientCount: recipientPhones.size, ...result });
 }

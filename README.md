@@ -348,6 +348,20 @@ e2e/              # testes Playwright
   `META_CONVERSIONS_API_TOKEN`, `NEXT_PUBLIC_GOOGLE_ADS_ID` e os 4
   rótulos de conversão), nenhum script de terceiro carrega — ver
   `.env.example` pro passo a passo
+- CRM completo, pros dois lados. Pro profissional, a aba Clientes agora é
+  um funil de verdade (lead → contatado → agendado → cliente ativo →
+  inativo), não só a lista automática de quem já teve sessão: dá pra
+  cadastrar um contato manualmente (antes de agendar), editar telefone,
+  marcar tags livres, filtrar por estágio/tag, e cada contato tem uma
+  página de detalhe própria (`/p/dashboard/clientes/[id]`) com notas
+  datadas, tarefas de follow-up (com data e status atrasada/feita) e o
+  histórico de campanhas de email/WhatsApp já enviadas pra aquele
+  cliente. Pro admin, `/admin/crm` traz duas visões: profissionais como
+  "conta" da Vero (notas de interação, tags, segmentação por plano e
+  status de vetting) e um diretório read-only de todos os clientes da
+  plataforma (busca por nome/email/profissional), pra suporte — sem
+  edição ali, porque notas/tags de cliente pertencem ao CRM do
+  profissional dono da relação
 
 Tudo isso funciona sem quebrar mesmo sem alguma das chaves configurada:
 as rotas respondem 503 ou seguem em modo grátis/sem email, nunca com erro.

@@ -1,5 +1,16 @@
+"use client";
+
+import { useMemo, useState } from "react";
+import Link from "next/link";
 import { ENGAGEMENT_STATUS_LABELS } from "@/lib/client-engagement";
-import type { ProfessionalClient } from "@/lib/professional-clients";
+import {
+  CRM_STAGES,
+  CRM_STAGE_LABELS,
+  contactLinkId,
+  type CrmContactSummary,
+  type CrmStage,
+} from "@/lib/professional-crm";
+import { AddLeadForm } from "@/components/professional/AddLeadForm";
 
 function formatPrice(cents: number) {
   return (cents / 100).toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
@@ -16,23 +27,64 @@ const ENGAGEMENT_BADGE_STYLES: Record<string, string> = {
   inativo: "bg-paper-alt text-ink-soft",
 };
 
-export function CrmTabPanel({ clients }: { clients: ProfessionalClient[] | null }) {
+const STAGE_BADGE_STYLES: Record<CrmStage, string> = {
+  lead: "bg-paper-alt text-ink-soft",
+  contatado: "bg-primary-light text-primary-dark",
+  agendado: "bg-primary-light text-primary-dark",
+  cliente_ativo: "bg-primary-light text-primary-dark",
+  inativo: "bg-accent-light text-accent-dark",
+};
+
+export function CrmTabPanel({ contacts }: { contacts: CrmContactSummary[] | null }) {
+  const [showAddForm, setShowAddForm] = useState(false);
+  const [stageFilter, setStageFilter] = useState<"todos" | CrmStage>("todos");
+  const [tagFilter, setTagFilter] = useState<string>("todas");
+
+  const allTags = useMemo(() => {
+    const set = new Set<string>();
+    for (const c of contacts ?? []) {
+      for (const tag of c.tags) set.add(tag);
+    }
+    return Array.from(set).sort((a, b) => a.localeCompare(b, "pt-BR"));
+  }, [contacts]);
+
+  const filtered = useMemo(() => {
+    return (contacts ?? []).filter((c) => {
+      if (stageFilter !== "todos" && c.stage !== stageFilter) return false;
+      if (tagFilter !== "todas" && !c.tags.includes(tagFilter)) return false;
+      return true;
+    });
+  }, [contacts, stageFilter, tagFilter]);
+
   return (
     <section>
-      <h2 className="text-sm font-semibold uppercase tracking-wide text-ink-soft">
-        Meus clientes
-      </h2>
-      <p className="mt-1 text-sm text-ink-soft">
-        Quem já passou por sessões com você, com histórico, valor
-        vitalício (LTV) e sinal de quem precisa de reengajamento.
-        Autoavaliações ficam na aba{" "}
-        <span className="font-medium text-ink">Testes</span>.
-      </p>
+      <div className="flex flex-wrap items-start justify-between gap-3">
+        <div>
+          <h2 className="text-sm font-semibold uppercase tracking-wide text-ink-soft">
+            Meus clientes
+          </h2>
+          <p className="mt-1 text-sm text-ink-soft">
+            Clientes reais (quem já passou por sessão) e leads que você cadastrar
+            manualmente, num funil só. Clique num contato pra ver detalhe, notas e
+            tarefas de follow-up.
+          </p>
+        </div>
+        <button
+          type="button"
+          onClick={() => setShowAddForm((v) => !v)}
+          className="shrink-0 rounded-xl border border-primary px-4 py-2 text-sm font-semibold text-primary-dark transition hover:bg-primary-light"
+        >
+          + Novo contato
+        </button>
+      </div>
+
+      {showAddForm && <AddLeadForm onDone={() => setShowAddForm(false)} />}
+
       <div className="mt-4">
-        {clients === null ? (
+        {contacts === null ? (
           <p className="text-sm text-ink-soft">Supabase ainda não está configurado.</p>
-        ) : clients.length === 0 ? (
-          <p className="text-sm text-ink-soft">Nenhum cliente ainda.</p>
+        ) : contacts.length === 0 ? (
+          <p className="text-sm text-ink-soft">Nenhum contato ainda.</p>
         ) : (
           <>
             <div className="grid gap-3 sm:grid-cols-3">
@@ -45,38 +97,97 @@ export function CrmTabPanel({ clients }: { clients: ProfessionalClient[] | null 
                     {ENGAGEMENT_STATUS_LABELS[status]}
                   </p>
                   <p className="mt-1 text-xl font-semibold text-ink">
-                    {clients.filter((c) => c.engagementStatus === status).length}
+                    {contacts.filter((c) => c.engagementStatus === status).length}
                   </p>
                 </div>
               ))}
             </div>
+
+            <div className="mt-4 flex flex-wrap gap-2">
+              <select
+                value={stageFilter}
+                onChange={(e) => setStageFilter(e.target.value as "todos" | CrmStage)}
+                className="rounded-lg border border-border bg-paper px-3 py-1.5 text-xs text-ink"
+              >
+                <option value="todos">Todos os estágios</option>
+                {CRM_STAGES.map((stage) => (
+                  <option key={stage} value={stage}>
+                    {CRM_STAGE_LABELS[stage]}
+                  </option>
+                ))}
+              </select>
+              {allTags.length > 0 && (
+                <select
+                  value={tagFilter}
+                  onChange={(e) => setTagFilter(e.target.value)}
+                  className="rounded-lg border border-border bg-paper px-3 py-1.5 text-xs text-ink"
+                >
+                  <option value="todas">Todas as tags</option>
+                  {allTags.map((tag) => (
+                    <option key={tag} value={tag}>
+                      {tag}
+                    </option>
+                  ))}
+                </select>
+              )}
+            </div>
+
             <div className="mt-4 space-y-2">
-              {clients.map((client) => (
-                <div
-                  key={client.id}
-                  className="flex flex-wrap items-center justify-between gap-2 rounded-xl border border-border bg-paper px-4 py-3 text-sm"
+              {filtered.length === 0 && (
+                <p className="text-sm text-ink-soft">Nenhum contato com esse filtro.</p>
+              )}
+              {filtered.map((contact) => (
+                <Link
+                  key={contactLinkId(contact)}
+                  href={`/p/dashboard/clientes/${contactLinkId(contact)}`}
+                  className="flex flex-wrap items-center justify-between gap-2 rounded-xl border border-border bg-paper px-4 py-3 text-sm transition hover:border-primary"
                 >
                   <div>
                     <p className="font-medium text-ink">
-                      {client.full_name}{" "}
+                      {contact.fullName}{" "}
                       <span
-                        className={`ml-1 rounded-full px-2 py-0.5 text-xs ${ENGAGEMENT_BADGE_STYLES[client.engagementStatus]}`}
+                        className={`ml-1 rounded-full px-2 py-0.5 text-xs ${STAGE_BADGE_STYLES[contact.stage]}`}
                       >
-                        {ENGAGEMENT_STATUS_LABELS[client.engagementStatus]}
+                        {CRM_STAGE_LABELS[contact.stage]}
                       </span>
+                      {contact.engagementStatus && (
+                        <span
+                          className={`ml-1 rounded-full px-2 py-0.5 text-xs ${ENGAGEMENT_BADGE_STYLES[contact.engagementStatus]}`}
+                        >
+                          {ENGAGEMENT_STATUS_LABELS[contact.engagementStatus]}
+                        </span>
+                      )}
                     </p>
-                    <p className="text-xs text-ink-soft">{client.email}</p>
-                  </div>
-                  <div className="text-right text-xs text-ink-soft">
-                    <p>
-                      {client.sessionCount} sessõe{client.sessionCount === 1 ? "" : "s"} ·{" "}
-                      LTV {formatPrice(client.totalPaidCents)}
-                    </p>
-                    {client.lastSessionAt && (
-                      <p>Última: {dateFormatter.format(new Date(client.lastSessionAt))}</p>
+                    <p className="text-xs text-ink-soft">{contact.email}</p>
+                    {contact.tags.length > 0 && (
+                      <p className="mt-1 flex flex-wrap gap-1">
+                        {contact.tags.map((tag) => (
+                          <span
+                            key={tag}
+                            className="rounded-full bg-paper-alt px-2 py-0.5 text-[11px] text-ink-soft"
+                          >
+                            {tag}
+                          </span>
+                        ))}
+                      </p>
                     )}
                   </div>
-                </div>
+                  <div className="text-right text-xs text-ink-soft">
+                    {contact.isLead ? (
+                      <p>Sem sessão ainda</p>
+                    ) : (
+                      <>
+                        <p>
+                          {contact.sessionCount} sessõe{contact.sessionCount === 1 ? "" : "s"} ·{" "}
+                          LTV {formatPrice(contact.totalPaidCents)}
+                        </p>
+                        {contact.lastSessionAt && (
+                          <p>Última: {dateFormatter.format(new Date(contact.lastSessionAt))}</p>
+                        )}
+                      </>
+                    )}
+                  </div>
+                </Link>
               ))}
             </div>
           </>
