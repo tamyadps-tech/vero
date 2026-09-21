@@ -19,6 +19,7 @@ import { SESSION_FORMAT_LABELS } from "@/lib/session-format";
 import { hasPlanAccess } from "@/lib/subscription-plans";
 import { ProfessionalProfileSection } from "@/components/professional/ProfessionalProfileSection";
 import { DashboardTabs } from "@/components/professional/DashboardTabs";
+import { DashboardShellProvider } from "@/components/professional/DashboardShellContext";
 import { PlanLockedPanel } from "@/components/professional/PlanLockedPanel";
 import { DashboardTabPanel } from "@/components/professional/tabs/DashboardTabPanel";
 import { MarketingTabPanel } from "@/components/professional/tabs/MarketingTabPanel";
@@ -143,6 +144,7 @@ export default async function ProfessionalDashboardPage() {
             </div>
           </section>
 
+          <DashboardShellProvider>
           <DashboardTabs
             dashboard={
               <DashboardTabPanel
@@ -195,6 +197,7 @@ export default async function ProfessionalDashboardPage() {
             exercicios={<ExerciciosTabPanel clients={clients} />}
             metodo={<MetodoTabPanel />}
           />
+          </DashboardShellProvider>
         </section>
       </main>
       <Footer />

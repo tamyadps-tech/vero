@@ -1,9 +1,11 @@
 import { NextResponse } from "next/server";
 import { getStripeClient } from "@/lib/stripe";
+import { getSupabaseAdmin } from "@/lib/supabase-admin";
 import { getProfessionalIdFromAccessToken } from "@/lib/professional-session";
 import { readAccessToken } from "@/lib/read-session-token";
 import { getProfessionalStripeInfo } from "@/lib/professional-subscription";
 import { isSubscriptionPlanId, getSubscriptionPlan } from "@/lib/subscription-plans";
+import { getOrCreateStripeProduct } from "@/lib/stripe-products";
 
 export async function POST(request: Request) {
   const stripe = getStripeClient();
@@ -34,18 +36,53 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Não foi possível carregar sua conta agora." }, { status: 500 });
   }
 
-  if (stripeInfo.subscriptionStatus === "ativa") {
-    // Sem lógica de troca/proração ainda — evita criar uma segunda
-    // assinatura em paralelo. Pra trocar de plano, cancela a atual no
-    // portal primeiro.
-    return NextResponse.json(
-      { error: "Você já tem uma assinatura ativa. Cancele-a no portal antes de assinar outro plano." },
-      { status: 409 }
-    );
-  }
-
   const planDef = getSubscriptionPlan(plan);
   const origin = new URL(request.url).origin;
+
+  // Já tem assinatura ativa: troca o preço na MESMA assinatura (com
+  // proração), em vez de criar uma segunda em paralelo — sem precisar
+  // cancelar antes.
+  if (stripeInfo.subscriptionStatus === "ativa" && stripeInfo.stripeSubscriptionId) {
+    try {
+      const subscription = await stripe.subscriptions.retrieve(stripeInfo.stripeSubscriptionId);
+      const itemId = subscription.items.data[0]?.id;
+      if (!itemId) {
+        return NextResponse.json({ error: "Não foi possível localizar sua assinatura atual." }, { status: 500 });
+      }
+
+      const productId = await getOrCreateStripeProduct(stripe, planDef);
+      await stripe.subscriptions.update(stripeInfo.stripeSubscriptionId, {
+        items: [
+          {
+            id: itemId,
+            price_data: {
+              currency: "brl",
+              unit_amount: planDef.priceCents,
+              product: productId,
+              recurring: { interval: "month" },
+            },
+          },
+        ],
+        proration_behavior: "create_prorations",
+        metadata: { professionalId, plan: planDef.id },
+      });
+
+      // Atualiza local pra refletir na hora — o webhook confirma de novo
+      // depois (customer.subscription.updated), sem conflito.
+      const supabase = getSupabaseAdmin();
+      if (supabase) {
+        await supabase
+          .from("professionals")
+          .update({ subscription_plan: planDef.id })
+          .eq("id", professionalId);
+      }
+
+      return NextResponse.json({ ok: true, switched: true });
+    } catch (error) {
+      console.error("[professional/subscription/checkout] Plan switch failed:", error);
+      return NextResponse.json({ error: "Não foi possível trocar de plano agora." }, { status: 500 });
+    }
+  }
 
   try {
     const checkoutSession = await stripe.checkout.sessions.create({

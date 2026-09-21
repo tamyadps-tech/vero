@@ -4,6 +4,7 @@ import { isSubscriptionPlanId, type SubscriptionPlanId, type SubscriptionStatus 
 export interface ProfessionalStripeInfo {
   email: string;
   stripeCustomerId: string | null;
+  stripeSubscriptionId: string | null;
   subscriptionStatus: SubscriptionStatus | null;
 }
 
@@ -16,7 +17,7 @@ export async function getProfessionalStripeInfo(
 
   const { data } = await supabase
     .from("professionals")
-    .select("email, stripe_customer_id, subscription_status")
+    .select("email, stripe_customer_id, stripe_subscription_id, subscription_status")
     .eq("id", professionalId)
     .maybeSingle();
 
@@ -24,6 +25,7 @@ export async function getProfessionalStripeInfo(
   return {
     email: data.email,
     stripeCustomerId: data.stripe_customer_id,
+    stripeSubscriptionId: data.stripe_subscription_id,
     subscriptionStatus: data.subscription_status,
   };
 }

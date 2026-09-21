@@ -1,8 +1,9 @@
 "use client";
 
-import { useState, type FormEvent } from "react";
+import { useEffect, useState, type FormEvent } from "react";
 import { useRouter } from "next/navigation";
 import type { ResolvedProfessionalCampaignTemplate } from "@/lib/professional-campaign-templates";
+import { useDashboardShell } from "@/components/professional/DashboardShellContext";
 
 type ClientOption = { id: string; full_name: string; email: string; phone_number: string | null };
 
@@ -20,11 +21,28 @@ export function ProfessionalCampaignComposer({
   clients: ClientOption[];
 }) {
   const router = useRouter();
+  const { pendingCampaignClientIds, clearPendingCampaign } = useDashboardShell();
   const [channel, setChannel] = useState<"email" | "whatsapp">("email");
   const [templateId, setTemplateId] = useState<string>(templates[0]?.id ?? "");
   const [selectedClientIds, setSelectedClientIds] = useState<string[]>([]);
   const [manualPhones, setManualPhones] = useState("");
   const [state, setState] = useState<SendState>({ status: "idle" });
+
+  // Veio da aba Clientes ("mandar campanha pros filtrados") — pré-marca
+  // esses clientes já no render (padrão React pra ajustar estado a
+  // partir de uma prop/contexto que mudou, sem passar por um efeito).
+  const [appliedPendingIds, setAppliedPendingIds] = useState<string[] | null>(null);
+  if (pendingCampaignClientIds && pendingCampaignClientIds !== appliedPendingIds) {
+    setAppliedPendingIds(pendingCampaignClientIds);
+    setSelectedClientIds(pendingCampaignClientIds);
+    setChannel("email");
+  }
+
+  // Limpar o pedido pendente mexe no contexto compartilhado (não é
+  // estado local), então isso sim é um efeito de verdade.
+  useEffect(() => {
+    if (pendingCampaignClientIds) clearPendingCampaign();
+  }, [pendingCampaignClientIds, clearPendingCampaign]);
 
   const [editing, setEditing] = useState(false);
   const [editSubject, setEditSubject] = useState("");

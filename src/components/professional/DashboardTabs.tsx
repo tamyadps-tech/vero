@@ -1,6 +1,7 @@
 "use client";
 
-import { useState, type ReactNode } from "react";
+import type { ReactNode } from "react";
+import { useDashboardShell } from "@/components/professional/DashboardShellContext";
 
 const TABS = [
   { key: "dashboard", label: "Dashboard" },
@@ -16,8 +17,13 @@ const TABS = [
 
 type TabKey = (typeof TABS)[number]["key"];
 
+function isTabKey(value: string): value is TabKey {
+  return TABS.some((tab) => tab.key === value);
+}
+
 export function DashboardTabs(props: Record<TabKey, ReactNode>) {
-  const [active, setActive] = useState<TabKey>("dashboard");
+  const { activeTab, setActiveTab } = useDashboardShell();
+  const active: TabKey = isTabKey(activeTab) ? activeTab : "dashboard";
 
   return (
     <div className="mt-8">
@@ -30,7 +36,7 @@ export function DashboardTabs(props: Record<TabKey, ReactNode>) {
               type="button"
               role="tab"
               aria-selected={isActive}
-              onClick={() => setActive(tab.key)}
+              onClick={() => setActiveTab(tab.key)}
               className={`shrink-0 whitespace-nowrap border-b-2 px-4 py-2.5 text-sm font-medium transition ${
                 isActive
                   ? "border-primary text-primary-dark"

@@ -331,6 +331,41 @@ export async function deleteLead(professionalId: string, contactId: string): Pro
   return true;
 }
 
+/**
+ * Se existe um lead manual (sem client_id ainda) com o mesmo email de
+ * quem acabou de agendar a 1ª sessão de verdade, promove esse contato
+ * pra "cliente_ativo" e linka o client_id — sem isso, um lead que vira
+ * cliente real continuava marcado como lead até o profissional trocar
+ * manualmente. Best-effort: nunca bloqueia o agendamento em si.
+ */
+export async function promoteContactOnBooking(
+  professionalId: string,
+  clientId: string,
+  email: string
+): Promise<void> {
+  const supabase = getSupabaseAdmin();
+  if (!supabase) return;
+
+  const { data: contact } = await supabase
+    .from("professional_contacts")
+    .select("id, stage, client_id")
+    .eq("professional_id", professionalId)
+    .ilike("email", email)
+    .maybeSingle();
+
+  if (!contact || contact.client_id) return;
+  if (!(["lead", "contatado", "agendado"] as CrmStage[]).includes(contact.stage)) return;
+
+  const { error } = await supabase
+    .from("professional_contacts")
+    .update({ client_id: clientId, stage: "cliente_ativo", updated_at: new Date().toISOString() })
+    .eq("id", contact.id);
+
+  if (error) {
+    console.error("[professional-crm] Failed to promote contact on booking:", error.message);
+  }
+}
+
 export async function addNote(contactId: string, body: string): Promise<boolean> {
   const supabase = getSupabaseAdmin();
   if (!supabase) return false;

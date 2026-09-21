@@ -28,6 +28,10 @@ export function SubscriptionCheckoutButton({
       if (!response.ok) {
         throw new Error(data.error ?? "Não foi possível iniciar o checkout agora.");
       }
+      if (data.switched) {
+        window.location.reload();
+        return;
+      }
       window.location.href = data.checkoutUrl;
     } catch (err) {
       setError(err instanceof Error ? err.message : "Não foi possível iniciar o checkout agora.");

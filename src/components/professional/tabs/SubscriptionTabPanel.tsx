@@ -61,8 +61,9 @@ export function SubscriptionTabPanel({
       <section>
         <h2 className="text-sm font-semibold uppercase tracking-wide text-ink-soft">Planos</h2>
         <p className="mt-1 text-sm text-ink-soft">
-          Assinatura mensal via Stripe. Cancele quando quiser pelo botão &quot;Gerenciar
-          assinatura&quot; acima.
+          Assinatura mensal via Stripe. Trocar de plano ajusta a cobrança com proração
+          automática — não precisa cancelar antes. Pra cancelar de vez, use o botão
+          &quot;Gerenciar assinatura&quot; acima.
         </p>
         <div className="mt-4 grid gap-4 sm:grid-cols-3">
           {SUBSCRIPTION_PLANS.map((plan) => {
@@ -90,15 +91,10 @@ export function SubscriptionTabPanel({
                     <span className="inline-block rounded-full bg-primary-light px-3 py-1 text-xs font-medium text-primary-dark">
                       Plano atual
                     </span>
-                  ) : hasActive ? (
-                    <p className="text-xs text-ink-soft">
-                      Cancele o plano atual em &quot;Gerenciar assinatura&quot; acima pra
-                      assinar este.
-                    </p>
                   ) : (
                     <SubscriptionCheckoutButton
                       plan={plan.id}
-                      label="Assinar"
+                      label={hasActive ? "Trocar pra este plano" : "Assinar"}
                       className="w-full rounded-xl bg-primary px-4 py-2 text-sm font-semibold text-paper transition hover:bg-primary-dark disabled:opacity-60"
                     />
                   )}

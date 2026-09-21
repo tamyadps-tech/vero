@@ -11,6 +11,7 @@ import {
   type CrmStage,
 } from "@/lib/professional-crm";
 import { AddLeadForm } from "@/components/professional/AddLeadForm";
+import { useDashboardShell } from "@/components/professional/DashboardShellContext";
 
 function formatPrice(cents: number) {
   return (cents / 100).toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
@@ -36,6 +37,7 @@ const STAGE_BADGE_STYLES: Record<CrmStage, string> = {
 };
 
 export function CrmTabPanel({ contacts }: { contacts: CrmContactSummary[] | null }) {
+  const { requestCampaignFor } = useDashboardShell();
   const [showAddForm, setShowAddForm] = useState(false);
   const [stageFilter, setStageFilter] = useState<"todos" | CrmStage>("todos");
   const [tagFilter, setTagFilter] = useState<string>("todas");
@@ -56,6 +58,12 @@ export function CrmTabPanel({ contacts }: { contacts: CrmContactSummary[] | null
     });
   }, [contacts, stageFilter, tagFilter]);
 
+  // Só clientes reais (com conta) recebem campanha — lead ainda não tem
+  // sessão verificada, então o envio nunca confiaria só no email dele.
+  const campaignEligibleIds = filtered
+    .filter((c) => c.clientId)
+    .map((c) => c.clientId as string);
+
   return (
     <section>
       <div className="flex flex-wrap items-start justify-between gap-3">
@@ -69,13 +77,21 @@ export function CrmTabPanel({ contacts }: { contacts: CrmContactSummary[] | null
             tarefas de follow-up.
           </p>
         </div>
-        <button
-          type="button"
-          onClick={() => setShowAddForm((v) => !v)}
-          className="shrink-0 rounded-xl border border-primary px-4 py-2 text-sm font-semibold text-primary-dark transition hover:bg-primary-light"
-        >
-          + Novo contato
-        </button>
+        <div className="flex shrink-0 gap-2">
+          <a
+            href="/api/professional/crm/export"
+            className="rounded-xl border border-border px-4 py-2 text-sm font-medium text-ink-soft transition hover:border-primary hover:text-ink"
+          >
+            Exportar CSV
+          </a>
+          <button
+            type="button"
+            onClick={() => setShowAddForm((v) => !v)}
+            className="rounded-xl border border-primary px-4 py-2 text-sm font-semibold text-primary-dark transition hover:bg-primary-light"
+          >
+            + Novo contato
+          </button>
+        </div>
       </div>
 
       {showAddForm && <AddLeadForm onDone={() => setShowAddForm(false)} />}
@@ -129,6 +145,16 @@ export function CrmTabPanel({ contacts }: { contacts: CrmContactSummary[] | null
                     </option>
                   ))}
                 </select>
+              )}
+              {campaignEligibleIds.length > 0 && (
+                <button
+                  type="button"
+                  onClick={() => requestCampaignFor(campaignEligibleIds)}
+                  className="rounded-lg border border-primary px-3 py-1.5 text-xs font-semibold text-primary-dark transition hover:bg-primary-light"
+                >
+                  Mandar campanha pros {campaignEligibleIds.length} filtrado
+                  {campaignEligibleIds.length === 1 ? "" : "s"}
+                </button>
               )}
             </div>
 

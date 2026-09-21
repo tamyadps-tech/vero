@@ -9,6 +9,7 @@ import { getGoogleCalendarAccessToken, createGoogleCalendarEvent } from "@/lib/g
 import { getStripeClient } from "@/lib/stripe";
 import { getClientFromAccessToken } from "@/lib/client-session";
 import { readAccessToken } from "@/lib/read-session-token";
+import { promoteContactOnBooking } from "@/lib/professional-crm";
 
 const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
@@ -99,6 +100,10 @@ export async function POST(request: Request) {
 
   const origin = new URL(request.url).origin;
   const progressUrl = `${origin}/c/dashboard`;
+
+  // Best-effort: promove lead → cliente ativo no CRM se esse email já
+  // estava cadastrado como contato manual.
+  await promoteContactOnBooking(professionalId, client.id, client.email);
 
   // Cria o evento na agenda do Google do profissional já aqui, antes da
   // Stripe — o horário já está reservado no Vero independente de

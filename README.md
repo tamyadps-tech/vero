@@ -362,6 +362,22 @@ e2e/              # testes Playwright
   plataforma (busca por nome/email/profissional), pra suporte — sem
   edição ali, porque notas/tags de cliente pertencem ao CRM do
   profissional dono da relação
+- CRM: lembrete diário por email (cron `/api/cron/task-reminders`, todo
+  dia às 8h BRT) resumindo tarefas atrasadas e de hoje pra cada
+  profissional — sem isso, tarefa vencida só aparecia se alguém abrisse
+  o painel por conta própria
+- CRM: quando um lead cadastrado manualmente agenda a 1ª sessão de
+  verdade, o contato é promovido pra "cliente ativo" automaticamente —
+  antes continuava marcado como lead até trocar na mão
+- CRM: filtrar por estágio/tag na aba Clientes e mandar campanha de
+  email/WhatsApp direto pros filtrados — abre a aba Marketing já com
+  esses clientes pré-selecionados, sem re-selecionar um por um
+- Assinatura: trocar de plano agora atualiza a mesma assinatura na
+  Stripe com proração automática, sem precisar cancelar antes (limite
+  que existia até aqui)
+- CRM: botão "Exportar CSV" na aba Clientes, com todo o funil (nome,
+  email, telefone, estágio, tags, sessões, LTV) — pra quem já usa outra
+  ferramenta (Excel, Notion) puxar os dados pra fora
 
 Tudo isso funciona sem quebrar mesmo sem alguma das chaves configurada:
 as rotas respondem 503 ou seguem em modo grátis/sem email, nunca com erro.

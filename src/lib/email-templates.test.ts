@@ -1,5 +1,10 @@
 import { describe, it, expect } from "vitest";
-import { bookingConfirmationEmail, sessionSummaryEmail, textToParagraphsHtml } from "./email-templates";
+import {
+  bookingConfirmationEmail,
+  sessionSummaryEmail,
+  taskReminderEmail,
+  textToParagraphsHtml,
+} from "./email-templates";
 
 describe("textToParagraphsHtml", () => {
   it("splits on blank lines into separate <p> tags", () => {
@@ -78,5 +83,31 @@ describe("sessionSummaryEmail", () => {
     expect(html).not.toContain("Tópicos abordados");
     expect(html).not.toContain("Tarefa até a próxima sessão");
     expect(html).not.toContain("Próxima sessão");
+  });
+});
+
+describe("taskReminderEmail", () => {
+  it("marks the subject with the overdue count when there are overdue tasks", () => {
+    const { subject, html } = taskReminderEmail({
+      professionalName: "Dra. Maria",
+      tasks: [
+        { contactName: "João", title: "Ligar pra remarcar", dueDate: "2026-01-01", overdue: true },
+        { contactName: "Ana", title: "Enviar material", dueDate: "2026-01-10", overdue: false },
+      ],
+      dashboardUrl: "https://vero.app/p/dashboard",
+    });
+    expect(subject).toContain("1 tarefa atrasada");
+    expect(html).toContain("João");
+    expect(html).toContain("Ligar pra remarcar");
+    expect(html).toContain("Atrasada");
+  });
+
+  it("uses a plain subject when nothing is overdue", () => {
+    const { subject } = taskReminderEmail({
+      professionalName: "Dra. Maria",
+      tasks: [{ contactName: "Ana", title: "Enviar material", dueDate: "2026-01-10", overdue: false }],
+      dashboardUrl: "https://vero.app/p/dashboard",
+    });
+    expect(subject).toBe("Tarefas de hoje no CRM — Vero");
   });
 });

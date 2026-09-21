@@ -219,3 +219,64 @@ export function professionalMessageEmail({
     html: shell(subject, body),
   };
 }
+
+const shortDateFormatter = new Intl.DateTimeFormat("pt-BR", { dateStyle: "short" });
+
+export interface TaskReminderItem {
+  contactName: string;
+  title: string;
+  dueDate: string;
+  overdue: boolean;
+}
+
+export function taskReminderEmail({
+  professionalName,
+  tasks,
+  dashboardUrl,
+}: {
+  professionalName: string;
+  tasks: TaskReminderItem[];
+  dashboardUrl: string;
+}): { subject: string; html: string } {
+  const overdueCount = tasks.filter((t) => t.overdue).length;
+  const todayCount = tasks.length - overdueCount;
+
+  const rowsHtml = tasks
+    .map(
+      (t) => `
+      <tr>
+        <td style="padding:8px 0;border-bottom:1px solid #e4dccc;font-size:14px;color:#1b2421;">
+          <strong>${escapeHtml(t.contactName)}</strong> — ${escapeHtml(t.title)}
+        </td>
+        <td style="padding:8px 0;border-bottom:1px solid #e4dccc;font-size:12px;text-align:right;white-space:nowrap;color:${t.overdue ? "#c94e29" : "#5b6763"};">
+          ${t.overdue ? "Atrasada · " : ""}${escapeHtml(shortDateFormatter.format(new Date(t.dueDate)))}
+        </td>
+      </tr>`
+    )
+    .join("\n");
+
+  const summary =
+    overdueCount > 0 && todayCount > 0
+      ? `${overdueCount} atrasada${overdueCount === 1 ? "" : "s"} e ${todayCount} de hoje`
+      : overdueCount > 0
+        ? `${overdueCount} atrasada${overdueCount === 1 ? "" : "s"}`
+        : `${todayCount} de hoje`;
+
+  const body = `
+    <p style="font-size:16px;">Olá, <strong>${escapeHtml(professionalName)}</strong>,</p>
+    <p style="font-size:14px;line-height:1.6;color:#5b6763;">
+      Você tem ${summary} no CRM da Vero:
+    </p>
+    <table style="width:100%;border-collapse:collapse;margin:16px 0;">
+      ${rowsHtml}
+    </table>
+    <p style="margin:24px 0;">${button(dashboardUrl, "Ver no painel")}</p>
+  `;
+  return {
+    subject:
+      overdueCount > 0
+        ? `${overdueCount} tarefa${overdueCount === 1 ? "" : "s"} atrasada${overdueCount === 1 ? "" : "s"} no CRM`
+        : "Tarefas de hoje no CRM — Vero",
+    html: shell("Tarefas do CRM — Vero", body),
+  };
+}
