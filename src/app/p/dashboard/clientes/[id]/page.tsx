@@ -14,6 +14,10 @@ import { ContactDetailHeader } from "@/components/professional/ContactDetailHead
 import { ContactNotes } from "@/components/professional/ContactNotes";
 import { ContactTasks } from "@/components/professional/ContactTasks";
 import { DeleteLeadButton } from "@/components/professional/DeleteLeadButton";
+import { TestListItem } from "@/components/professional/TestListItem";
+import { ExerciseListItem } from "@/components/professional/ExerciseListItem";
+import { ASSESSMENT_TEMPLATES } from "@/lib/assessments";
+import { EXERCISES } from "@/lib/exercises";
 
 export const metadata: Metadata = {
   title: "Contato — Vero",
@@ -120,6 +124,59 @@ export default async function ContactDetailPage({
           <div className="mt-8 space-y-8">
             <ContactTasks linkId={linkId} tasks={detail.tasks} />
             <ContactNotes linkId={linkId} notes={detail.notes} />
+
+            {detail.client && (
+              <>
+                <section>
+                  <h2 className="text-sm font-semibold uppercase tracking-wide text-ink-soft">
+                    Testes
+                  </h2>
+                  <p className="mt-1 text-sm text-ink-soft">
+                    Envie só os que fizerem sentido pra esse cliente agora — nada aparece
+                    pra ele até você clicar em &quot;Enviar&quot;.
+                  </p>
+                  <div className="mt-3 space-y-2">
+                    {ASSESSMENT_TEMPLATES.map((template) => (
+                      <TestListItem
+                        key={template.slug}
+                        clientId={detail.client!.id}
+                        template={template}
+                        initialReleased={detail.client!.releasedAssessmentSlugs.includes(
+                          template.slug
+                        )}
+                        latest={detail.client!.latestAssessments.find(
+                          (a) => a.templateSlug === template.slug
+                        )}
+                      />
+                    ))}
+                  </div>
+                </section>
+
+                <section>
+                  <h2 className="text-sm font-semibold uppercase tracking-wide text-ink-soft">
+                    Exercícios
+                  </h2>
+                  <p className="mt-1 text-sm text-ink-soft">
+                    Mesma lógica: só quem você enviar fica disponível pro cliente responder.
+                  </p>
+                  <div className="mt-3 space-y-2">
+                    {EXERCISES.map((exercise) => (
+                      <ExerciseListItem
+                        key={exercise.slug}
+                        clientId={detail.client!.id}
+                        exercise={exercise}
+                        initialReleased={detail.client!.releasedExerciseSlugs.includes(
+                          exercise.slug
+                        )}
+                        latest={detail.client!.latestExercises.find(
+                          (e) => e.templateSlug === exercise.slug
+                        )}
+                      />
+                    ))}
+                  </div>
+                </section>
+              </>
+            )}
 
             <section>
               <h2 className="text-sm font-semibold uppercase tracking-wide text-ink-soft">
