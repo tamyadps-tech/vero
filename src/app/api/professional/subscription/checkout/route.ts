@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import Stripe from "stripe";
 import { getStripeClient } from "@/lib/stripe";
 import { getSupabaseAdmin } from "@/lib/supabase-admin";
 import { getProfessionalIdFromAccessToken } from "@/lib/professional-session";
@@ -80,7 +81,11 @@ export async function POST(request: Request) {
       return NextResponse.json({ ok: true, switched: true });
     } catch (error) {
       console.error("[professional/subscription/checkout] Plan switch failed:", error);
-      return NextResponse.json({ error: "Não foi possível trocar de plano agora." }, { status: 500 });
+      const detail = error instanceof Stripe.errors.StripeError ? `: ${error.message}` : "";
+      return NextResponse.json(
+        { error: `Não foi possível trocar de plano agora${detail}` },
+        { status: 500 }
+      );
     }
   }
 
@@ -116,6 +121,10 @@ export async function POST(request: Request) {
     return NextResponse.json({ checkoutUrl: checkoutSession.url });
   } catch (error) {
     console.error("[professional/subscription/checkout] Stripe checkout failed:", error);
-    return NextResponse.json({ error: "Não foi possível iniciar o checkout agora." }, { status: 500 });
+    const detail = error instanceof Stripe.errors.StripeError ? `: ${error.message}` : "";
+    return NextResponse.json(
+      { error: `Não foi possível iniciar o checkout agora${detail}` },
+      { status: 500 }
+    );
   }
 }
