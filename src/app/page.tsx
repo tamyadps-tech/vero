@@ -1,5 +1,6 @@
 import { Header } from "@/components/Header";
 import { Hero } from "@/components/Hero";
+import { WhyItMatters } from "@/components/WhyItMatters";
 import { Features } from "@/components/Features";
 import { HowItWorks } from "@/components/HowItWorks";
 import { VettingProcess } from "@/components/VettingProcess";
@@ -14,6 +15,7 @@ export default function Home() {
       <Header />
       <main className="flex-1">
         <Hero />
+        <WhyItMatters />
         <Features />
         <HowItWorks />
         <VettingProcess />

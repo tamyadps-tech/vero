@@ -24,6 +24,9 @@ export function Header() {
           <Link href="/#faq" className="hover:text-ink">
             Dúvidas
           </Link>
+          <Link href="/blog" className="hover:text-ink">
+            Blog
+          </Link>
         </nav>
         <div className="flex items-center gap-3">
           <Link

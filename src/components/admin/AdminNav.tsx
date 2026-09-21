@@ -8,6 +8,7 @@ const links = [
   { href: "/admin/assinaturas", label: "Assinaturas" },
   { href: "/admin/marketing", label: "Marketing" },
   { href: "/admin/financeiro", label: "Financeiro" },
+  { href: "/admin/blog", label: "Blog" },
 ];
 
 export function AdminNav({ active }: { active: string }) {
