@@ -2,8 +2,9 @@ import { describe, it, expect, beforeEach } from "vitest";
 import { POST } from "./route";
 
 const VALID_BODY = {
-  code: "code-abc",
-  codeVerifier: "verifier-abc",
+  accessToken: "access-abc",
+  refreshToken: "refresh-abc",
+  expiresIn: 3600,
 };
 
 function makeRequest(body: Record<string, unknown>) {
@@ -20,13 +21,13 @@ describe("POST /api/auth/client/google-callback", () => {
     delete process.env.SUPABASE_ANON_KEY;
   });
 
-  it("rejects a missing code", async () => {
-    const response = await POST(makeRequest({ ...VALID_BODY, code: undefined }));
+  it("rejects a missing accessToken", async () => {
+    const response = await POST(makeRequest({ ...VALID_BODY, accessToken: undefined }));
     expect(response.status).toBe(400);
   });
 
-  it("rejects a missing codeVerifier", async () => {
-    const response = await POST(makeRequest({ ...VALID_BODY, codeVerifier: undefined }));
+  it("rejects a missing refreshToken", async () => {
+    const response = await POST(makeRequest({ ...VALID_BODY, refreshToken: undefined }));
     expect(response.status).toBe(400);
   });
 
