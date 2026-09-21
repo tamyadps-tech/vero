@@ -18,6 +18,9 @@ export function Header() {
           <Link href="/#para-profissionais" className="hover:text-ink">
             Para profissionais
           </Link>
+          <Link href="/palestrantes-e-treinadores" className="hover:text-ink">
+            Palestrantes
+          </Link>
           <Link href="/#confianca" className="hover:text-ink">
             Confiança &amp; vetting
           </Link>
