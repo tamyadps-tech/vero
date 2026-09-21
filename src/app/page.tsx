@@ -6,6 +6,7 @@ import { Features } from "@/components/Features";
 import { HowItWorks } from "@/components/HowItWorks";
 import { VettingProcess } from "@/components/VettingProcess";
 import { SecuritySection } from "@/components/SecuritySection";
+import { ProfessionalPainPoints } from "@/components/ProfessionalPainPoints";
 import { ForProfessionals } from "@/components/ForProfessionals";
 import { FAQ } from "@/components/FAQ";
 import { Footer } from "@/components/Footer";
@@ -22,6 +23,7 @@ export default function Home() {
         <HowItWorks />
         <VettingProcess />
         <SecuritySection />
+        <ProfessionalPainPoints />
         <ForProfessionals />
         <FAQ />
       </main>

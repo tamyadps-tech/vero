@@ -2,6 +2,8 @@ import Link from "next/link";
 
 const perks = [
   "Agenda, prontuário e cobrança num só lugar",
+  "Calculadora de margem e preço sugerido, a partir dos seus custos reais — chega de cobrar no chute",
+  "Testes e exercícios prontos pra enviar, pra nunca faltar ideia de conteúdo pra próxima sessão",
   "CRM com o histórico de cada cliente e o valor que ele já gerou (LTV)",
   "Sinal de quem está sumindo, pra você reengajar antes de perder o cliente",
   "Envie mensagens (avisos, novidades, promoções) direto pros seus clientes",
