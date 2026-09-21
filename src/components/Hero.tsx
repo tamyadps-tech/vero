@@ -25,7 +25,7 @@ export function Hero() {
         <div className="mx-auto max-w-3xl text-center">
           <span className="inline-flex items-center gap-2 rounded-full border border-border bg-paper/80 px-4 py-1.5 text-xs font-medium uppercase tracking-wide text-ink-soft shadow-soft backdrop-blur">
             <span className="h-1.5 w-1.5 rounded-full bg-primary" />
-            Marketplace de saúde &amp; bem-estar
+            Gente de verdade, cuidando de você
           </span>
           <h1 className="mt-7 font-display text-5xl font-medium leading-[1.05] tracking-tight text-ink sm:text-6xl">
             Profissionais verificados.
