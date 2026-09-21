@@ -29,7 +29,7 @@ export function VettingProcess() {
   return (
     <section className="mx-auto max-w-6xl px-6 py-20">
       <div className="mx-auto max-w-2xl text-center">
-        <h2 className="text-3xl font-semibold tracking-tight text-ink">
+        <h2 className="font-display text-3xl font-medium tracking-tight text-ink sm:text-4xl">
           Como funciona o vetting
         </h2>
         <p className="mt-4 text-ink-soft">
@@ -40,10 +40,10 @@ export function VettingProcess() {
       <div className="mt-14 grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
         {steps.map((item) => (
           <div key={item.step}>
-            <span className="text-sm font-semibold text-accent">
+            <span className="font-display text-2xl font-medium text-accent">
               {item.step}
             </span>
-            <h3 className="mt-2 text-base font-semibold text-ink">
+            <h3 className="mt-3 font-display text-base font-medium text-ink">
               {item.title}
             </h3>
             <p className="mt-2 text-sm leading-relaxed text-ink-soft">

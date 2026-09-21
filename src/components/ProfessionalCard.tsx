@@ -28,7 +28,7 @@ export function ProfessionalCard({
   return (
     <Link
       href={`/profissionais/${professional.id}`}
-      className="block rounded-2xl border border-border bg-paper p-6 transition hover:border-primary"
+      className="block rounded-2xl border border-border bg-paper p-6 shadow-soft transition hover:-translate-y-0.5 hover:border-primary hover:shadow-lifted"
     >
       <div className="flex items-start justify-between gap-3">
         <div className="flex items-start gap-3">
@@ -46,7 +46,7 @@ export function ProfessionalCard({
           )}
           <div>
             <div className="flex flex-wrap items-center gap-1.5">
-              <h3 className="font-semibold text-ink">{professional.full_name}</h3>
+              <h3 className="font-display font-medium text-ink">{professional.full_name}</h3>
               <VerifiedBadge />
             </div>
             <p className="text-sm text-ink-soft">

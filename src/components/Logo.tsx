@@ -24,7 +24,7 @@ export function Logo({ className = "" }: { className?: string }) {
   return (
     <span className={`inline-flex items-center gap-2 ${className}`}>
       <LogoMark />
-      <span className="text-xl font-semibold tracking-tight text-ink">
+      <span className="font-display text-xl font-medium tracking-tight text-ink">
         Vero
       </span>
     </span>

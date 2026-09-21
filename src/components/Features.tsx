@@ -29,7 +29,7 @@ export function Features() {
   return (
     <section id="confianca" className="mx-auto max-w-6xl px-6 py-20">
       <div className="mx-auto max-w-2xl text-center">
-        <h2 className="text-3xl font-semibold tracking-tight text-ink">
+        <h2 className="font-display text-3xl font-medium tracking-tight text-ink sm:text-4xl">
           Confiança do primeiro clique à última sessão
         </h2>
         <p className="mt-4 text-ink-soft">
@@ -41,12 +41,12 @@ export function Features() {
         {features.map((feature) => (
           <div
             key={feature.title}
-            className="rounded-2xl border border-border bg-paper-alt/50 p-6"
+            className="rounded-2xl border border-border bg-paper p-6 shadow-soft transition hover:-translate-y-0.5 hover:shadow-lifted"
           >
-            <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-primary-light text-primary">
+            <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary-light text-primary">
               <svg
                 viewBox="0 0 24 24"
-                className="h-5 w-5"
+                className="h-6 w-6"
                 fill="none"
                 stroke="currentColor"
                 strokeWidth="1.8"
@@ -56,7 +56,7 @@ export function Features() {
                 {feature.icon}
               </svg>
             </div>
-            <h3 className="mt-4 text-lg font-semibold text-ink">
+            <h3 className="mt-4 font-display text-lg font-medium text-ink">
               {feature.title}
             </h3>
             <p className="mt-2 text-sm leading-relaxed text-ink-soft">

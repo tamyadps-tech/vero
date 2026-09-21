@@ -46,7 +46,7 @@ export default async function ProfissionaisPage({
       <Header />
       <main className="flex-1">
         <section className="mx-auto max-w-6xl px-6 py-16">
-          <h1 className="text-3xl font-semibold tracking-tight text-ink sm:text-4xl">
+          <h1 className="font-display text-3xl font-medium tracking-tight text-ink sm:text-4xl">
             Encontre um profissional
           </h1>
           <p className="mt-2 text-ink-soft">

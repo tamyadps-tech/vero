@@ -34,7 +34,7 @@ export function Header() {
           </Link>
           <Link
             href="/c/cadastrar"
-            className="rounded-full bg-primary px-5 py-2.5 text-sm font-semibold text-paper transition hover:bg-primary-dark"
+            className="rounded-full bg-primary px-5 py-2.5 text-sm font-semibold text-paper shadow-soft transition hover:bg-primary-dark hover:shadow-lifted"
           >
             Cadastre-se aqui
           </Link>

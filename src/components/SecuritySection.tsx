@@ -23,7 +23,7 @@ export function SecuritySection() {
     <section className="border-y border-border/70 bg-paper-alt/40">
       <div className="mx-auto max-w-6xl px-6 py-20">
         <div className="mx-auto max-w-2xl text-center">
-          <h2 className="text-3xl font-semibold tracking-tight text-ink">
+          <h2 className="font-display text-3xl font-medium tracking-tight text-ink sm:text-4xl">
             Segurança e privacidade
           </h2>
           <p className="mt-4 text-ink-soft">
@@ -35,9 +35,9 @@ export function SecuritySection() {
           {points.map((point) => (
             <div
               key={point.title}
-              className="rounded-2xl border border-border bg-paper p-6"
+              className="rounded-2xl border border-border bg-paper p-6 shadow-soft transition hover:-translate-y-0.5 hover:shadow-lifted"
             >
-              <h3 className="font-semibold text-ink">{point.title}</h3>
+              <h3 className="font-display font-medium text-ink">{point.title}</h3>
               <p className="mt-2 text-sm leading-relaxed text-ink-soft">
                 {point.description}
               </p>

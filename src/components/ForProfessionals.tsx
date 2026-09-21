@@ -13,9 +13,9 @@ const perks = [
 export function ForProfessionals() {
   return (
     <section id="para-profissionais" className="mx-auto max-w-6xl px-6 py-20">
-      <div className="grid gap-10 rounded-3xl border border-border bg-paper-alt/50 p-8 sm:grid-cols-2 sm:p-12">
+      <div className="grid gap-10 rounded-3xl border border-border bg-paper-alt/50 p-8 shadow-soft sm:grid-cols-2 sm:p-12">
         <div>
-          <h2 className="text-3xl font-semibold tracking-tight text-ink">
+          <h2 className="font-display text-3xl font-medium tracking-tight text-ink sm:text-4xl">
             Para profissionais
           </h2>
           <p className="mt-4 text-ink-soft">
@@ -47,7 +47,7 @@ export function ForProfessionals() {
           </p>
           <Link
             href="/profissionais/cadastro"
-            className="inline-flex items-center justify-center rounded-xl bg-primary px-6 py-3 text-sm font-semibold text-paper transition hover:bg-primary-dark"
+            className="inline-flex items-center justify-center rounded-xl bg-primary px-6 py-3 text-sm font-semibold text-paper shadow-soft transition hover:bg-primary-dark hover:shadow-lifted"
           >
             Cadastre-se aqui
           </Link>

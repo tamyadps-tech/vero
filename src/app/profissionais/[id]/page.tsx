@@ -96,7 +96,7 @@ export default async function ProfessionalProfilePage({
                 </span>
                 <VerifiedBadge />
               </div>
-              <h1 className="mt-2 text-3xl font-semibold tracking-tight text-ink sm:text-4xl">
+              <h1 className="mt-2 font-display text-3xl font-medium tracking-tight text-ink sm:text-4xl">
                 {professional.full_name}
               </h1>
             </div>
@@ -197,10 +197,10 @@ export default async function ProfessionalProfilePage({
 
           <PortfolioCarousel photoUrls={professional.portfolio_photo_urls} />
 
-          <div className="mt-8 rounded-2xl border border-border bg-paper p-6 sm:p-8">
+          <div className="mt-8 rounded-2xl border border-border bg-paper p-6 shadow-lifted sm:p-8">
             <div className="mb-5 flex items-center justify-between">
               <p className="text-sm text-ink-soft">Sessão individual</p>
-              <p className="text-2xl font-semibold text-ink">
+              <p className="font-display text-2xl font-medium text-ink">
                 {formatPrice(professional.price_cents)}
               </p>
             </div>

@@ -35,7 +35,7 @@ export function FAQ() {
   return (
     <section id="faq" className="mx-auto max-w-3xl px-6 py-20">
       <div className="text-center">
-        <h2 className="text-3xl font-semibold tracking-tight text-ink">
+        <h2 className="font-display text-3xl font-medium tracking-tight text-ink sm:text-4xl">
           Perguntas frequentes
         </h2>
       </div>
@@ -43,7 +43,7 @@ export function FAQ() {
         {faqs.map((faq) => (
           <details
             key={faq.question}
-            className="group rounded-2xl border border-border bg-paper-alt/40 p-5"
+            className="group rounded-2xl border border-border bg-paper p-5 shadow-soft transition open:shadow-lifted"
           >
             <summary className="cursor-pointer list-none font-medium text-ink marker:content-none">
               <span className="flex items-center justify-between gap-3">
