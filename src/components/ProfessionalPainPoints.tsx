@@ -1,3 +1,5 @@
+import { Reveal } from "@/components/Reveal";
+
 const painPoints = [
   "Agenda num app, prontuário em outro, cobrança numa planilha — nada conversa entre si",
   "Definir preço no chute, sem saber se cobre os custos e ainda sobra margem saudável",
@@ -23,14 +25,13 @@ export function ProfessionalPainPoints() {
         </p>
       </div>
       <div className="mt-10 grid gap-4 sm:grid-cols-2">
-        {painPoints.map((point) => (
-          <div
-            key={point}
-            className="flex items-start gap-3 rounded-2xl border border-border bg-paper-alt/40 p-5 text-sm text-ink"
-          >
-            <span className="mt-1 h-1.5 w-1.5 shrink-0 rounded-full bg-accent" />
-            {point}
-          </div>
+        {painPoints.map((point, index) => (
+          <Reveal key={point} delayMs={index * 100}>
+            <div className="flex items-start gap-3 rounded-2xl border border-border bg-paper-alt/40 p-5 text-sm text-ink">
+              <span className="mt-1 h-1.5 w-1.5 shrink-0 rounded-full bg-accent" />
+              {point}
+            </div>
+          </Reveal>
         ))}
       </div>
     </section>

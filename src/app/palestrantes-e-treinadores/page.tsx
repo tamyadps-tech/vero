@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
+import { Reveal } from "@/components/Reveal";
 
 export const metadata: Metadata = {
   title: "Palestrantes e treinadores — Vero",
@@ -94,14 +95,13 @@ export default function PalestrantesETreinadoresPage() {
             </p>
           </div>
           <div className="mt-10 grid gap-4 sm:grid-cols-2">
-            {painPoints.map((point) => (
-              <div
-                key={point}
-                className="flex items-start gap-3 rounded-2xl border border-border bg-paper-alt/40 p-5 text-sm text-ink"
-              >
-                <span className="mt-1 h-1.5 w-1.5 shrink-0 rounded-full bg-accent" />
-                {point}
-              </div>
+            {painPoints.map((point, index) => (
+              <Reveal key={point} delayMs={index * 100}>
+                <div className="flex items-start gap-3 rounded-2xl border border-border bg-paper-alt/40 p-5 text-sm text-ink">
+                  <span className="mt-1 h-1.5 w-1.5 shrink-0 rounded-full bg-accent" />
+                  {point}
+                </div>
+              </Reveal>
             ))}
           </div>
         </section>
@@ -120,18 +120,17 @@ export default function PalestrantesETreinadoresPage() {
               </p>
             </div>
             <div className="mt-12 grid gap-5 sm:grid-cols-2">
-              {benefits.map((benefit) => (
-                <div
-                  key={benefit.title}
-                  className="rounded-2xl border border-border bg-paper p-6 shadow-soft transition hover:-translate-y-0.5 hover:shadow-lifted"
-                >
-                  <h3 className="font-display text-lg font-medium text-ink">
-                    {benefit.title}
-                  </h3>
-                  <p className="mt-2 text-sm leading-relaxed text-ink-soft">
-                    {benefit.description}
-                  </p>
-                </div>
+              {benefits.map((benefit, index) => (
+                <Reveal key={benefit.title} delayMs={index * 100}>
+                  <div className="h-full rounded-2xl border border-border bg-paper p-6 shadow-soft transition hover:-translate-y-0.5 hover:shadow-lifted">
+                    <h3 className="font-display text-lg font-medium text-ink">
+                      {benefit.title}
+                    </h3>
+                    <p className="mt-2 text-sm leading-relaxed text-ink-soft">
+                      {benefit.description}
+                    </p>
+                  </div>
+                </Reveal>
               ))}
             </div>
           </div>
@@ -144,38 +143,39 @@ export default function PalestrantesETreinadoresPage() {
             </h2>
           </div>
           <div className="mt-10 grid gap-5 sm:grid-cols-3">
-            {formats.map((format) => (
-              <div
-                key={format.title}
-                className="rounded-2xl border border-border bg-paper p-6 shadow-soft"
-              >
-                <h3 className="font-display text-lg font-medium text-ink">{format.title}</h3>
-                <p className="mt-2 text-sm leading-relaxed text-ink-soft">
-                  {format.description}
-                </p>
-              </div>
+            {formats.map((format, index) => (
+              <Reveal key={format.title} delayMs={index * 100}>
+                <div className="h-full rounded-2xl border border-border bg-paper p-6 shadow-soft">
+                  <h3 className="font-display text-lg font-medium text-ink">{format.title}</h3>
+                  <p className="mt-2 text-sm leading-relaxed text-ink-soft">
+                    {format.description}
+                  </p>
+                </div>
+              </Reveal>
             ))}
           </div>
         </section>
 
         <section className="mx-auto max-w-3xl px-6 pb-24">
-          <div className="rounded-2xl border border-primary/20 bg-primary-light/40 p-8 text-center shadow-soft">
-            <h2 className="font-display text-xl font-medium text-ink">
-              Escolha com a mesma confiança de quem já contratou
-            </h2>
-            <p className="mx-auto mt-2 max-w-xl text-sm leading-relaxed text-ink-soft">
-              Todo palestrante e treinador na Vero passa por verificação de credenciais e
-              acumula avaliações reais de quem já contratou uma sessão — nada de escolher no
-              escuro.
-            </p>
-            <Link
-              href="/profissionais?category=palestrante"
-              className="mt-5 inline-flex items-center gap-2 rounded-xl bg-primary px-6 py-3 text-sm font-semibold text-paper shadow-soft transition hover:bg-primary-dark hover:shadow-lifted"
-            >
-              Ver palestrantes e treinadores
-              <span>→</span>
-            </Link>
-          </div>
+          <Reveal>
+            <div className="rounded-2xl border border-primary/20 bg-primary-light/40 p-8 text-center shadow-soft">
+              <h2 className="font-display text-xl font-medium text-ink">
+                Escolha com a mesma confiança de quem já contratou
+              </h2>
+              <p className="mx-auto mt-2 max-w-xl text-sm leading-relaxed text-ink-soft">
+                Todo palestrante e treinador na Vero passa por verificação de credenciais e
+                acumula avaliações reais de quem já contratou uma sessão — nada de escolher no
+                escuro.
+              </p>
+              <Link
+                href="/profissionais?category=palestrante"
+                className="mt-5 inline-flex items-center gap-2 rounded-xl bg-primary px-6 py-3 text-sm font-semibold text-paper shadow-soft transition hover:bg-primary-dark hover:shadow-lifted"
+              >
+                Ver palestrantes e treinadores
+                <span>→</span>
+              </Link>
+            </div>
+          </Reveal>
         </section>
       </main>
       <Footer />

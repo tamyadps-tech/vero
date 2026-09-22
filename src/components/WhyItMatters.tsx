@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { Reveal } from "@/components/Reveal";
 
 const stats = [
   {
@@ -48,15 +49,14 @@ export function WhyItMatters() {
         </div>
 
         <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-          {stats.map((stat) => (
-            <div
-              key={stat.label}
-              className="rounded-2xl border border-border bg-paper p-6 shadow-soft"
-            >
-              <p className="font-display text-3xl font-medium text-primary">{stat.number}</p>
-              <p className="mt-1 text-sm font-semibold text-ink">{stat.label}</p>
-              <p className="mt-2 text-xs leading-relaxed text-ink-soft">{stat.detail}</p>
-            </div>
+          {stats.map((stat, index) => (
+            <Reveal key={stat.label} delayMs={index * 100}>
+              <div className="h-full rounded-2xl border border-border bg-paper p-6 shadow-soft">
+                <p className="font-display text-3xl font-medium text-primary">{stat.number}</p>
+                <p className="mt-1 text-sm font-semibold text-ink">{stat.label}</p>
+                <p className="mt-2 text-xs leading-relaxed text-ink-soft">{stat.detail}</p>
+              </div>
+            </Reveal>
           ))}
         </div>
 

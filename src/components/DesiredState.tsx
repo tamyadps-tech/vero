@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { Reveal } from "@/components/Reveal";
 
 const shifts = [
   {
@@ -49,18 +50,17 @@ export function DesiredState() {
             </p>
           </div>
         </div>
-        {shifts.map((shift) => (
-          <div
-            key={shift.before}
-            className="grid grid-cols-2 divide-x divide-border border-t border-border"
-          >
-            <p className="px-5 py-4 text-sm leading-relaxed text-ink-soft sm:px-8">
-              {shift.before}
-            </p>
-            <p className="bg-primary-light/10 px-5 py-4 text-sm leading-relaxed text-ink sm:px-8">
-              {shift.after}
-            </p>
-          </div>
+        {shifts.map((shift, index) => (
+          <Reveal key={shift.before} delayMs={index * 100}>
+            <div className="grid grid-cols-2 divide-x divide-border border-t border-border">
+              <p className="px-5 py-4 text-sm leading-relaxed text-ink-soft sm:px-8">
+                {shift.before}
+              </p>
+              <p className="bg-primary-light/10 px-5 py-4 text-sm leading-relaxed text-ink sm:px-8">
+                {shift.after}
+              </p>
+            </div>
+          </Reveal>
         ))}
       </div>
 

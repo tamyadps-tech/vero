@@ -1,5 +1,6 @@
 import { Header } from "@/components/Header";
 import { Hero } from "@/components/Hero";
+import { Reveal } from "@/components/Reveal";
 import { WhyItMatters } from "@/components/WhyItMatters";
 import { DesiredState } from "@/components/DesiredState";
 import { Features } from "@/components/Features";
@@ -17,15 +18,33 @@ export default function Home() {
       <Header />
       <main className="flex-1">
         <Hero />
-        <WhyItMatters />
-        <DesiredState />
-        <Features />
-        <HowItWorks />
-        <VettingProcess />
-        <SecuritySection />
-        <ProfessionalPainPoints />
-        <ForProfessionals />
-        <FAQ />
+        <Reveal>
+          <WhyItMatters />
+        </Reveal>
+        <Reveal>
+          <DesiredState />
+        </Reveal>
+        <Reveal>
+          <Features />
+        </Reveal>
+        <Reveal>
+          <HowItWorks />
+        </Reveal>
+        <Reveal>
+          <VettingProcess />
+        </Reveal>
+        <Reveal>
+          <SecuritySection />
+        </Reveal>
+        <Reveal>
+          <ProfessionalPainPoints />
+        </Reveal>
+        <Reveal>
+          <ForProfessionals />
+        </Reveal>
+        <Reveal>
+          <FAQ />
+        </Reveal>
       </main>
       <Footer />
     </>

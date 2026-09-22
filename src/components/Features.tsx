@@ -1,3 +1,5 @@
+import { Reveal } from "@/components/Reveal";
+
 const features = [
   {
     title: "Vetting de verdade",
@@ -38,31 +40,30 @@ export function Features() {
         </p>
       </div>
       <div className="mt-14 grid gap-6 sm:grid-cols-3">
-        {features.map((feature) => (
-          <div
-            key={feature.title}
-            className="rounded-2xl border border-border bg-paper p-6 shadow-soft transition hover:-translate-y-0.5 hover:shadow-lifted"
-          >
-            <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary-light text-primary">
-              <svg
-                viewBox="0 0 24 24"
-                className="h-6 w-6"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="1.8"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                {feature.icon}
-              </svg>
+        {features.map((feature, index) => (
+          <Reveal key={feature.title} delayMs={index * 100}>
+            <div className="h-full rounded-2xl border border-border bg-paper p-6 shadow-soft transition hover:-translate-y-0.5 hover:shadow-lifted">
+              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary-light text-primary">
+                <svg
+                  viewBox="0 0 24 24"
+                  className="h-6 w-6"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1.8"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  {feature.icon}
+                </svg>
+              </div>
+              <h3 className="mt-4 font-display text-lg font-medium text-ink">
+                {feature.title}
+              </h3>
+              <p className="mt-2 text-sm leading-relaxed text-ink-soft">
+                {feature.description}
+              </p>
             </div>
-            <h3 className="mt-4 font-display text-lg font-medium text-ink">
-              {feature.title}
-            </h3>
-            <p className="mt-2 text-sm leading-relaxed text-ink-soft">
-              {feature.description}
-            </p>
-          </div>
+          </Reveal>
         ))}
       </div>
     </section>
