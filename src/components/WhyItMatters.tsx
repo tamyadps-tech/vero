@@ -7,24 +7,28 @@ const stats = [
     label: "pessoas no mundo",
     detail:
       "vivem com algum transtorno mental, segundo o Relatório Mundial de Saúde Mental da Organização Mundial da Saúde (OMS).",
+    color: "text-primary",
   },
   {
     number: "Nº1",
     label: "em ansiedade",
     detail:
       "O Brasil é apontado pela OMS como o país com a maior prevalência de ansiedade do mundo.",
+    color: "text-accent-dark",
   },
   {
     number: "70%",
     label: "relatam melhora real",
     detail:
       "de quem passa por acompanhamento com coaching relata evolução no desempenho e nas relações, segundo a Federação Internacional de Coaching (ICF).",
+    color: "text-gold-dark",
   },
   {
     number: "Maioria",
     label: "nunca busca ajuda",
     detail:
       "A maior parte de quem precisa de acompanhamento nunca chega a iniciar um tratamento, segundo a OMS — muitas vezes por não saber por onde começar.",
+    color: "text-sage",
   },
 ];
 
@@ -52,7 +56,7 @@ export function WhyItMatters() {
           {stats.map((stat, index) => (
             <Reveal key={stat.label} delayMs={index * 100}>
               <div className="h-full rounded-2xl border border-border bg-paper p-6 shadow-soft">
-                <p className="font-display text-3xl font-medium text-primary">{stat.number}</p>
+                <p className={`font-display text-3xl font-medium ${stat.color}`}>{stat.number}</p>
                 <p className="mt-1 text-sm font-semibold text-ink">{stat.label}</p>
                 <p className="mt-2 text-xs leading-relaxed text-ink-soft">{stat.detail}</p>
               </div>

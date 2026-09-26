@@ -14,6 +14,12 @@
   --color-accent: #ff6b4a;
   --color-accent-dark: #d8492a;
   --color-accent-light: #ffe4da;
+  --color-gold: #c68a2e;
+  --color-gold-dark: #96661e;
+  --color-gold-light: #f5e6c8;
+  --color-sage: #3e6e5e;
+  --color-sage-dark: #2a4c40;
+  --color-sage-light: #dceae4;
   --color-border: #e8dbe1;
 }
 
@@ -28,6 +34,12 @@
   --color-accent: var(--color-accent);
   --color-accent-dark: var(--color-accent-dark);
   --color-accent-light: var(--color-accent-light);
+  --color-gold: var(--color-gold);
+  --color-gold-dark: var(--color-gold-dark);
+  --color-gold-light: var(--color-gold-light);
+  --color-sage: var(--color-sage);
+  --color-sage-dark: var(--color-sage-dark);
+  --color-sage-light: var(--color-sage-light);
   --color-border: var(--color-border);
 
   /* Manrope (UI/corpo) + Instrument Serif (títulos) — as variáveis

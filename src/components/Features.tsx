@@ -8,6 +8,7 @@ const features = [
     icon: (
       <path d="M9 12.5l2 2 4-4.5M12 3l7 3v5c0 4.5-2.9 8.3-7 9.9-4.1-1.6-7-5.4-7-9.9V6l7-3z" />
     ),
+    iconBg: "bg-primary-light text-primary",
   },
   {
     title: "Avaliações públicas",
@@ -16,6 +17,7 @@ const features = [
     icon: (
       <path d="M12 3l2.6 5.6 6.1.6-4.6 4.1 1.3 6-5.4-3.1-5.4 3.1 1.3-6-4.6-4.1 6.1-.6z" />
     ),
+    iconBg: "bg-accent-light text-accent-dark",
   },
   {
     title: "Progresso visual, na sua conta",
@@ -24,6 +26,7 @@ const features = [
     icon: (
       <path d="M4 19V5m0 14h16M8 15l3-4 3 3 4-6" />
     ),
+    iconBg: "bg-gold-light text-gold-dark",
   },
 ];
 
@@ -43,7 +46,7 @@ export function Features() {
         {features.map((feature, index) => (
           <Reveal key={feature.title} delayMs={index * 100}>
             <div className="h-full rounded-2xl border border-border bg-paper p-6 shadow-soft transition hover:-translate-y-0.5 hover:shadow-lifted">
-              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary-light text-primary">
+              <div className={`flex h-12 w-12 items-center justify-center rounded-xl ${feature.iconBg}`}>
                 <svg
                   viewBox="0 0 24 24"
                   className="h-6 w-6"

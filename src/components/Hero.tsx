@@ -21,6 +21,7 @@ export function Hero() {
       />
       <div className="pointer-events-none absolute -right-32 -top-32 h-96 w-96 rounded-full bg-primary-light blur-3xl" />
       <div className="pointer-events-none absolute -left-32 top-52 h-96 w-96 rounded-full bg-accent-light blur-3xl" />
+      <div className="pointer-events-none absolute left-1/3 -bottom-40 h-80 w-80 rounded-full bg-gold-light/70 blur-3xl" />
       <div className="relative mx-auto max-w-6xl px-6 py-24 sm:py-32">
         <div className="mx-auto max-w-3xl text-center">
           <span className="inline-flex items-center gap-2 rounded-full border border-border bg-paper/80 px-4 py-1.5 text-xs font-medium uppercase tracking-wide text-ink-soft shadow-soft backdrop-blur">

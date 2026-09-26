@@ -16,13 +16,15 @@ dos documentos legais.
 
 ---
 
-## Paleta de cores — "Ameixa & Coral"
+## Paleta de cores — "Ameixa & Coral" (+ Gold & Sage)
 
 Fugimos do roxo-gradiente genérico de SaaS e do verde-petróleo genérico de
 plataforma de bem-estar. A Vero usa uma ameixa profunda (autoridade,
 sofisticação, um pouco de drama editorial) combinada com coral vibrante
 (energia, calor humano) sobre um fundo creme rosado — mais marcante que
-"seguro", sem perder acolhimento.
+"seguro", sem perder acolhimento. Gold e sage entram como terceira e quarta
+cor de apoio, pra dar variedade em pontos com vários itens paralelos sem
+descaracterizar a dupla principal.
 
 | Token | Hex | Uso |
 |---|---|---|
@@ -32,11 +34,23 @@ sofisticação, um pouco de drama editorial) combinada com coral vibrante
 | `--color-accent` | `#FF6B4A` | CTA secundário (ex. "Entrar na lista"), alertas de atenção |
 | `--color-accent-dark` | `#D8492A` | Hover do accent |
 | `--color-accent-light` | `#FFE4DA` | Fundos suaves com accent |
+| `--color-gold` | `#C68A2E` | Terceira cor de apoio — variedade em conjuntos de 3–4 itens (ícones, estatísticas) |
+| `--color-gold-dark` | `#96661E` | Texto/hover sobre gold |
+| `--color-gold-light` | `#F5E6C8` | Fundos suaves com gold |
+| `--color-sage` | `#3E6E5E` | Quarta cor de apoio — contraponto frio ao par ameixa/coral |
+| `--color-sage-dark` | `#2A4C40` | Texto/hover sobre sage |
+| `--color-sage-light` | `#DCEAE4` | Fundos suaves com sage |
 | `--color-paper` | `#FAF7F5` | Fundo principal (creme rosado, não branco puro) |
 | `--color-paper-alt` | `#F2E9E6` | Fundo de seções alternadas, cards |
 | `--color-ink` | `#201720` | Texto principal |
 | `--color-ink-soft` | `#675863` | Texto secundário, legendas |
 | `--color-border` | `#E8DBE1` | Bordas e divisores |
+
+**Regra de uso do gold/sage**: nunca em CTA principal, botão de ação ou link —
+esses continuam `primary`/`accent`. Gold e sage existem só pra dar variedade
+visual em conjuntos paralelos de 3–4 itens (os 4 cards de estatística da
+landing, os 3 ícones de feature, um terceiro blob de fundo no Hero) — cor por
+identidade do item, nunca decoração aleatória solta na página.
 
 Definidos como CSS custom properties em `src/app/globals.css` e expostos ao
 Tailwind via `@theme inline` — usar como `bg-primary`, `text-ink-soft`,
