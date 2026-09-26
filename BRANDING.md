@@ -16,25 +16,27 @@ dos documentos legais.
 
 ---
 
-## Paleta de cores
+## Paleta de cores — "Ameixa & Coral"
 
-Fugimos do roxo-gradiente genérico de SaaS. A Vero usa um verde-petróleo
-(confiança, saúde, calma) combinado com terracota quente (humanidade,
-acolhimento) sobre um fundo creme — soa profissional sem ser fria.
+Fugimos do roxo-gradiente genérico de SaaS e do verde-petróleo genérico de
+plataforma de bem-estar. A Vero usa uma ameixa profunda (autoridade,
+sofisticação, um pouco de drama editorial) combinada com coral vibrante
+(energia, calor humano) sobre um fundo creme rosado — mais marcante que
+"seguro", sem perder acolhimento.
 
 | Token | Hex | Uso |
 |---|---|---|
-| `--color-primary` | `#0F6E64` | Ações primárias, links, ícones de destaque, texto de marca |
-| `--color-primary-dark` | `#0A4F48` | Hover/active de botões primários |
-| `--color-primary-light` | `#E4F2EF` | Fundos suaves (badges, cards de destaque) |
-| `--color-accent` | `#E9673F` | CTA secundário (ex. "Entrar na lista"), alertas de atenção |
-| `--color-accent-dark` | `#C94E29` | Hover do accent |
-| `--color-accent-light` | `#FDECE4` | Fundos suaves com accent |
-| `--color-paper` | `#FBF8F3` | Fundo principal (creme quente, não branco puro) |
-| `--color-paper-alt` | `#F3EEE4` | Fundo de seções alternadas, cards |
-| `--color-ink` | `#1B2421` | Texto principal |
-| `--color-ink-soft` | `#5B6763` | Texto secundário, legendas |
-| `--color-border` | `#E4DCCC` | Bordas e divisores |
+| `--color-primary` | `#6C2F63` | Ações primárias, links, ícones de destaque, texto de marca |
+| `--color-primary-dark` | `#4A1F43` | Hover/active de botões primários |
+| `--color-primary-light` | `#F3E6F1` | Fundos suaves (badges, cards de destaque) |
+| `--color-accent` | `#FF6B4A` | CTA secundário (ex. "Entrar na lista"), alertas de atenção |
+| `--color-accent-dark` | `#D8492A` | Hover do accent |
+| `--color-accent-light` | `#FFE4DA` | Fundos suaves com accent |
+| `--color-paper` | `#FAF7F5` | Fundo principal (creme rosado, não branco puro) |
+| `--color-paper-alt` | `#F2E9E6` | Fundo de seções alternadas, cards |
+| `--color-ink` | `#201720` | Texto principal |
+| `--color-ink-soft` | `#675863` | Texto secundário, legendas |
+| `--color-border` | `#E8DBE1` | Bordas e divisores |
 
 Definidos como CSS custom properties em `src/app/globals.css` e expostos ao
 Tailwind via `@theme inline` — usar como `bg-primary`, `text-ink-soft`,
@@ -49,17 +51,16 @@ acessibilidade e de legibilidade).
 
 ## Tipografia
 
-Pilha de fontes do sistema (`-apple-system, "Segoe UI", Roboto, Helvetica,
-Arial, sans-serif`) — zero custo de licença, zero dependência de rede no
-build, carregamento instantâneo. Quando o orçamento permitir, a próxima
-melhoria é trocar por uma fonte de marca (ex. via `next/font/google` com
-self-hosting automático), mas isso é otimização, não bloqueio.
+Par editorial: **Instrument Serif** para títulos (`font-display`) + **Manrope**
+para corpo/UI (`font-sans`), self-hosted via `next/font/google` em
+`src/app/layout.tsx` — sem chamada de rede em produção, sem flash de fonte.
+Instrument Serif só existe no peso 400 (normal/itálico); Manrope cobre 200–800.
 
 Hierarquia:
-- **H1** (hero): `text-4xl`/`text-5xl`, `font-semibold`, `tracking-tight`
-- **H2** (seção): `text-3xl`, `font-semibold`, `tracking-tight`
-- **H3** (card): `text-lg`, `font-semibold`
-- **Corpo**: `text-base`/`text-sm`, `leading-relaxed`, cor `ink-soft`
+- **H1** (hero): `font-display`, `text-4xl`/`text-5xl`, `font-medium`, `tracking-tight`
+- **H2** (seção): `font-display`, `text-3xl`, `font-medium`, `tracking-tight`
+- **H3** (card): `font-display`, `text-lg`, `font-medium`
+- **Corpo**: `font-sans` (padrão), `text-base`/`text-sm`, `leading-relaxed`, cor `ink-soft`
 
 ---
 
@@ -82,10 +83,6 @@ verificação de rede social.
 
 ## Próximos passos de marca (quando o orçamento permitir)
 
-1. Fonte de marca própria (headline diferenciada do corpo)
-2. Ilustrações/fotografia de estilo consistente para perfis de profissionais
-3. Variação do logo para redes sociais (avatar quadrado) e para o email
-   transacional (ver `docs/legal` e o template de email original em
-   `4-EMAIL_TEMPLATE_RESUMO_SESSAO.html`, que precisa ser migrado para as
-   cores acima antes de ir para produção)
-4. Modo escuro, se a base de usuários pedir
+1. Ilustrações/fotografia de estilo consistente para perfis de profissionais
+2. Variação do logo para redes sociais (avatar quadrado)
+3. Modo escuro, se a base de usuários pedir

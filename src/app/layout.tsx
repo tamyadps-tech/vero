@@ -1,10 +1,14 @@
 import type { Metadata } from "next";
-import { Fraunces, Inter } from "next/font/google";
+import { Instrument_Serif, Manrope } from "next/font/google";
 import "./globals.css";
 import { AdTrackingScripts } from "@/components/AdTrackingScripts";
 
-const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
-const fraunces = Fraunces({ subsets: ["latin"], variable: "--font-fraunces" });
+const manrope = Manrope({ subsets: ["latin"], variable: "--font-manrope" });
+const instrumentSerif = Instrument_Serif({
+  subsets: ["latin"],
+  weight: ["400"],
+  variable: "--font-instrument-serif",
+});
 
 export const metadata: Metadata = {
   title: "Vero — Profissionais verificados. Progresso que se vê.",
@@ -20,7 +24,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="pt-BR"
-      className={`h-full antialiased ${inter.variable} ${fraunces.variable}`}
+      className={`h-full antialiased ${manrope.variable} ${instrumentSerif.variable}`}
     >
       <body className="min-h-full flex flex-col bg-paper font-sans text-ink">
         <AdTrackingScripts />

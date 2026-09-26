@@ -16,17 +16,17 @@ export function shell(title: string, bodyHtml: string): string {
   return `<!DOCTYPE html>
 <html lang="pt-BR">
 <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>${escapeHtml(title)}</title></head>
-<body style="margin:0;padding:0;background-color:#f8f9fa;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:#1b2421;">
+<body style="margin:0;padding:0;background-color:#f2e9e6;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:#201720;">
   <div style="max-width:560px;margin:0 auto;background-color:#ffffff;">
-    <div style="background:linear-gradient(135deg,#0f6e64 0%,#0a4f48 100%);color:#fbf8f3;padding:32px 24px;text-align:center;">
+    <div style="background:linear-gradient(135deg,#6c2f63 0%,#4a1f43 100%);color:#faf7f5;padding:32px 24px;text-align:center;">
       <p style="margin:0;font-size:20px;font-weight:700;">Vero</p>
     </div>
     <div style="padding:28px 24px;">
       ${bodyHtml}
     </div>
-    <div style="padding:20px 24px;border-top:1px solid #e4dccc;text-align:center;">
-      <p style="margin:0;font-size:12px;color:#5b6763;">
-        Vero · <a href="mailto:suporte@vero.app" style="color:#0f6e64;">suporte@vero.app</a>
+    <div style="padding:20px 24px;border-top:1px solid #e8dbe1;text-align:center;">
+      <p style="margin:0;font-size:12px;color:#675863;">
+        Vero · <a href="mailto:suporte@vero.app" style="color:#6c2f63;">suporte@vero.app</a>
       </p>
     </div>
   </div>
@@ -35,7 +35,7 @@ export function shell(title: string, bodyHtml: string): string {
 }
 
 export function button(href: string, label: string): string {
-  return `<a href="${escapeHtml(href)}" style="display:inline-block;background:#0f6e64;color:#fbf8f3;padding:12px 24px;border-radius:6px;text-decoration:none;font-weight:600;font-size:14px;">${escapeHtml(label)}</a>`;
+  return `<a href="${escapeHtml(href)}" style="display:inline-block;background:#6c2f63;color:#faf7f5;padding:12px 24px;border-radius:6px;text-decoration:none;font-weight:600;font-size:14px;">${escapeHtml(label)}</a>`;
 }
 
 /**
@@ -50,7 +50,7 @@ export function textToParagraphsHtml(text: string): string {
     .filter(Boolean)
     .map(
       (paragraph) =>
-        `<p style="font-size:14px;line-height:1.6;color:#5b6763;">${escapeHtml(paragraph).replace(/\n/g, "<br>")}</p>`
+        `<p style="font-size:14px;line-height:1.6;color:#675863;">${escapeHtml(paragraph).replace(/\n/g, "<br>")}</p>`
     )
     .join("\n");
 }
@@ -69,11 +69,11 @@ export function bookingConfirmationEmail({
   const when = dateFormatter.format(new Date(scheduledAt));
   const body = `
     <p style="font-size:16px;">Olá, <strong>${escapeHtml(clientName)}</strong>,</p>
-    <p style="font-size:14px;line-height:1.6;color:#5b6763;">
+    <p style="font-size:14px;line-height:1.6;color:#675863;">
       Sua sessão com <strong>${escapeHtml(professionalName)}</strong> foi agendada para:
     </p>
     <p style="font-size:18px;font-weight:600;margin:16px 0;">${escapeHtml(when)}</p>
-    <p style="font-size:14px;line-height:1.6;color:#5b6763;">
+    <p style="font-size:14px;line-height:1.6;color:#675863;">
       Entre na sua conta pra acompanhar o progresso das suas sessões.
     </p>
     <p style="margin:24px 0;">${button(progressUrl, "Ver meu progresso")}</p>
@@ -102,11 +102,11 @@ export function sessionSummaryEmail({
   const topicsHtml =
     topics.length > 0
       ? `<div style="margin:16px 0;">
-          <p style="font-size:12px;font-weight:700;text-transform:uppercase;color:#0f6e64;margin:0 0 8px;">Tópicos abordados</p>
+          <p style="font-size:12px;font-weight:700;text-transform:uppercase;color:#6c2f63;margin:0 0 8px;">Tópicos abordados</p>
           ${topics
             .map(
               (t) =>
-                `<span style="display:inline-block;background:#e4f2ef;color:#0a4f48;border-radius:999px;padding:4px 10px;font-size:12px;margin:0 4px 4px 0;">${escapeHtml(t)}</span>`
+                `<span style="display:inline-block;background:#f3e6f1;color:#4a1f43;border-radius:999px;padding:4px 10px;font-size:12px;margin:0 4px 4px 0;">${escapeHtml(t)}</span>`
             )
             .join("")}
         </div>`
@@ -115,20 +115,20 @@ export function sessionSummaryEmail({
   const homeworkHtml = homework
     ? `<div style="margin:16px 0;background:#fff8e1;border-left:4px solid #fbc02d;padding:12px 16px;border-radius:6px;">
         <p style="font-size:12px;font-weight:700;text-transform:uppercase;color:#f57c00;margin:0 0 6px;">Tarefa até a próxima sessão</p>
-        <p style="font-size:14px;margin:0;color:#1b2421;">${escapeHtml(homework)}</p>
+        <p style="font-size:14px;margin:0;color:#201720;">${escapeHtml(homework)}</p>
       </div>`
     : "";
 
   const nextSessionHtml = nextSessionAt
-    ? `<div style="margin:16px 0;background:#e4f2ef;border-left:4px solid #0f6e64;padding:12px 16px;border-radius:6px;">
-        <p style="font-size:12px;font-weight:700;text-transform:uppercase;color:#0f6e64;margin:0 0 6px;">Próxima sessão</p>
-        <p style="font-size:14px;margin:0;color:#1b2421;">${escapeHtml(dateFormatter.format(new Date(nextSessionAt)))}</p>
+    ? `<div style="margin:16px 0;background:#f3e6f1;border-left:4px solid #6c2f63;padding:12px 16px;border-radius:6px;">
+        <p style="font-size:12px;font-weight:700;text-transform:uppercase;color:#6c2f63;margin:0 0 6px;">Próxima sessão</p>
+        <p style="font-size:14px;margin:0;color:#201720;">${escapeHtml(dateFormatter.format(new Date(nextSessionAt)))}</p>
       </div>`
     : "";
 
   const body = `
     <p style="font-size:16px;">Olá, <strong>${escapeHtml(clientName)}</strong>,</p>
-    <p style="font-size:14px;line-height:1.6;color:#5b6763;">
+    <p style="font-size:14px;line-height:1.6;color:#675863;">
       Aqui está o resumo da sua sessão com <strong>${escapeHtml(professionalName)}</strong>.
     </p>
     ${topicsHtml}
@@ -151,11 +151,11 @@ export function professionalApprovedEmail({
 }): { subject: string; html: string } {
   const body = `
     <p style="font-size:16px;">Olá, <strong>${escapeHtml(professionalName)}</strong>,</p>
-    <p style="font-size:14px;line-height:1.6;color:#5b6763;">
+    <p style="font-size:14px;line-height:1.6;color:#675863;">
       Boas notícias: sua candidatura foi <strong>aprovada</strong> e seu
       perfil já está visível na Vero.
     </p>
-    <p style="font-size:14px;line-height:1.6;color:#5b6763;">
+    <p style="font-size:14px;line-height:1.6;color:#675863;">
       Entre com o email e a senha que você cadastrou na candidatura pra
       configurar sua disponibilidade e acompanhar suas sessões.
     </p>
@@ -175,18 +175,18 @@ export function professionalRejectedEmail({
   notes: string | null;
 }): { subject: string; html: string } {
   const notesHtml = notes
-    ? `<p style="font-size:14px;line-height:1.6;color:#5b6763;"><strong>Observação:</strong> ${escapeHtml(notes)}</p>`
+    ? `<p style="font-size:14px;line-height:1.6;color:#675863;"><strong>Observação:</strong> ${escapeHtml(notes)}</p>`
     : "";
   const body = `
     <p style="font-size:16px;">Olá, <strong>${escapeHtml(professionalName)}</strong>,</p>
-    <p style="font-size:14px;line-height:1.6;color:#5b6763;">
+    <p style="font-size:14px;line-height:1.6;color:#675863;">
       Depois de revisar sua candidatura, não conseguimos aprová-la nesta
       etapa do vetting da Vero.
     </p>
     ${notesHtml}
-    <p style="font-size:14px;line-height:1.6;color:#5b6763;">
+    <p style="font-size:14px;line-height:1.6;color:#675863;">
       Dúvidas? Responda este email ou escreva pra
-      <a href="mailto:suporte@vero.app" style="color:#0f6e64;">suporte@vero.app</a>.
+      <a href="mailto:suporte@vero.app" style="color:#6c2f63;">suporte@vero.app</a>.
     </p>
   `;
   return {
@@ -209,8 +209,8 @@ export function professionalMessageEmail({
   const messageHtml = escapeHtml(message).replace(/\n/g, "<br>");
   const body = `
     <p style="font-size:16px;">Olá, <strong>${escapeHtml(clientName)}</strong>,</p>
-    <p style="font-size:14px;line-height:1.6;color:#1b2421;">${messageHtml}</p>
-    <p style="margin-top:24px;font-size:12px;color:#5b6763;">
+    <p style="font-size:14px;line-height:1.6;color:#201720;">${messageHtml}</p>
+    <p style="margin-top:24px;font-size:12px;color:#675863;">
       Mensagem enviada por <strong>${escapeHtml(professionalName)}</strong> pela Vero.
     </p>
   `;
@@ -245,10 +245,10 @@ export function taskReminderEmail({
     .map(
       (t) => `
       <tr>
-        <td style="padding:8px 0;border-bottom:1px solid #e4dccc;font-size:14px;color:#1b2421;">
+        <td style="padding:8px 0;border-bottom:1px solid #e8dbe1;font-size:14px;color:#201720;">
           <strong>${escapeHtml(t.contactName)}</strong> — ${escapeHtml(t.title)}
         </td>
-        <td style="padding:8px 0;border-bottom:1px solid #e4dccc;font-size:12px;text-align:right;white-space:nowrap;color:${t.overdue ? "#c94e29" : "#5b6763"};">
+        <td style="padding:8px 0;border-bottom:1px solid #e8dbe1;font-size:12px;text-align:right;white-space:nowrap;color:${t.overdue ? "#d8492a" : "#675863"};">
           ${t.overdue ? "Atrasada · " : ""}${escapeHtml(shortDateFormatter.format(new Date(t.dueDate)))}
         </td>
       </tr>`
@@ -264,7 +264,7 @@ export function taskReminderEmail({
 
   const body = `
     <p style="font-size:16px;">Olá, <strong>${escapeHtml(professionalName)}</strong>,</p>
-    <p style="font-size:14px;line-height:1.6;color:#5b6763;">
+    <p style="font-size:14px;line-height:1.6;color:#675863;">
       Você tem ${summary} no CRM da Vero:
     </p>
     <table style="width:100%;border-collapse:collapse;margin:16px 0;">
