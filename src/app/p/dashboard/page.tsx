@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { headers } from "next/headers";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
+import { Reveal } from "@/components/Reveal";
 import { LogoutButton } from "@/components/auth/LogoutButton";
 import { RatingBadge } from "@/components/RatingBadge";
 import { getProfessionalFromAccessToken } from "@/lib/professional-session";
@@ -131,18 +132,20 @@ export default async function ProfessionalDashboardPage() {
           </p>
 
           {/* Meu perfil */}
-          <section className="mt-10">
-            <h2 className="text-sm font-semibold uppercase tracking-wide text-ink-soft">
-              Meu perfil
-            </h2>
-            <p className="mt-1 text-sm text-ink-soft">
-              Como você aparece pra quem te encontra na busca. Mantenha bio,
-              foto e redes sociais atualizadas.
-            </p>
-            <div className="mt-4">
-              <ProfessionalProfileSection professional={professional} />
-            </div>
-          </section>
+          <Reveal className="mt-10">
+            <section>
+              <h2 className="text-sm font-semibold uppercase tracking-wide text-ink-soft">
+                Meu perfil
+              </h2>
+              <p className="mt-1 text-sm text-ink-soft">
+                Como você aparece pra quem te encontra na busca. Mantenha bio,
+                foto e redes sociais atualizadas.
+              </p>
+              <div className="mt-4">
+                <ProfessionalProfileSection professional={professional} />
+              </div>
+            </section>
+          </Reveal>
 
           <DashboardShellProvider>
           <DashboardTabs

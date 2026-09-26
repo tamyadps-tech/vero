@@ -48,7 +48,9 @@ export function DashboardTabs(props: Record<TabKey, ReactNode>) {
           );
         })}
       </div>
-      <div className="mt-6">{props[active]}</div>
+      <div key={active} className="mt-6 animate-fade-in-up motion-reduce:animate-none">
+        {props[active]}
+      </div>
     </div>
   );
 }

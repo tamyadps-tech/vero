@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
+import { Reveal } from "@/components/Reveal";
 import { LogoutButton } from "@/components/auth/LogoutButton";
 import { getClientFromAccessToken } from "@/lib/client-session";
 import { readAccessToken } from "@/lib/read-session-token";
@@ -105,13 +106,13 @@ export default async function ClientDashboardPage({
             Olá, {progress.full_name.split(" ")[0]}
           </h1>
 
-          <div className="mt-6">
+          <Reveal className="mt-6">
             <ClientProfileSection
               fullName={client.full_name}
               email={client.email}
               phoneNumber={client.phone_number}
             />
-          </div>
+          </Reveal>
 
           {pago === "1" && (
             <div className="mt-4 rounded-xl border border-primary/30 bg-primary-light px-4 py-3">
@@ -122,48 +123,54 @@ export default async function ClientDashboardPage({
           )}
 
           {nextSession && (
-            <div className="mt-8 rounded-2xl border border-primary/30 bg-primary-light p-6">
-              <p className="text-xs font-semibold uppercase tracking-wide text-primary-dark">
-                Próxima sessão
-              </p>
-              <p className="mt-1 text-lg font-semibold text-ink">
-                {dateFormatter.format(new Date(nextSession.scheduled_at))}
-              </p>
-              {nextSession.professional && (
-                <p className="text-sm text-ink-soft">
-                  com {nextSession.professional.full_name}
+            <Reveal className="mt-8">
+              <div className="rounded-2xl border border-primary/30 bg-primary-light p-6">
+                <p className="text-xs font-semibold uppercase tracking-wide text-primary-dark">
+                  Próxima sessão
                 </p>
-              )}
-            </div>
+                <p className="mt-1 text-lg font-semibold text-ink">
+                  {dateFormatter.format(new Date(nextSession.scheduled_at))}
+                </p>
+                {nextSession.professional && (
+                  <p className="text-sm text-ink-soft">
+                    com {nextSession.professional.full_name}
+                  </p>
+                )}
+              </div>
+            </Reveal>
           )}
 
-          <h2 className="mt-10 text-sm font-semibold uppercase tracking-wide text-ink-soft">
-            Autoavaliações
-          </h2>
-          <p className="mt-1 text-sm text-ink-soft">
-            Cada teste só fica disponível depois que seu profissional
-            libera — combina com ele se e quando fizer sentido.
-          </p>
-          <div className="mt-4">
-            <AssessmentsSection
-              responses={progress.assessmentResponses}
-              releasedSlugs={Array.from(releasedSlugs)}
-            />
-          </div>
+          <Reveal className="mt-10">
+            <h2 className="text-sm font-semibold uppercase tracking-wide text-ink-soft">
+              Autoavaliações
+            </h2>
+            <p className="mt-1 text-sm text-ink-soft">
+              Cada teste só fica disponível depois que seu profissional
+              libera — combina com ele se e quando fizer sentido.
+            </p>
+            <div className="mt-4">
+              <AssessmentsSection
+                responses={progress.assessmentResponses}
+                releasedSlugs={Array.from(releasedSlugs)}
+              />
+            </div>
+          </Reveal>
 
-          <h2 className="mt-10 text-sm font-semibold uppercase tracking-wide text-ink-soft">
-            Exercícios
-          </h2>
-          <p className="mt-1 text-sm text-ink-soft">
-            Espaços de reflexão em texto livre — também só ficam
-            disponíveis depois que seu profissional libera.
-          </p>
-          <div className="mt-4">
-            <ExercisesSection
-              responses={progress.exerciseResponses}
-              releasedSlugs={Array.from(releasedExerciseSlugs)}
-            />
-          </div>
+          <Reveal className="mt-10">
+            <h2 className="text-sm font-semibold uppercase tracking-wide text-ink-soft">
+              Exercícios
+            </h2>
+            <p className="mt-1 text-sm text-ink-soft">
+              Espaços de reflexão em texto livre — também só ficam
+              disponíveis depois que seu profissional libera.
+            </p>
+            <div className="mt-4">
+              <ExercisesSection
+                responses={progress.exerciseResponses}
+                releasedSlugs={Array.from(releasedExerciseSlugs)}
+              />
+            </div>
+          </Reveal>
 
           <h2 className="mt-10 text-sm font-semibold uppercase tracking-wide text-ink-soft">
             Histórico de sessões
@@ -175,9 +182,9 @@ export default async function ClientDashboardPage({
             </p>
           ) : (
             <div className="mt-4 space-y-4">
-              {past.map((session) => (
+              {past.map((session, index) => (
+                <Reveal key={session.id} delayMs={(index % 5) * 80}>
                 <div
-                  key={session.id}
                   className="rounded-2xl border border-border bg-paper-alt/40 p-5"
                 >
                   <div className="flex flex-wrap items-center justify-between gap-2">
@@ -235,6 +242,7 @@ export default async function ClientDashboardPage({
                       <ReviewForm sessionId={session.id} />
                     ))}
                 </div>
+                </Reveal>
               ))}
             </div>
           )}
