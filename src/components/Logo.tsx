@@ -1,4 +1,4 @@
-export function LogoMark({ className = "h-11 w-11" }: { className?: string }) {
+export function LogoMark({ className = "h-14 w-14" }: { className?: string }) {
   return (
     <svg
       viewBox="0 0 40 40"
@@ -24,7 +24,7 @@ export function Logo({ className = "" }: { className?: string }) {
   return (
     <span className={`inline-flex items-center gap-2.5 ${className}`}>
       <LogoMark />
-      <span className="font-display text-[1.75rem] font-semibold leading-none tracking-tight text-ink">
+      <span className="font-display text-[2.5rem] font-normal leading-none tracking-tight text-ink">
         Vero
       </span>
     </span>
