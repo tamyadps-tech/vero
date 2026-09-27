@@ -42,7 +42,7 @@ export default async function AdminFinanceiroPage() {
     <>
       <AdminNav active="/admin/financeiro" />
       <main className="mx-auto max-w-6xl px-6 py-10">
-        <h1 className="text-2xl font-semibold tracking-tight text-ink">Financeiro</h1>
+        <h1 className="font-display text-3xl font-semibold tracking-tight text-ink">Financeiro</h1>
         <p className="mt-1 text-sm text-ink-soft">
           A saúde financeira da própria Vero — não a de um profissional específico.
         </p>

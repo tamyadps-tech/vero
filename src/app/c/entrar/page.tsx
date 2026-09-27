@@ -16,22 +16,22 @@ export default function ClientLoginPage() {
       <Header />
       <main className="flex-1">
         <section className="mx-auto max-w-md px-6 py-16">
-          <h1 className="text-2xl font-semibold tracking-tight text-ink">
+          <h1 className="font-display text-4xl font-semibold tracking-tight text-ink">
             Entrar
           </h1>
-          <p className="mt-1 text-sm text-ink-soft">
+          <p className="mt-2 text-base text-ink-soft">
             Acompanhe suas sessões e progresso.
           </p>
           <div className="mt-8">
             <GoogleLoginButton redirectTo="/c/dashboard" />
           </div>
-          <div className="my-6 flex items-center gap-3 text-xs text-ink-soft">
+          <div className="my-6 flex items-center gap-3 text-sm text-ink-soft">
             <span className="h-px flex-1 bg-border" />
             ou
             <span className="h-px flex-1 bg-border" />
           </div>
           <LoginForm role="client" redirectTo="/c/dashboard" />
-          <p className="mt-6 text-center text-sm text-ink-soft">
+          <p className="mt-6 text-center text-base text-ink-soft">
             Ainda não tem conta?{" "}
             <Link href="/c/cadastrar" className="text-primary hover:underline">
               Criar conta

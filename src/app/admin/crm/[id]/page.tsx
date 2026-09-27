@@ -43,7 +43,7 @@ export default async function AdminCrmAccountPage({
           </p>
         ) : (
           <>
-            <h1 className="mt-4 text-2xl font-semibold tracking-tight text-ink">
+            <h1 className="mt-4 font-display text-3xl font-semibold tracking-tight text-ink">
               {account.fullName}
             </h1>
             <p className="mt-1 text-sm text-ink-soft">{account.email}</p>

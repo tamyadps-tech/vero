@@ -11,7 +11,7 @@ export default async function AdminBlogPage() {
     <>
       <AdminNav active="/admin/blog" />
       <main className="mx-auto max-w-5xl px-6 py-10">
-        <h1 className="text-2xl font-semibold tracking-tight text-ink">Blog</h1>
+        <h1 className="font-display text-3xl font-semibold tracking-tight text-ink">Blog</h1>
         <p className="mt-1 text-sm text-ink-soft">
           Conteúdo com dados e argumentos sobre saúde mental e desenvolvimento — sustenta a
           landing e dá material pra divulgar nas redes.

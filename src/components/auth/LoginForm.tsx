@@ -4,8 +4,8 @@ import { useState, type FormEvent } from "react";
 import { useRouter } from "next/navigation";
 
 const fieldClass =
-  "w-full rounded-xl border border-border bg-paper px-4 py-3 text-sm text-ink placeholder:text-ink-soft/70 focus:border-primary focus:outline-none";
-const labelClass = "mb-1.5 block text-sm font-medium text-ink";
+  "w-full rounded-xl border border-border bg-paper px-4 py-3 text-base text-ink placeholder:text-ink-soft/70 focus:border-primary focus:outline-none";
+const labelClass = "mb-1.5 block text-sm font-semibold text-ink";
 
 export function LoginForm({
   role,
@@ -78,7 +78,7 @@ export function LoginForm({
       <button
         type="submit"
         disabled={status === "loading"}
-        className="w-full rounded-xl bg-primary px-5 py-3 text-sm font-semibold text-paper transition hover:bg-primary-dark disabled:opacity-60"
+        className="w-full rounded-xl bg-primary px-5 py-3 text-base font-semibold text-paper transition hover:bg-primary-dark disabled:opacity-60"
       >
         {status === "loading" ? "Entrando…" : "Entrar"}
       </button>

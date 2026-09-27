@@ -14,16 +14,16 @@ export default function EntrarChooserPage() {
       <Header />
       <main className="flex-1">
         <section className="mx-auto max-w-2xl px-6 py-16">
-          <h1 className="text-2xl font-semibold tracking-tight text-ink">
+          <h1 className="font-display text-4xl font-semibold tracking-tight text-ink">
             Entrar na Vero
           </h1>
-          <p className="mt-1 text-sm text-ink-soft">
+          <p className="mt-2 text-base text-ink-soft">
             Escolha como você usa a Vero.
           </p>
 
           <div className="mt-8 grid gap-4 sm:grid-cols-2">
             <div className="rounded-2xl border border-border bg-paper-alt/40 p-6">
-              <h2 className="font-semibold text-ink">Sou cliente</h2>
+              <h2 className="text-lg font-semibold text-ink">Sou cliente</h2>
               <p className="mt-1 text-sm text-ink-soft">
                 Agendar sessões e acompanhar meu progresso.
               </p>
@@ -44,7 +44,7 @@ export default function EntrarChooserPage() {
             </div>
 
             <div className="rounded-2xl border border-border bg-paper-alt/40 p-6">
-              <h2 className="font-semibold text-ink">Sou profissional</h2>
+              <h2 className="text-lg font-semibold text-ink">Sou profissional</h2>
               <p className="mt-1 text-sm text-ink-soft">
                 Gerenciar agenda, clientes e sessões.
               </p>

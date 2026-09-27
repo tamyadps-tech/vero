@@ -16,7 +16,7 @@ export default async function AdminCrmPage() {
     <>
       <AdminNav active="/admin/crm" />
       <main className="mx-auto max-w-6xl px-6 py-10">
-        <h1 className="text-2xl font-semibold tracking-tight text-ink">CRM</h1>
+        <h1 className="font-display text-3xl font-semibold tracking-tight text-ink">CRM</h1>
         <p className="mt-1 text-sm text-ink-soft">
           Profissionais como conta da Vero (notas, tags, segmentação) e um diretório
           read-only de todos os clientes da plataforma, pra suporte.
