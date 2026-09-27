@@ -5,10 +5,8 @@ import { useDashboardShell } from "@/components/professional/DashboardShellConte
 
 const TABS = [
   { key: "dashboard", label: "Dashboard" },
-  { key: "marketing", label: "Marketing" },
+  { key: "agendaMkt", label: "Agenda & mkt" },
   { key: "financeiro", label: "Financeiro" },
-  { key: "assinatura", label: "Assinatura" },
-  { key: "agenda", label: "Agenda" },
   { key: "crm", label: "Clientes" },
   { key: "testes", label: "Testes" },
   { key: "exercicios", label: "Exercícios" },

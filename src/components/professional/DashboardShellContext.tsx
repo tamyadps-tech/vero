@@ -14,7 +14,7 @@ const DashboardShellContext = createContext<DashboardShellState | null>(null);
 
 /**
  * Estado compartilhado entre as abas do painel do profissional — hoje só
- * pra uma coisa: deixar o filtro do CRM abrir a aba Marketing já com os
+ * pra uma coisa: deixar o filtro do CRM abrir a aba Agenda & mkt já com os
  * clientes filtrados pré-selecionados, sem precisar re-selecionar tudo
  * de novo numa tela separada.
  */
@@ -24,7 +24,7 @@ export function DashboardShellProvider({ children }: { children: ReactNode }) {
 
   const requestCampaignFor = useCallback((clientIds: string[]) => {
     setPendingCampaignClientIds(clientIds);
-    setActiveTab("marketing");
+    setActiveTab("agendaMkt");
   }, []);
 
   const clearPendingCampaign = useCallback(() => {

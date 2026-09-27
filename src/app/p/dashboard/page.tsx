@@ -157,16 +157,26 @@ export default async function ProfessionalDashboardPage() {
                 expenses={expenses}
               />
             }
-            marketing={
-              hasPlanAccess(professional.subscription_plan, professional.subscription_status, "pro") ? (
-                <MarketingTabPanel
-                  publicProfileUrl={publicProfileUrl}
-                  clients={clients}
-                  templateOverrides={templateOverrides}
+            agendaMkt={
+              <div className="space-y-14">
+                <AgendaTabPanel
+                  professionalId={professional.id}
+                  slots={slots}
+                  sessions={sessions}
+                  googleCalendarEmail={professional.google_calendar_email}
                 />
-              ) : (
-                <PlanLockedPanel requiredPlan="pro" featureName="Marketing" />
-              )
+                <div className="border-t border-border pt-10">
+                  {hasPlanAccess(professional.subscription_plan, professional.subscription_status, "pro") ? (
+                    <MarketingTabPanel
+                      publicProfileUrl={publicProfileUrl}
+                      clients={clients}
+                      templateOverrides={templateOverrides}
+                    />
+                  ) : (
+                    <PlanLockedPanel requiredPlan="pro" featureName="Marketing" />
+                  )}
+                </div>
+              </div>
             }
             financeiro={
               hasPlanAccess(professional.subscription_plan, professional.subscription_status, "premium") ? (
@@ -180,25 +190,21 @@ export default async function ProfessionalDashboardPage() {
                 <PlanLockedPanel requiredPlan="premium" featureName="Financeiro" />
               )
             }
-            assinatura={
-              <SubscriptionTabPanel
-                currentPlan={professional.subscription_plan}
-                currentStatus={professional.subscription_status}
-                currentPeriodEnd={professional.subscription_current_period_end}
-              />
-            }
-            agenda={
-              <AgendaTabPanel
-                professionalId={professional.id}
-                slots={slots}
-                sessions={sessions}
-                googleCalendarEmail={professional.google_calendar_email}
-              />
-            }
             crm={<CrmTabPanel contacts={contacts} />}
             testes={<TestesTabPanel clients={clients} />}
             exercicios={<ExerciciosTabPanel clients={clients} />}
-            metodo={<MetodoTabPanel />}
+            metodo={
+              <div className="space-y-14">
+                <MetodoTabPanel />
+                <div className="border-t border-border pt-10">
+                  <SubscriptionTabPanel
+                    currentPlan={professional.subscription_plan}
+                    currentStatus={professional.subscription_status}
+                    currentPeriodEnd={professional.subscription_current_period_end}
+                  />
+                </div>
+              </div>
+            }
           />
           </DashboardShellProvider>
         </section>
