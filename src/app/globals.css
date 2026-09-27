@@ -26,9 +26,11 @@
   --color-sage-dark: #3f1b18;
   --color-sage-light: #ecdcda;
   --color-border: #ddd5c3;
-  /* Cor telha — fundo da área do cliente (/c), pedido explícito pra
-     substituir o antigo bg-accent-light (rosa pastel demais). */
-  --color-tile: #cc8258;
+  /* Fundo nude da área do cliente (/c) — pedido explícito, depois de
+     testar telha (terracota) e rosa pastel (accent-light original).
+     Título em verde-oliva (--color-primary) por cima, escolhido por
+     ser mais sóbrio que o coral nessa combinação. */
+  --color-tile: #e6cfb8;
 }
 
 @theme inline {
@@ -99,10 +101,10 @@ body {
   font-family: var(--font-display);
 }
 
-/* Área do cliente (/c): título de página em coral (destaque), mesma
-   fonte de destaque — mesma ressalva do h2/h3 acima. */
+/* Área do cliente (/c): título de página em verde-oliva sobre o fundo
+   nude, mesma fonte de destaque — mesma ressalva do h2/h3 acima. */
 .area-cliente h1 {
-  color: var(--color-accent);
+  color: var(--color-primary);
   font-weight: 600;
   font-family: var(--font-display);
 }

@@ -65,6 +65,12 @@ Tailwind via `@theme inline` — usar como `bg-primary`, `text-ink-soft`,
 `ink-soft` sobre `paper`/`paper-alt`, nunca cor pura da marca (falha de
 acessibilidade e de legibilidade).
 
+**Fundo da área do cliente (`--color-tile`, `#E6CFB8`)**: nude, só usado
+como `bg-tile` no wrapper de `/c/*` (`src/app/c/layout.tsx`). Chegou depois
+de testar rosa pastel (o antigo `accent-light`) e depois telha/terracota —
+título de página (`.area-cliente h1`) usa `primary` (verde-oliva) por cima,
+escolhido por ficar mais sóbrio que coral nessa combinação.
+
 ---
 
 ## Tipografia
