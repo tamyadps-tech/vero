@@ -1,13 +1,13 @@
 import type { Metadata } from "next";
-import { Instrument_Serif, Manrope } from "next/font/google";
+import { Bodoni_Moda, Inter } from "next/font/google";
 import "./globals.css";
 import { AdTrackingScripts } from "@/components/AdTrackingScripts";
 
-const manrope = Manrope({ subsets: ["latin"], variable: "--font-manrope" });
-const instrumentSerif = Instrument_Serif({
+const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
+const bodoniModa = Bodoni_Moda({
   subsets: ["latin"],
-  weight: ["400"],
-  variable: "--font-instrument-serif",
+  weight: "variable",
+  variable: "--font-bodoni-moda",
 });
 
 export const metadata: Metadata = {
@@ -24,7 +24,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="pt-BR"
-      className={`h-full antialiased ${manrope.variable} ${instrumentSerif.variable}`}
+      className={`h-full antialiased ${inter.variable} ${bodoniModa.variable}`}
     >
       <body className="min-h-full flex flex-col bg-paper font-sans text-ink">
         <AdTrackingScripts />

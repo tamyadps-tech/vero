@@ -1,3 +1,7 @@
+import { Antic_Didone } from "next/font/google";
+
+const anticDidone = Antic_Didone({ subsets: ["latin"], weight: "400" });
+
 export function LogoMark({ className = "h-14 w-14" }: { className?: string }) {
   return (
     <svg
@@ -24,7 +28,7 @@ export function Logo({ className = "" }: { className?: string }) {
   return (
     <span className={`inline-flex items-center gap-2.5 ${className}`}>
       <LogoMark />
-      <span className="font-display text-[2.5rem] font-normal leading-none tracking-tight text-ink">
+      <span className={`${anticDidone.className} text-[2.5rem] leading-none tracking-tight text-ink`}>
         Vero
       </span>
     </span>

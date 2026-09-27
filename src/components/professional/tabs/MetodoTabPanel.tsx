@@ -38,7 +38,7 @@ export function MetodoTabPanel() {
         {METHOD_ARTICLES.map((article) => (
           <article key={article.slug} className="py-8 first:pt-0">
             <div className="flex flex-wrap items-center gap-2">
-              <h3 className="text-lg font-semibold text-ink">{article.title}</h3>
+              <h3 className="font-display text-lg font-semibold text-ink">{article.title}</h3>
               <CategoryBadge category={article.category} />
               <KindBadge kind={article.kind} />
             </div>

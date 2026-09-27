@@ -3,24 +3,26 @@
 
 :root {
   /* Vero brand tokens — see /BRANDING.md for rationale.
-     Paleta "Ameixa & Coral" — mais dramática/editorial que a anterior. */
-  --color-paper: #faf7f5;
-  --color-paper-alt: #f2e9e6;
-  --color-ink: #201720;
-  --color-ink-soft: #675863;
-  --color-primary: #6c2f63;
-  --color-primary-dark: #4a1f43;
-  --color-primary-light: #f3e6f1;
-  --color-accent: #ff6b4a;
-  --color-accent-dark: #d8492a;
-  --color-accent-light: #ffe4da;
-  --color-gold: #c68a2e;
-  --color-gold-dark: #96661e;
-  --color-gold-light: #f5e6c8;
-  --color-sage: #3e6e5e;
-  --color-sage-dark: #2a4c40;
-  --color-sage-light: #dceae4;
-  --color-border: #e8dbe1;
+     Paleta "Oliva" — tons terrosos e dessaturados (quiet luxury), com
+     verde-oliva escuro como cor dominante, a partir da referência de 5
+     cores enviada por Tamy. Taupe/terracota/oxblood entram como apoio. */
+  --color-paper: #f7f4ec;
+  --color-paper-alt: #ece7d9;
+  --color-ink: #262620;
+  --color-ink-soft: #6b6558;
+  --color-primary: #454a34;
+  --color-primary-dark: #2e321f;
+  --color-primary-light: #e3e2d3;
+  --color-accent: #9b5c4f;
+  --color-accent-dark: #74423a;
+  --color-accent-light: #f0ddd6;
+  --color-gold: #87796d;
+  --color-gold-dark: #5f544a;
+  --color-gold-light: #ece7df;
+  --color-sage: #5c2925;
+  --color-sage-dark: #3f1b18;
+  --color-sage-light: #ecdcda;
+  --color-border: #ddd5c3;
 }
 
 @theme inline {
@@ -42,12 +44,13 @@
   --color-sage-light: var(--color-sage-light);
   --color-border: var(--color-border);
 
-  /* Manrope (UI/corpo) + Instrument Serif (títulos) — as variáveis
-     --font-manrope e --font-instrument-serif são geradas pelo next/font
-     em layout.tsx. */
-  --font-sans: var(--font-manrope), -apple-system, BlinkMacSystemFont, "Segoe UI",
+  /* Inter (UI/corpo) + Bodoni Moda (títulos) — as variáveis
+     --font-inter e --font-bodoni-moda são geradas pelo next/font
+     em layout.tsx. Bodoni Moda é variável (400-900): pode usar
+     font-medium/font-semibold sem risco de negrito falso do navegador. */
+  --font-sans: var(--font-inter), -apple-system, BlinkMacSystemFont, "Segoe UI",
     Roboto, Helvetica, Arial, sans-serif;
-  --font-display: var(--font-instrument-serif), Georgia, "Times New Roman", serif;
+  --font-display: var(--font-bodoni-moda), Georgia, "Times New Roman", serif;
   --font-serif: Georgia, "Times New Roman", serif;
 
   /* Sombras quentes (tingidas da tinta da marca, não preto puro) —
@@ -78,21 +81,20 @@ body {
   font-family: var(--font-sans);
 }
 
-/* Área do profissional (/p): títulos em negrito na cor laranja da marca,
-   na fonte de destaque (mesma usada nos títulos da landing). */
-.area-profissional h1,
-.area-profissional h2,
-.area-profissional h3 {
+/* Área do profissional (/p): título de página em negrito na cor laranja
+   da marca, na fonte de destaque (mesma usada nos títulos da landing).
+   Só h1 — h2/h3 no painel são sempre selos pequenos ("Sessões",
+   "Divulgação"...), nunca títulos de destaque, então não devem herdar
+   a fonte serifada/cor de marca (isso achatava a hierarquia visual). */
+.area-profissional h1 {
   color: var(--color-accent);
   font-weight: 600;
   font-family: var(--font-display);
 }
 
-/* Área do cliente (/c): títulos em negrito na cor verde da marca, mesma
-   fonte de destaque. */
-.area-cliente h1,
-.area-cliente h2,
-.area-cliente h3 {
+/* Área do cliente (/c): título de página em negrito na cor verde da
+   marca, mesma fonte de destaque — mesma ressalva do h2/h3 acima. */
+.area-cliente h1 {
   color: var(--color-primary);
   font-weight: 600;
   font-family: var(--font-display);

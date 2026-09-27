@@ -16,40 +16,40 @@ dos documentos legais.
 
 ---
 
-## Paleta de cores — "Ameixa & Coral" (+ Gold & Sage)
+## Paleta de cores — "Oliva" (quiet luxury)
 
-Fugimos do roxo-gradiente genérico de SaaS e do verde-petróleo genérico de
-plataforma de bem-estar. A Vero usa uma ameixa profunda (autoridade,
-sofisticação, um pouco de drama editorial) combinada com coral vibrante
-(energia, calor humano) sobre um fundo creme rosado — mais marcante que
-"seguro", sem perder acolhimento. Gold e sage entram como terceira e quarta
-cor de apoio, pra dar variedade em pontos com vários itens paralelos sem
-descaracterizar a dupla principal.
+A partir de uma referência de 5 cores enviada por Tamy (taupe, greige,
+terracota, oxblood, verde-oliva escuro) — tons terrosos e dessaturados,
+com o verde-oliva como cor dominante. Território "quiet luxury": comercial
+e editorial sem ser doce ou "de beleza feminina" — deliberadamente unissex,
+já que a Vero atende terapeutas/coaches/consultores e seus clientes dos
+dois lados. Terracota, taupe e oxblood entram como cores de apoio, cada
+uma com seu próprio papel, nunca como decoração solta.
 
 | Token | Hex | Uso |
 |---|---|---|
-| `--color-primary` | `#6C2F63` | Ações primárias, links, ícones de destaque, texto de marca |
-| `--color-primary-dark` | `#4A1F43` | Hover/active de botões primários |
-| `--color-primary-light` | `#F3E6F1` | Fundos suaves (badges, cards de destaque) |
-| `--color-accent` | `#FF6B4A` | CTA secundário (ex. "Entrar na lista"), alertas de atenção |
-| `--color-accent-dark` | `#D8492A` | Hover do accent |
-| `--color-accent-light` | `#FFE4DA` | Fundos suaves com accent |
-| `--color-gold` | `#C68A2E` | Terceira cor de apoio — variedade em conjuntos de 3–4 itens (ícones, estatísticas) |
-| `--color-gold-dark` | `#96661E` | Texto/hover sobre gold |
-| `--color-gold-light` | `#F5E6C8` | Fundos suaves com gold |
-| `--color-sage` | `#3E6E5E` | Quarta cor de apoio — contraponto frio ao par ameixa/coral |
-| `--color-sage-dark` | `#2A4C40` | Texto/hover sobre sage |
-| `--color-sage-light` | `#DCEAE4` | Fundos suaves com sage |
-| `--color-paper` | `#FAF7F5` | Fundo principal (creme rosado, não branco puro) |
-| `--color-paper-alt` | `#F2E9E6` | Fundo de seções alternadas, cards |
-| `--color-ink` | `#201720` | Texto principal |
-| `--color-ink-soft` | `#675863` | Texto secundário, legendas |
-| `--color-border` | `#E8DBE1` | Bordas e divisores |
+| `--color-primary` | `#454A34` | Cor dominante — ações primárias, links, ícones de destaque, texto de marca |
+| `--color-primary-dark` | `#2E321F` | Hover/active de botões primários |
+| `--color-primary-light` | `#E3E2D3` | Fundos suaves (badges, cards de destaque) |
+| `--color-accent` | `#9B5C4F` | CTA secundário (ex. "Entrar na lista"), alertas de atenção — terracota |
+| `--color-accent-dark` | `#74423A` | Hover do accent |
+| `--color-accent-light` | `#F0DDD6` | Fundos suaves com accent |
+| `--color-gold` | `#87796D` | Terceira cor de apoio (taupe) — variedade em conjuntos de 3–4 itens (ícones, estatísticas) |
+| `--color-gold-dark` | `#5F544A` | Texto/hover sobre gold |
+| `--color-gold-light` | `#ECE7DF` | Fundos suaves com gold |
+| `--color-sage` | `#5C2925` | Quarta cor de apoio (oxblood) — contraponto escuro/quente ao verde-oliva |
+| `--color-sage-dark` | `#3F1B18` | Texto/hover sobre sage |
+| `--color-sage-light` | `#ECDCDA` | Fundos suaves com sage |
+| `--color-paper` | `#F7F4EC` | Fundo principal (creme quente, não branco puro) |
+| `--color-paper-alt` | `#ECE7D9` | Fundo de seções alternadas, cards (greige) |
+| `--color-ink` | `#262620` | Texto principal |
+| `--color-ink-soft` | `#6B6558` | Texto secundário, legendas |
+| `--color-border` | `#DDD5C3` | Bordas e divisores |
 
 **Regra de uso do gold/sage**: nunca em CTA principal, botão de ação ou link —
 esses continuam `primary`/`accent`. Gold e sage existem só pra dar variedade
 visual em conjuntos paralelos de 3–4 itens (os 4 cards de estatística da
-landing, os 3 ícones de feature, um terceiro blob de fundo no Hero) — cor por
+landing, os 3 números de feature, um terceiro blob de fundo no Hero) — cor por
 identidade do item, nunca decoração aleatória solta na página.
 
 Definidos como CSS custom properties em `src/app/globals.css` e expostos ao
@@ -65,16 +65,27 @@ acessibilidade e de legibilidade).
 
 ## Tipografia
 
-Par editorial: **Instrument Serif** para títulos (`font-display`) + **Manrope**
+Par editorial: **Bodoni Moda** para títulos (`font-display`) + **Inter**
 para corpo/UI (`font-sans`), self-hosted via `next/font/google` em
 `src/app/layout.tsx` — sem chamada de rede em produção, sem flash de fonte.
-Instrument Serif só existe no peso 400 (normal/itálico); Manrope cobre 200–800.
+Bodoni Moda é uma fonte variável (pesos 400–900, eixo de tamanho óptico
+próprio) — alto contraste entre traços finos e grossos, editorial/haute
+couture. Inter é o grotesco neutro e extremamente legível usado por boa
+parte dos produtos premium — cobre pesos 100–900.
 
 Hierarquia:
 - **H1** (hero): `font-display`, `text-4xl`/`text-5xl`, `font-medium`, `tracking-tight`
 - **H2** (seção): `font-display`, `text-3xl`, `font-medium`, `tracking-tight`
 - **H3** (card): `font-display`, `text-lg`, `font-medium`
 - **Corpo**: `font-sans` (padrão), `text-base`/`text-sm`, `leading-relaxed`, cor `ink-soft`
+
+**Wordmark**: o logotipo "Vero" (`src/components/Logo.tsx`) usa uma terceira
+fonte, só ali — **Antic Didone**, também self-hosted via `next/font/google`,
+mas aplicada localmente ao componente (não é uma variável global). Serifa
+de contraste altíssimo com terminações em bola, mais próxima do estilo
+"fashion logotype" de referências como Rachelya/Lagency do que o Bodoni
+Moda usado nos títulos de conteúdo — só existe no peso 400, então nunca usar
+`font-semibold`/`font-bold` nela (sem eixo variável, viraria negrito falso).
 
 ---
 
