@@ -87,7 +87,7 @@ export default async function ContactDetailPage({
 
           <div className="mt-4 flex flex-wrap items-start justify-between gap-3">
             <div>
-              <h1 className="text-3xl font-semibold tracking-tight text-ink">{detail.fullName}</h1>
+              <h1 className="text-4xl font-semibold tracking-tight text-ink">{detail.fullName}</h1>
               <p className="mt-1 text-sm text-ink-soft">{detail.email}</p>
             </div>
             {detail.isLead && detail.id && (

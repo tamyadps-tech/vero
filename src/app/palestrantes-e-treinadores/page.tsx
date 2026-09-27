@@ -67,7 +67,7 @@ export default function PalestrantesETreinadoresPage() {
               <span className="h-1.5 w-1.5 rounded-full bg-primary" />
               Palestrantes e treinadores
             </span>
-            <h1 className="mt-6 font-display text-4xl font-medium leading-tight tracking-tight text-ink sm:text-5xl">
+            <h1 className="mt-6 font-display text-5xl font-medium leading-tight tracking-tight text-ink sm:text-6xl">
               Palestras e treinamentos que ficam
             </h1>
             <p className="mx-auto mt-5 max-w-xl text-lg leading-relaxed text-ink-soft">
@@ -86,7 +86,7 @@ export default function PalestrantesETreinadoresPage() {
 
         <section className="mx-auto max-w-5xl px-6 py-20">
           <div className="mx-auto max-w-2xl text-center">
-            <h2 className="font-display text-3xl font-medium tracking-tight text-ink sm:text-4xl">
+            <h2 className="font-display text-4xl font-medium tracking-tight text-ink sm:text-5xl">
               O treinamento certo resolve problema de verdade
             </h2>
             <p className="mt-4 text-ink-soft">
@@ -109,7 +109,7 @@ export default function PalestrantesETreinadoresPage() {
         <section className="border-y border-border/70 bg-paper-alt/40">
           <div className="mx-auto max-w-6xl px-6 py-20">
             <div className="mx-auto max-w-2xl text-center">
-              <h2 className="font-display text-3xl font-medium tracking-tight text-ink sm:text-4xl">
+              <h2 className="font-display text-4xl font-medium tracking-tight text-ink sm:text-5xl">
                 O que muda com o profissional certo
               </h2>
               <p className="mt-4 text-ink-soft">
@@ -123,7 +123,7 @@ export default function PalestrantesETreinadoresPage() {
               {benefits.map((benefit, index) => (
                 <Reveal key={benefit.title} delayMs={index * 100}>
                   <div className="h-full rounded-2xl border border-border bg-paper p-6 shadow-soft transition hover:-translate-y-0.5 hover:shadow-lifted">
-                    <h3 className="font-display text-lg font-medium text-ink">
+                    <h3 className="font-display text-xl font-medium text-ink">
                       {benefit.title}
                     </h3>
                     <p className="mt-2 text-sm leading-relaxed text-ink-soft">
@@ -138,7 +138,7 @@ export default function PalestrantesETreinadoresPage() {
 
         <section className="mx-auto max-w-5xl px-6 py-20">
           <div className="mx-auto max-w-2xl text-center">
-            <h2 className="font-display text-3xl font-medium tracking-tight text-ink sm:text-4xl">
+            <h2 className="font-display text-4xl font-medium tracking-tight text-ink sm:text-5xl">
               Formatos disponíveis
             </h2>
           </div>
@@ -146,7 +146,7 @@ export default function PalestrantesETreinadoresPage() {
             {formats.map((format, index) => (
               <Reveal key={format.title} delayMs={index * 100}>
                 <div className="h-full rounded-2xl border border-border bg-paper p-6 shadow-soft">
-                  <h3 className="font-display text-lg font-medium text-ink">{format.title}</h3>
+                  <h3 className="font-display text-xl font-medium text-ink">{format.title}</h3>
                   <p className="mt-2 text-sm leading-relaxed text-ink-soft">
                     {format.description}
                   </p>
@@ -159,7 +159,7 @@ export default function PalestrantesETreinadoresPage() {
         <section className="mx-auto max-w-3xl px-6 pb-24">
           <Reveal>
             <div className="rounded-2xl border border-primary/20 bg-primary-light/40 p-8 text-center shadow-soft">
-              <h2 className="font-display text-xl font-medium text-ink">
+              <h2 className="font-display text-2xl font-medium text-ink">
                 Escolha com a mesma confiança de quem já contratou
               </h2>
               <p className="mx-auto mt-2 max-w-xl text-sm leading-relaxed text-ink-soft">

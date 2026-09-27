@@ -17,7 +17,7 @@ export function ForProfessionals() {
     <section id="para-profissionais" className="mx-auto max-w-6xl px-6 py-20">
       <div className="grid gap-10 rounded-3xl border border-border bg-paper-alt/50 p-8 shadow-soft sm:grid-cols-2 sm:p-12">
         <div>
-          <h2 className="font-display text-3xl font-medium tracking-tight text-ink sm:text-4xl">
+          <h2 className="font-display text-4xl font-medium tracking-tight text-ink sm:text-5xl">
             Para profissionais
           </h2>
           <p className="mt-4 text-ink-soft">

@@ -37,7 +37,7 @@ export function WhyItMatters() {
             <span className="h-1.5 w-1.5 rounded-full bg-primary" />
             Por que isso importa
           </span>
-          <h2 className="mt-5 font-display text-3xl font-medium tracking-tight text-ink sm:text-4xl">
+          <h2 className="mt-5 font-display text-4xl font-medium tracking-tight text-ink sm:text-5xl">
             Cuidar da cabeça não devia ficar pro fim da lista
           </h2>
           <p className="mt-4 text-ink-soft">
@@ -52,7 +52,7 @@ export function WhyItMatters() {
           {stats.map((stat, index) => (
             <Reveal key={stat.label} delayMs={index * 100}>
               <div className="h-full rounded-2xl border border-border bg-paper p-6 shadow-soft">
-                <p className="font-display text-3xl font-medium text-accent">{stat.number}</p>
+                <p className="font-display text-4xl font-medium text-accent">{stat.number}</p>
                 <p className="mt-1 text-sm font-semibold text-ink">{stat.label}</p>
                 <p className="mt-2 text-xs leading-relaxed text-ink-soft">{stat.detail}</p>
               </div>
@@ -61,7 +61,7 @@ export function WhyItMatters() {
         </div>
 
         <div className="mx-auto mt-14 max-w-3xl rounded-2xl border border-primary/20 bg-primary-light/40 p-8 text-center shadow-soft">
-          <h3 className="font-display text-xl font-medium text-ink">
+          <h3 className="font-display text-2xl font-medium text-ink">
             Um espaço de acolhimento, não de julgamento
           </h3>
           <p className="mx-auto mt-2 max-w-xl text-sm leading-relaxed text-ink-soft">

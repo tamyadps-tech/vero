@@ -23,7 +23,7 @@ export function SecuritySection() {
     <section className="border-y border-border/70 bg-paper-alt/40">
       <div className="mx-auto max-w-6xl px-6 py-20">
         <div className="mx-auto max-w-2xl text-center">
-          <h2 className="font-display text-3xl font-medium tracking-tight text-ink sm:text-4xl">
+          <h2 className="font-display text-4xl font-medium tracking-tight text-ink sm:text-5xl">
             Segurança e privacidade
           </h2>
           <p className="mt-4 text-ink-soft">

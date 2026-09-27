@@ -25,7 +25,7 @@ export function Features() {
   return (
     <section id="confianca" className="mx-auto max-w-6xl px-6 py-20">
       <div className="mx-auto max-w-2xl text-center">
-        <h2 className="font-display text-3xl font-medium tracking-tight text-ink sm:text-4xl">
+        <h2 className="font-display text-4xl font-medium tracking-tight text-ink sm:text-5xl">
           Confiança do primeiro clique à última sessão
         </h2>
         <p className="mt-4 text-ink-soft">
@@ -37,10 +37,10 @@ export function Features() {
         {features.map((feature, index) => (
           <Reveal key={feature.title} delayMs={index * 100}>
             <div className="h-full border-t-2 border-ink pt-5">
-              <p className="font-display text-4xl font-medium text-accent">
+              <p className="font-display text-5xl font-medium text-accent">
                 {feature.number}
               </p>
-              <h3 className="mt-3 font-display text-lg font-medium text-ink">
+              <h3 className="mt-3 font-display text-xl font-medium text-ink">
                 {feature.title}
               </h3>
               <p className="mt-2 text-sm leading-relaxed text-ink-soft">

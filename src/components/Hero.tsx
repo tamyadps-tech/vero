@@ -26,7 +26,7 @@ export function Hero() {
             Gente de verdade, cuidando de você
             <span className="h-px w-8 bg-primary" />
           </p>
-          <h1 className="mt-7 font-display text-5xl font-medium leading-[1.05] tracking-tight text-ink sm:text-6xl">
+          <h1 className="mt-7 font-display text-6xl font-medium leading-[1.05] tracking-tight text-ink sm:text-7xl">
             Profissionais verificados.
             <br className="hidden sm:block" /> Progresso que{" "}
             <span className="text-accent">se vê</span>.
@@ -62,7 +62,7 @@ export function Hero() {
             <div key={point.label} className="flex items-center gap-8">
               {i > 0 && <span className="hidden h-8 w-px bg-border sm:block" />}
               <div className="text-center sm:text-left">
-                <p className="font-display text-base font-medium text-ink">
+                <p className="font-display text-xl font-medium text-ink">
                   {point.label}
                 </p>
                 <p className="text-xs text-ink-soft">{point.detail}</p>

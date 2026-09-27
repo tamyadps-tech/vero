@@ -96,7 +96,7 @@ export default async function ProfessionalProfilePage({
                 </span>
                 <VerifiedBadge />
               </div>
-              <h1 className="mt-2 font-display text-3xl font-medium tracking-tight text-ink sm:text-4xl">
+              <h1 className="mt-2 font-display text-4xl font-medium tracking-tight text-ink sm:text-5xl">
                 {professional.full_name}
               </h1>
             </div>

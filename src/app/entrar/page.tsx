@@ -14,7 +14,7 @@ export default function EntrarChooserPage() {
       <Header />
       <main className="flex-1">
         <section className="mx-auto max-w-2xl px-6 py-16">
-          <h1 className="font-display text-4xl font-semibold tracking-tight text-ink">
+          <h1 className="font-display text-5xl font-semibold tracking-tight text-ink">
             Entrar na Vero
           </h1>
           <p className="mt-2 text-base text-ink-soft">

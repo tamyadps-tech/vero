@@ -123,7 +123,7 @@ export default async function ProfessionalDashboardPage() {
             </span>
             <LogoutButton role="professional" redirectTo="/p/entrar" />
           </div>
-          <h1 className="mt-4 text-3xl font-semibold tracking-tight text-ink">
+          <h1 className="mt-4 text-4xl font-semibold tracking-tight text-ink">
             Olá, {professional.full_name.split(" ")[0]}
           </h1>
           <p className="mt-1 text-sm text-ink-soft">

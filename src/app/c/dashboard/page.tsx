@@ -102,7 +102,7 @@ export default async function ClientDashboardPage({
             </span>
             <LogoutButton role="client" redirectTo="/c/entrar" />
           </div>
-          <h1 className="mt-4 text-3xl font-semibold tracking-tight text-ink">
+          <h1 className="mt-4 text-4xl font-semibold tracking-tight text-ink">
             Olá, {progress.full_name.split(" ")[0]}
           </h1>
 

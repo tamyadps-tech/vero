@@ -46,7 +46,7 @@ export default async function BlogPostPage({
           <p className="mt-4 text-xs text-ink-soft">
             {dateFormatter.format(new Date(post.publishedAt))}
           </p>
-          <h1 className="mt-1 font-display text-3xl font-medium tracking-tight text-ink sm:text-4xl">
+          <h1 className="mt-1 font-display text-4xl font-medium tracking-tight text-ink sm:text-5xl">
             {post.title}
           </h1>
           {post.tags.length > 0 && (
@@ -68,7 +68,7 @@ export default async function BlogPostPage({
           />
 
           <div className="mt-14 rounded-2xl border border-primary/20 bg-primary-light/40 p-8 text-center shadow-soft">
-            <h2 className="font-display text-xl font-medium text-ink">
+            <h2 className="font-display text-2xl font-medium text-ink">
               Pronto(a) pra dar o próximo passo?
             </h2>
             <p className="mx-auto mt-2 max-w-md text-sm text-ink-soft">

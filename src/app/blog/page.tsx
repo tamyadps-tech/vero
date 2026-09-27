@@ -22,7 +22,7 @@ export default async function BlogPage() {
       <Header />
       <main className="flex-1">
         <section className="mx-auto max-w-4xl px-6 py-16">
-          <h1 className="font-display text-3xl font-medium tracking-tight text-ink sm:text-4xl">
+          <h1 className="font-display text-4xl font-medium tracking-tight text-ink sm:text-5xl">
             Blog
           </h1>
           <p className="mt-2 text-ink-soft">
@@ -50,7 +50,7 @@ export default async function BlogPage() {
                   <p className="text-xs text-ink-soft">
                     {dateFormatter.format(new Date(post.publishedAt))}
                   </p>
-                  <h2 className="mt-1 font-display text-xl font-medium text-ink">
+                  <h2 className="mt-1 font-display text-2xl font-medium text-ink">
                     {post.title}
                   </h2>
                   <p className="mt-2 text-sm leading-relaxed text-ink-soft">{post.excerpt}</p>

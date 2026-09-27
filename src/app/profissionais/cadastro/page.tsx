@@ -18,7 +18,7 @@ export default function CadastroProfissionalPage() {
           <span className="inline-flex items-center gap-2 rounded-full border border-border bg-paper-alt px-4 py-1.5 text-xs font-medium uppercase tracking-wide text-ink-soft">
             Cadastro de profissional
           </span>
-          <h1 className="mt-4 font-display text-3xl font-semibold tracking-tight text-ink sm:text-4xl">
+          <h1 className="mt-4 font-display text-4xl font-semibold tracking-tight text-ink sm:text-5xl">
             Candidate-se para a Vero
           </h1>
           <p className="mt-3 text-ink-soft">

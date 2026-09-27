@@ -28,7 +28,7 @@ export function DesiredState() {
           <span className="h-1.5 w-1.5 rounded-full bg-primary" />
           O que muda
         </span>
-        <h2 className="mt-5 font-display text-3xl font-medium tracking-tight text-ink sm:text-4xl">
+        <h2 className="mt-5 font-display text-4xl font-medium tracking-tight text-ink sm:text-5xl">
           Como fica quando você tem o apoio certo
         </h2>
         <p className="mt-4 text-ink-soft">

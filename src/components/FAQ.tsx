@@ -35,7 +35,7 @@ export function FAQ() {
   return (
     <section id="faq" className="mx-auto max-w-3xl px-6 py-20">
       <div className="text-center">
-        <h2 className="font-display text-3xl font-medium tracking-tight text-ink sm:text-4xl">
+        <h2 className="font-display text-4xl font-medium tracking-tight text-ink sm:text-5xl">
           Perguntas frequentes
         </h2>
       </div>
