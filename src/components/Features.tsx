@@ -6,21 +6,18 @@ const features = [
     title: "Vetting de verdade",
     description:
       "Cada profissional passa por verificação de credenciais (CRP, certificações, diplomas) antes de entrar na Vero. Só aprova quem comprova.",
-    numberColor: "text-primary",
   },
   {
     number: "02",
     title: "Avaliações públicas",
     description:
       "Só quem realizou sessão pode avaliar. Rating e comentários ficam visíveis no perfil — prova social real, sem espaço para fraude.",
-    numberColor: "text-accent-dark",
   },
   {
     number: "03",
     title: "Progresso visual, na sua conta",
     description:
       "Depois de cada sessão, o cliente recebe um resumo por email e acompanha sua evolução no próprio painel, com histórico completo de tudo.",
-    numberColor: "text-gold-dark",
   },
 ];
 
@@ -40,7 +37,7 @@ export function Features() {
         {features.map((feature, index) => (
           <Reveal key={feature.title} delayMs={index * 100}>
             <div className="h-full border-t-2 border-ink pt-5">
-              <p className={`font-display text-4xl font-medium ${feature.numberColor}`}>
+              <p className="font-display text-4xl font-medium text-accent">
                 {feature.number}
               </p>
               <h3 className="mt-3 font-display text-lg font-medium text-ink">

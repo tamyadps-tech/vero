@@ -31,13 +31,13 @@ uma com seu próprio papel, nunca como decoração solta.
 | `--color-primary` | `#454A34` | Cor dominante — ações primárias, links, ícones de destaque, texto de marca |
 | `--color-primary-dark` | `#2E321F` | Hover/active de botões primários |
 | `--color-primary-light` | `#E3E2D3` | Fundos suaves (badges, cards de destaque) |
-| `--color-accent` | `#9B5C4F` | CTA secundário (ex. "Entrar na lista"), alertas de atenção — terracota |
-| `--color-accent-dark` | `#74423A` | Hover do accent |
-| `--color-accent-light` | `#F0DDD6` | Fundos suaves com accent |
-| `--color-gold` | `#87796D` | Terceira cor de apoio (taupe) — variedade em conjuntos de 3–4 itens (ícones, estatísticas) |
+| `--color-accent` | `#FF6B4A` | Coral vívido — a única cor saturada da paleta, reservada pra destacar dado importante (estatística, palavra-chave no H1, CTA secundário) |
+| `--color-accent-dark` | `#D8492A` | Hover do accent |
+| `--color-accent-light` | `#FFE0D6` | Fundos suaves com accent |
+| `--color-gold` | `#87796D` | Cor de apoio (taupe), hoje sem uso — reservada pra variedade em conjuntos de 3–4 itens |
 | `--color-gold-dark` | `#5F544A` | Texto/hover sobre gold |
 | `--color-gold-light` | `#ECE7DF` | Fundos suaves com gold |
-| `--color-sage` | `#5C2925` | Quarta cor de apoio (oxblood) — contraponto escuro/quente ao verde-oliva |
+| `--color-sage` | `#5C2925` | Cor de apoio (oxblood), hoje sem uso — reservada pra contraponto escuro/quente ao verde-oliva |
 | `--color-sage-dark` | `#3F1B18` | Texto/hover sobre sage |
 | `--color-sage-light` | `#ECDCDA` | Fundos suaves com sage |
 | `--color-paper` | `#F7F4EC` | Fundo principal (creme quente, não branco puro) |
@@ -46,11 +46,15 @@ uma com seu próprio papel, nunca como decoração solta.
 | `--color-ink-soft` | `#6B6558` | Texto secundário, legendas |
 | `--color-border` | `#DDD5C3` | Bordas e divisores |
 
-**Regra de uso do gold/sage**: nunca em CTA principal, botão de ação ou link —
-esses continuam `primary`/`accent`. Gold e sage existem só pra dar variedade
-visual em conjuntos paralelos de 3–4 itens (os 4 cards de estatística da
-landing, os 3 números de feature, um terceiro blob de fundo no Hero) — cor por
-identidade do item, nunca decoração aleatória solta na página.
+**Regra de uso do accent**: é a única cor vívida/saturada no meio de uma
+paleta terrosa de propósito — por isso deve ir sempre em dado real que
+precisa de destaque (a palavra-chave do H1 "se vê", os números da seção
+"Por que isso importa", os números 01/02/03 de listas de passos/features),
+nunca em decoração solta. **Regra de uso do gold/sage**: nunca em CTA
+principal, botão de ação ou link — esses continuam `primary`/`accent`.
+Hoje sem uso ativo no código; existem pra variedade visual em algum futuro
+conjunto paralelo de 3–4 itens, se aparecer — cor por identidade do item,
+nunca decoração aleatória solta na página.
 
 Definidos como CSS custom properties em `src/app/globals.css` e expostos ao
 Tailwind via `@theme inline` — usar como `bg-primary`, `text-ink-soft`,

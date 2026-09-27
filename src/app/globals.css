@@ -5,7 +5,10 @@
   /* Vero brand tokens — see /BRANDING.md for rationale.
      Paleta "Oliva" — tons terrosos e dessaturados (quiet luxury), com
      verde-oliva escuro como cor dominante, a partir da referência de 5
-     cores enviada por Tamy. Taupe/terracota/oxblood entram como apoio. */
+     cores enviada por Tamy. O accent é um coral vívido de propósito —
+     é a ÚNICA cor saturada da paleta, reservada pra destacar dado
+     importante (estatística, palavra-chave, CTA secundário) contra o
+     fundo sóbrio; nunca decoração, sempre destaque de verdade. */
   --color-paper: #f7f4ec;
   --color-paper-alt: #ece7d9;
   --color-ink: #262620;
@@ -13,9 +16,9 @@
   --color-primary: #454a34;
   --color-primary-dark: #2e321f;
   --color-primary-light: #e3e2d3;
-  --color-accent: #9b5c4f;
-  --color-accent-dark: #74423a;
-  --color-accent-light: #f0ddd6;
+  --color-accent: #ff6b4a;
+  --color-accent-dark: #d8492a;
+  --color-accent-light: #ffe0d6;
   --color-gold: #87796d;
   --color-gold-dark: #5f544a;
   --color-gold-light: #ece7df;
@@ -23,6 +26,9 @@
   --color-sage-dark: #3f1b18;
   --color-sage-light: #ecdcda;
   --color-border: #ddd5c3;
+  /* Cor telha — fundo da área do cliente (/c), pedido explícito pra
+     substituir o antigo bg-accent-light (rosa pastel demais). */
+  --color-tile: #cc8258;
 }
 
 @theme inline {
@@ -43,6 +49,7 @@
   --color-sage-dark: var(--color-sage-dark);
   --color-sage-light: var(--color-sage-light);
   --color-border: var(--color-border);
+  --color-tile: var(--color-tile);
 
   /* Inter (UI/corpo) + Bodoni Moda (títulos) — as variáveis
      --font-inter e --font-bodoni-moda são geradas pelo next/font
@@ -92,10 +99,10 @@ body {
   font-family: var(--font-display);
 }
 
-/* Área do cliente (/c): título de página em negrito na cor verde da
-   marca, mesma fonte de destaque — mesma ressalva do h2/h3 acima. */
+/* Área do cliente (/c): título de página em coral (destaque), mesma
+   fonte de destaque — mesma ressalva do h2/h3 acima. */
 .area-cliente h1 {
-  color: var(--color-primary);
+  color: var(--color-accent);
   font-weight: 600;
   font-family: var(--font-display);
 }

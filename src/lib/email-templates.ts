@@ -248,7 +248,7 @@ export function taskReminderEmail({
         <td style="padding:8px 0;border-bottom:1px solid #ddd5c3;font-size:14px;color:#262620;">
           <strong>${escapeHtml(t.contactName)}</strong> — ${escapeHtml(t.title)}
         </td>
-        <td style="padding:8px 0;border-bottom:1px solid #ddd5c3;font-size:12px;text-align:right;white-space:nowrap;color:${t.overdue ? "#74423a" : "#6b6558"};">
+        <td style="padding:8px 0;border-bottom:1px solid #ddd5c3;font-size:12px;text-align:right;white-space:nowrap;color:${t.overdue ? "#d8492a" : "#6b6558"};">
           ${t.overdue ? "Atrasada · " : ""}${escapeHtml(shortDateFormatter.format(new Date(t.dueDate)))}
         </td>
       </tr>`

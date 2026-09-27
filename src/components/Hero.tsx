@@ -29,7 +29,7 @@ export function Hero() {
           <h1 className="mt-7 font-display text-5xl font-medium leading-[1.05] tracking-tight text-ink sm:text-6xl">
             Profissionais verificados.
             <br className="hidden sm:block" /> Progresso que{" "}
-            <span className="text-primary">se vê</span>.
+            <span className="text-accent">se vê</span>.
           </h1>
           <p className="mx-auto mt-6 max-w-xl text-lg leading-relaxed text-ink-soft">
             A Vero conecta terapeutas, psicólogos, coaches e consultores a
