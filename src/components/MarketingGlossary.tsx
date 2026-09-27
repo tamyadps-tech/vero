@@ -15,6 +15,35 @@ const TERMS: {
       "Lead que não recebe resposta ou follow-up esfria em poucos dias e vira oportunidade perdida, mesmo quando o interesse inicial era real.",
   },
   {
+    term: "Follow-up",
+    definition:
+      "Voltar a entrar em contato depois de um primeiro contato, sem esperar a outra pessoa tomar a iniciativa. Um lembrete, uma pergunta sobre se ficou alguma dúvida, um \"ainda faz sentido pra você?\" alguns dias depois.",
+    whyItMatters:
+      "A maioria das pessoas não fecha no primeiro contato, mas também não volta sozinha, o follow-up é o que recupera esse interesse antes que ele esfrie de vez.",
+    danger:
+      "Sem follow-up, todo lead que não responde na hora vira perda automática, mesmo quando só precisava de um empurrão gentil pra decidir.",
+  },
+  {
+    term: "Estágios do CRM",
+    aka: "lead → contatado → agendado → cliente ativo",
+    definition:
+      "O caminho que um contato percorre dentro do seu CRM na Vero: lead (demonstrou interesse), contatado (você já falou com ele), agendado (marcou uma sessão) e cliente ativo (já é cliente de verdade). Cada contato tem um estágio, visível na aba Clientes.",
+    whyItMatters:
+      "Ver o estágio de cada contato mostra exatamente onde focar energia: quem está parado em \"contatado\" há semanas provavelmente precisa de um follow-up, não de um lead novo.",
+    danger:
+      "Sem acompanhar o estágio de cada contato, é fácil perder de vista quem estava quase fechando, deixando pra trás justamente quem tinha mais chance de virar cliente.",
+  },
+  {
+    term: "Status de engajamento",
+    aka: "ativo / em risco / inativo",
+    definition:
+      "Diferente do estágio do CRM (que mostra o caminho até virar cliente), o status de engajamento mede a saúde do relacionamento com quem já é cliente: ativo (sessão recente ou agendada), em risco (sem sessão há um tempo, sinal de alerta) ou inativo (sumiu de vez). Calculado automaticamente pela Vero em cada cliente.",
+    whyItMatters:
+      "É o alarme que avisa quem está esfriando antes que vire um cancelamento silencioso, dá tempo de agir (mandar uma mensagem de cuidado) enquanto ainda dá.",
+    danger:
+      "Ignorar clientes marcados como \"em risco\" é a forma mais comum de perder alguém que já confiava em você, sem nunca saber exatamente por quê ou quando parou de vir.",
+  },
+  {
     term: "CAC",
     aka: "Custo de Aquisição de Cliente, do inglês Customer Acquisition Cost",
     definition:
@@ -131,6 +160,11 @@ const DIFFERENCES: { pair: string; explanation: string }[] = [
     pair: "Alcance × Engajamento",
     explanation:
       "Alcance é quantas pessoas viram o conteúdo. Engajamento é quantas interagiram de verdade (curtida, comentário, resposta). Alcance alto com engajamento baixo costuma significar audiência desconectada, não interessada o bastante pra agir.",
+  },
+  {
+    pair: "Estágio do CRM × Status de engajamento",
+    explanation:
+      "Os dois usam a palavra \"ativo\" e \"inativo\", mas medem coisas diferentes. Estágio do CRM mostra o caminho até virar cliente (lead, contatado, agendado, cliente ativo). Status de engajamento mede a saúde de quem já é cliente (ativo, em risco, inativo). Um cliente pode estar no estágio \"cliente ativo\" do CRM e, meses depois, ter status de engajamento \"inativo\", porque parou de agendar, sem nunca sair do CRM.",
   },
 ];
 
