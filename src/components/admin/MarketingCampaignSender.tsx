@@ -76,7 +76,7 @@ export function MarketingCampaignSender({
         >
           {templates.map((template) => (
             <option key={template.id} value={template.id}>
-              {template.stage} — {template.label}
+              {template.stage}, {template.label}
             </option>
           ))}
         </select>
@@ -135,7 +135,7 @@ export function MarketingCampaignSender({
 
       {state.status === "done" && (
         <p className="mt-3 text-xs text-ink-soft">
-          {state.recipientCount} destinatário(s) — {state.sent} enviado(s), {state.failed} não
+          {state.recipientCount} destinatário(s), {state.sent} enviado(s), {state.failed} não
           enviado(s)
           {state.reasons.length > 0 && ` (motivo: ${state.reasons.join(", ")})`}.
         </p>

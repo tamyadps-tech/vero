@@ -55,7 +55,7 @@ export function WhatsAppCampaignSender({ templates }: { templates: ResolvedCampa
     <form onSubmit={handleSubmit} className="rounded-2xl border border-border bg-paper p-5">
       <h3 className="text-sm font-semibold text-ink">Disparar campanha de WhatsApp</h3>
       <p className="mt-1 text-xs text-ink-soft">
-        A Vero ainda não guarda telefone de ninguém automaticamente — cole abaixo os números
+        A Vero ainda não guarda telefone de ninguém automaticamente, cole abaixo os números
         no formato internacional (ex: +5511999999999) de quem já topou receber mensagem.
       </p>
 
@@ -68,7 +68,7 @@ export function WhatsAppCampaignSender({ templates }: { templates: ResolvedCampa
         >
           {templates.map((template) => (
             <option key={template.id} value={template.id}>
-              {template.stage} — {template.label}
+              {template.stage}, {template.label}
             </option>
           ))}
         </select>
@@ -95,7 +95,7 @@ export function WhatsAppCampaignSender({ templates }: { templates: ResolvedCampa
 
       {state.status === "done" && (
         <p className="mt-3 text-xs text-ink-soft">
-          {state.recipientCount} destinatário(s) — {state.sent} enviado(s), {state.failed} não
+          {state.recipientCount} destinatário(s), {state.sent} enviado(s), {state.failed} não
           enviado(s)
           {state.reasons.length > 0 && ` (motivo: ${state.reasons.join(", ")})`}.
         </p>

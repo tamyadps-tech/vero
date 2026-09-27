@@ -99,7 +99,7 @@ function ClientProfileEditForm({
           className={fieldClass}
         />
         <p className="mt-1.5 text-xs text-ink-soft">
-          Com DDI e DDD, ex: +5511999998888 — usado só pra confirmação e
+          Com DDI e DDD, ex: +5511999998888, usado só pra confirmação e
           lembrete de sessão. Opcional.
         </p>
       </div>
@@ -134,7 +134,7 @@ function ClientProfileEditForm({
           </div>
         </div>
         <p className="mt-1.5 text-xs text-ink-soft">
-          Só preencha se quiser trocar — mínimo 8 caracteres.
+          Só preencha se quiser trocar, mínimo 8 caracteres.
         </p>
       </div>
 

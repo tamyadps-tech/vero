@@ -72,9 +72,9 @@ export function TestListItem({
   }
 
   const status = latest
-    ? `Respondido em ${dateFormatter.format(new Date(latest.createdAt))} — ${latest.score} (${latest.severity})`
+    ? `Respondido em ${dateFormatter.format(new Date(latest.createdAt))}, ${latest.score} (${latest.severity})`
     : released
-      ? "Enviado — aguardando resposta do cliente"
+      ? "Enviado, aguardando resposta do cliente"
       : "Não enviado";
 
   const options = getResponseOptions(template.responseType);

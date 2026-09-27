@@ -44,7 +44,7 @@ export default async function AdminFinanceiroPage() {
       <main className="mx-auto max-w-6xl px-6 py-10">
         <h1 className="font-display text-4xl font-semibold tracking-tight text-ink">Financeiro</h1>
         <p className="mt-1 text-sm text-ink-soft">
-          A saúde financeira da própria Vero — não a de um profissional específico.
+          A saúde financeira da própria Vero, não a de um profissional específico.
         </p>
 
         {!metrics ? (
@@ -55,7 +55,7 @@ export default async function AdminFinanceiroPage() {
           <>
             <section className="mt-8">
               <div className="rounded-2xl border border-amber-200 bg-amber-50 p-4 text-sm text-amber-900">
-                <strong>Importante:</strong> a Vero ainda não cobra comissão por sessão — o
+                <strong>Importante:</strong> a Vero ainda não cobra comissão por sessão, o
                 valor abaixo é o volume processado no Stripe (que é repassado ao profissional),
                 não receita própria. A Vero já cobra assinatura dos profissionais (planos
                 Básico/Pro/Premium); veja o MRR real em{" "}
@@ -75,7 +75,7 @@ export default async function AdminFinanceiroPage() {
                     {formatPrice(metrics.revenue.totalCents)}
                   </p>
                   <p className="mt-1 text-xs text-ink-soft">
-                    {metrics.revenue.pagas} sessões pagas — repassado ao profissional, não é
+                    {metrics.revenue.pagas} sessões pagas, repassado ao profissional, não é
                     receita da Vero
                   </p>
                 </div>
@@ -109,7 +109,7 @@ export default async function AdminFinanceiroPage() {
                 Custos operacionais da Vero
               </h2>
               <p className="mt-1 text-sm text-ink-soft">
-                Cadastre aqui o que a própria plataforma custa pra rodar — é isso que entra
+                Cadastre aqui o que a própria plataforma custa pra rodar, é isso que entra
                 no cálculo de margem e comissão sugerida abaixo.
               </p>
               <div className="mt-4 rounded-2xl border border-border bg-paper-alt/40 p-5">
@@ -163,7 +163,7 @@ export default async function AdminFinanceiroPage() {
                 Comissão necessária pra Vero se sustentar
               </h2>
               <p className="mt-1 text-sm text-ink-soft">
-                Com R$0 de comissão (situação atual), a margem de contribuição é negativa —
+                Com R$0 de comissão (situação atual), a margem de contribuição é negativa,
                 cada sessão processada custa mais do que gera. Simule uma comissão por sessão
                 abaixo pra ver o que cobriria os custos com uma margem saudável.
               </p>
@@ -178,7 +178,7 @@ export default async function AdminFinanceiroPage() {
               </div>
               <div className="mt-4">
                 <p className="mb-2 text-xs font-medium text-ink-soft">
-                  Calculadora — teste diferentes comissões e volumes
+                  Calculadora, teste diferentes comissões e volumes
                 </p>
                 <FinancialHealthCalculator
                   initialFixedMonthlyCostsCents={fixedMonthlyCostsCents}

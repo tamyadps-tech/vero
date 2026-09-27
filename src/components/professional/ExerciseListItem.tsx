@@ -68,7 +68,7 @@ export function ExerciseListItem({
   const status = latest
     ? `Respondido em ${dateFormatter.format(new Date(latest.createdAt))}`
     : released
-      ? "Enviado — aguardando resposta do cliente"
+      ? "Enviado, aguardando resposta do cliente"
       : "Não enviado";
 
   return (

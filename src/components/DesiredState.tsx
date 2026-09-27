@@ -8,7 +8,7 @@ const shifts = [
   },
   {
     before: "Sensação de estar sempre apagando incêndio",
-    after: "Clareza sobre prioridades — e espaço pra dizer não ao resto",
+    after: "Clareza sobre prioridades, e espaço pra dizer não ao resto",
   },
   {
     before: "Metas de carreira ou de vida que nunca saem do papel",
@@ -16,7 +16,7 @@ const shifts = [
   },
   {
     before: "Cansaço que continua mesmo depois de dormir",
-    after: "Rotina mais sustentável, com descanso de verdade — sem culpa",
+    after: "Rotina mais sustentável, com descanso de verdade, sem culpa",
   },
 ];
 
@@ -32,7 +32,7 @@ export function DesiredState() {
           Como fica quando você tem o apoio certo
         </h2>
         <p className="mt-4 text-ink-soft">
-          Não é sobre virar outra pessoa da noite pro dia — é sobre ter, com
+          Não é sobre virar outra pessoa da noite pro dia, é sobre ter, com
           regularidade, alguém que te ajuda a sair do modo sobrevivência.
         </p>
       </div>

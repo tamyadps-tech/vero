@@ -132,7 +132,7 @@ export function BlogManager({ posts }: { posts: AdminBlogPost[] }) {
     <div>
       <div className="flex items-center justify-between">
         <p className="text-sm text-ink-soft">
-          {posts.length} post{posts.length === 1 ? "" : "s"} — dados/argumentos que sustentam a
+          {posts.length} post{posts.length === 1 ? "" : "s"}, dados/argumentos que sustentam a
           landing e dão material pra divulgação.
         </p>
         <button
@@ -172,7 +172,7 @@ export function BlogManager({ posts }: { posts: AdminBlogPost[] }) {
           </div>
           <div>
             <label className="mb-1.5 block text-xs font-medium text-ink" htmlFor="blog-content">
-              Conteúdo (aceita Markdown — # título, **negrito**, listas com -)
+              Conteúdo (aceita Markdown, # título, **negrito**, listas com -)
             </label>
             <textarea
               id="blog-content"

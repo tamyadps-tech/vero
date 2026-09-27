@@ -2,7 +2,7 @@ const faqs = [
   {
     question: "Os profissionais são verificados de verdade?",
     answer:
-      "Sim. Todo perfil passa por vetting antes de ficar público — conferimos credencial (diploma, registro como CRP) e experiência declarada. Veja o processo completo acima.",
+      "Sim. Todo perfil passa por vetting antes de ficar público, conferimos credencial (diploma, registro como CRP) e experiência declarada. Veja o processo completo acima.",
   },
   {
     question: "Meus dados ficam seguros?",
@@ -17,12 +17,12 @@ const faqs = [
   {
     question: "Como cancelo ou remarco uma sessão?",
     answer:
-      "Por enquanto isso é combinado direto com o profissional (contato dele aparece depois de agendar) ou escrevendo pra suporte@vero.app — o cancelamento pelo próprio painel ainda está a caminho.",
+      "Por enquanto isso é combinado direto com o profissional (contato dele aparece depois de agendar) ou escrevendo pra suporte@vero.app, o cancelamento pelo próprio painel ainda está a caminho.",
   },
   {
     question: "Preciso criar conta?",
     answer:
-      "Sim — leva menos de um minuto, só email e senha. É o que garante que seu histórico e progresso fiquem só com você.",
+      "Sim, leva menos de um minuto, só email e senha. É o que garante que seu histórico e progresso fiquem só com você.",
   },
   {
     question: "Sou profissional, como entro na Vero?",

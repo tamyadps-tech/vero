@@ -26,7 +26,7 @@ export default async function AdminMarketingPage() {
       <main className="mx-auto max-w-6xl px-6 py-10">
         <h1 className="font-display text-4xl font-semibold tracking-tight text-ink">Marketing</h1>
         <p className="mt-1 text-sm text-ink-soft">
-          Ferramentas pra divulgar a própria Vero — não a agenda de um profissional
+          Ferramentas pra divulgar a própria Vero, não a agenda de um profissional
           específico. Nada aqui pede pra você sair da Vero ou abrir conta em outro lugar:
           o envio usa o Resend e o Twilio que já estão conectados no resto do app.
         </p>
@@ -61,7 +61,7 @@ export default async function AdminMarketingPage() {
             WhatsApp em massa
           </h2>
           <p className="mt-1 text-sm text-ink-soft">
-            Pra quem já topou receber mensagem — use os mesmos modelos, em versão curta.
+            Pra quem já topou receber mensagem, use os mesmos modelos, em versão curta.
           </p>
           <div className="mt-3">
             <MarketingIntegrationStatusCard

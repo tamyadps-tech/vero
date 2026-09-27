@@ -81,7 +81,7 @@ export function MonthlyGoalTracker({
       {editing ? (
         <div className="mt-3 flex flex-wrap items-end gap-2">
           <label className="text-xs font-medium text-ink-soft">
-            Meta de receita mensal (R$) — deixe em branco pra remover
+            Meta de receita mensal (R$), deixe em branco pra remover
             <input
               type="number"
               min={0}

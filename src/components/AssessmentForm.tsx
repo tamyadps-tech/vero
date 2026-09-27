@@ -96,7 +96,7 @@ export function AssessmentForm({
     return (
       <div className="rounded-xl border border-primary/30 bg-primary-light p-5">
         <p className="text-xs font-semibold uppercase tracking-wide text-primary-dark">
-          {previewOnly ? "Prévia do resultado" : "Seu resultado"} — {template.name}
+          {previewOnly ? "Prévia do resultado" : "Seu resultado"}, {template.name}
         </p>
 
         <div className="mt-3 flex items-baseline gap-2">
@@ -148,7 +148,7 @@ export function AssessmentForm({
 
         <p className="mt-4 border-t border-primary/20 pt-3 text-xs text-primary-dark/80">
           {previewOnly
-            ? "Isso é só uma prévia pra você entender como o teste funciona — nada foi salvo."
+            ? "Isso é só uma prévia pra você entender como o teste funciona, nada foi salvo."
             : "Seu profissional já tem acesso a esse resultado e vai conversar sobre ele com você na próxima sessão."}
         </p>
 

@@ -2,13 +2,13 @@ import Link from "next/link";
 
 const perks = [
   "Agenda, prontuário e cobrança num só lugar",
-  "Calculadora de margem e preço sugerido, a partir dos seus custos reais — chega de cobrar no chute",
+  "Calculadora de margem e preço sugerido, a partir dos seus custos reais, chega de cobrar no chute",
   "Testes e exercícios prontos pra enviar, pra nunca faltar ideia de conteúdo pra próxima sessão",
   "CRM com o histórico de cada cliente e o valor que ele já gerou (LTV)",
   "Sinal de quem está sumindo, pra você reengajar antes de perder o cliente",
   "Envie mensagens (avisos, novidades, promoções) direto pros seus clientes",
   "Perfil público com avaliações reais de clientes",
-  "Resumo de sessão automático — você não escreve o email",
+  "Resumo de sessão automático, você não escreve o email",
   "Comissão simples por sessão, sem mensalidade no início",
 ];
 
@@ -44,7 +44,7 @@ export function ForProfessionals() {
         </div>
         <div id="lista-espera-profissional" className="flex flex-col justify-center">
           <p className="mb-3 text-sm font-medium text-ink">
-            Candidate-se e aguarde a aprovação da equipe — todo perfil
+            Candidate-se e aguarde a aprovação da equipe, todo perfil
             precisa ser verificado antes de ir ao ar:
           </p>
           <Link

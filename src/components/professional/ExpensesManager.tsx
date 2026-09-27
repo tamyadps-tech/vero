@@ -189,7 +189,7 @@ export function ExpensesManager({
       <p className="mt-2 text-xs text-ink-soft">
         Custo <strong>fixo</strong>: informe o valor mensal (ex: aluguel, assinatura).
         Custo <strong>variável</strong>: informe o valor por sessão (ex: material, taxa de
-        pagamento) — é isso que entra na margem e no preço sugerido abaixo.
+        pagamento), é isso que entra na margem e no preço sugerido abaixo.
       </p>
 
       {error && (

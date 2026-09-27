@@ -5,7 +5,7 @@ export function Header() {
   return (
     <header className="sticky top-0 z-40 border-b border-border/70 bg-paper/90 backdrop-blur">
       <div className="mx-auto flex max-w-6xl items-center justify-between gap-6 px-6 py-3.5">
-        <Link href="/" aria-label="Vero — página inicial" className="shrink-0">
+        <Link href="/" aria-label="Vero, página inicial" className="shrink-0">
           <Logo />
         </Link>
         <nav className="hidden items-center gap-6 text-sm font-medium text-ink-soft xl:flex">

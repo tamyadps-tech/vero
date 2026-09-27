@@ -24,7 +24,7 @@ const stats = [
     number: "Maioria",
     label: "nunca busca ajuda",
     detail:
-      "A maior parte de quem precisa de acompanhamento nunca chega a iniciar um tratamento, segundo a OMS — muitas vezes por não saber por onde começar.",
+      "A maior parte de quem precisa de acompanhamento nunca chega a iniciar um tratamento, segundo a OMS, muitas vezes por não saber por onde começar.",
   },
 ];
 
@@ -41,7 +41,7 @@ export function WhyItMatters() {
             Cuidar da cabeça não devia ficar pro fim da lista
           </h2>
           <p className="mt-4 text-ink-soft">
-            Ansiedade, sobrecarga, estagnação na carreira, relações que travam — a maioria de
+            Ansiedade, sobrecarga, estagnação na carreira, relações que travam, a maioria de
             nós carrega alguma dessas dores em silêncio, esperando &quot;ter mais tempo&quot;
             pra cuidar disso. Só que esse tempo raramente chega sozinho. Os números mostram
             por que vale dar o primeiro passo agora:
@@ -65,7 +65,7 @@ export function WhyItMatters() {
             Um espaço de acolhimento, não de julgamento
           </h3>
           <p className="mx-auto mt-2 max-w-xl text-sm leading-relaxed text-ink-soft">
-            Na Vero você não está escolhendo &quot;um nome qualquer na internet&quot; — está
+            Na Vero você não está escolhendo &quot;um nome qualquer na internet&quot;, está
             escolhendo entre profissionais que passaram por verificação de credenciais e que
             têm avaliações reais de quem já fez sessão com eles. É a chance de dar esse
             primeiro passo com quem é, de fato, confiável.

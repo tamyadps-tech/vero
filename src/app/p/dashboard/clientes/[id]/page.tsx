@@ -132,7 +132,7 @@ export default async function ContactDetailPage({
                     Testes
                   </h2>
                   <p className="mt-1 text-sm text-ink-soft">
-                    Envie só os que fizerem sentido pra esse cliente agora — nada aparece
+                    Envie só os que fizerem sentido pra esse cliente agora, nada aparece
                     pra ele até você clicar em &quot;Enviar&quot;.
                   </p>
                   <div className="mt-3 space-y-2">

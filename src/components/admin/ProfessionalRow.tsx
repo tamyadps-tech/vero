@@ -218,7 +218,7 @@ export function ProfessionalRow({
                       )}
                     </span>
                     {professional.verification_meeting_notes &&
-                      ` — ${professional.verification_meeting_notes}`}
+                      `, ${professional.verification_meeting_notes}`}
                   </>
                 ) : (
                   "Nenhuma reunião de verificação marcada ainda."

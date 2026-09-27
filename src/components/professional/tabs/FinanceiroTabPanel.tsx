@@ -101,7 +101,7 @@ export function FinanceiroTabPanel({
           <p className="mt-3 text-xs text-ink-soft">
             Sem Stripe Connect ainda: o valor cai na conta da Vero e o repasse é
             manual, como descrito no Termo de Uso. Imposto não entra nessa
-            conta — depende do seu regime tributário e fica pra uma próxima
+            conta, depende do seu regime tributário e fica pra uma próxima
             etapa.
           </p>
           {finance.transactions.length > 0 && (
@@ -193,7 +193,7 @@ export function FinanceiroTabPanel({
 
                 <div className="mt-4">
                   <p className="mb-2 text-xs font-medium text-ink-soft">
-                    Calculadora — mude os valores abaixo pra simular outros cenários
+                    Calculadora, mude os valores abaixo pra simular outros cenários
                   </p>
                   <FinancialHealthCalculator
                     initialFixedMonthlyCostsCents={fixedMonthlyCostsCents}

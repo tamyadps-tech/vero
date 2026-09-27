@@ -44,7 +44,7 @@ export function ExerciciosTabPanel({ clients }: { clients: ProfessionalClient[] 
     <section>
       <h2 className="text-sm font-semibold uppercase tracking-wide text-ink-soft">Exercícios</h2>
       <p className="mt-1 text-sm text-ink-soft">
-        Reflexões em texto livre — sem pontuação, o &quot;resultado&quot; é o que
+        Reflexões em texto livre, sem pontuação, o &quot;resultado&quot; é o que
         o cliente escreve. O cliente só consegue responder depois que
         você envia o exercício.
       </p>
@@ -69,7 +69,7 @@ export function ExerciciosTabPanel({ clients }: { clients: ProfessionalClient[] 
           <p className="text-sm text-ink-soft">Supabase ainda não está configurado.</p>
         ) : clients.length === 0 ? (
           <p className="text-sm text-ink-soft">
-            Nenhum cliente ainda — assim que alguém agendar uma sessão com
+            Nenhum cliente ainda, assim que alguém agendar uma sessão com
             você, ele aparece aqui pra você enviar os exercícios.
           </p>
         ) : (

@@ -30,7 +30,7 @@ export function MetodoTabPanel() {
       <h2 className="text-sm font-semibold uppercase tracking-wide text-ink-soft">Método</h2>
       <p className="mt-1 text-sm text-ink-soft">
         Guias práticos com dicas e caminhos pra sua atuação com clientes,
-        e fichas de condução — roteiros de perguntas abertas pra usar
+        e fichas de condução, roteiros de perguntas abertas pra usar
         ao vivo em sessão. Conteúdo curado e escrito pela equipe Vero.
       </p>
 

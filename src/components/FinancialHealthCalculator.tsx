@@ -118,7 +118,7 @@ export function FinancialHealthCalculator({
 
       {isUnhealthy && (
         <p className="mt-4 rounded-xl border border-red-200 bg-red-50 p-3 text-sm text-red-800">
-          Atenção: com esses números, cada {unitLabel} dá prejuízo — o custo variável já é
+          Atenção: com esses números, cada {unitLabel} dá prejuízo, o custo variável já é
           maior que o preço cobrado. Não existe ponto de equilíbrio possível enquanto isso
           não mudar.
         </p>

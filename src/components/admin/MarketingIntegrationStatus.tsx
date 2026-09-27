@@ -20,13 +20,13 @@ export function MarketingIntegrationStatusCard({
       />
       {status.configured ? (
         <span>
-          Conectado via {status.provider} — a mesma integração que a Vero já usa em outras
+          Conectado via {status.provider}, a mesma integração que a Vero já usa em outras
           partes do app. Pronto pra disparar campanha de verdade.
         </span>
       ) : (
         <span>
           Ainda não conectado. Defina <code>{envVarsHint}</code> pra ligar o envio real (é a
-          mesma chave de {status.provider} usada no resto da Vero — sem isso, a campanha só
+          mesma chave de {status.provider} usada no resto da Vero, sem isso, a campanha só
           mostra o resultado como &quot;não enviado&quot;).
         </span>
       )}

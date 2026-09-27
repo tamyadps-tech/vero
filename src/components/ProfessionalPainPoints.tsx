@@ -1,7 +1,7 @@
 import { Reveal } from "@/components/Reveal";
 
 const painPoints = [
-  "Agenda num app, prontuário em outro, cobrança numa planilha — nada conversa entre si",
+  "Agenda num app, prontuário em outro, cobrança numa planilha, nada conversa entre si",
   "Definir preço no chute, sem saber se cobre os custos e ainda sobra margem saudável",
   "Anotações e ideias de sessão espalhadas em caderno, notas do celular ou grupos de WhatsApp",
   "Depender só de indicação boca a boca, sem controle sobre a própria divulgação",
@@ -20,7 +20,7 @@ export function ProfessionalPainPoints() {
           Gerir o próprio negócio não devia ser mais cansativo que o trabalho em si
         </h2>
         <p className="mt-4 text-ink-soft">
-          Se algum desses cenários soa familiar, o problema não é falta de esforço — é falta
+          Se algum desses cenários soa familiar, o problema não é falta de esforço, é falta
           de uma estrutura que junte tudo:
         </p>
       </div>

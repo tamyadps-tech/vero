@@ -43,7 +43,7 @@ export default async function AdminCrmPage() {
             Todos os clientes da plataforma
           </h2>
           <p className="mt-1 text-sm text-ink-soft">
-            Read-only — cada cliente pertence a um ou mais profissionais; notas e tags de
+            Read-only, cada cliente pertence a um ou mais profissionais; notas e tags de
             cliente ficam no CRM do profissional dono da relação, não aqui.
           </p>
           <div className="mt-4">

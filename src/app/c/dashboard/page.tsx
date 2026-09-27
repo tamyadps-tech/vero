@@ -146,7 +146,7 @@ export default async function ClientDashboardPage({
             </h2>
             <p className="mt-1 text-sm text-ink-soft">
               Cada teste só fica disponível depois que seu profissional
-              libera — combina com ele se e quando fizer sentido.
+              libera, combina com ele se e quando fizer sentido.
             </p>
             <div className="mt-4">
               <AssessmentsSection
@@ -161,7 +161,7 @@ export default async function ClientDashboardPage({
               Exercícios
             </h2>
             <p className="mt-1 text-sm text-ink-soft">
-              Espaços de reflexão em texto livre — também só ficam
+              Espaços de reflexão em texto livre, também só ficam
               disponíveis depois que seu profissional libera.
             </p>
             <div className="mt-4">
@@ -236,7 +236,7 @@ export default async function ClientDashboardPage({
                           {"★".repeat(session.review.rating)}
                           {"☆".repeat(5 - session.review.rating)}
                         </span>
-                        {session.review.comment && ` — "${session.review.comment}"`}
+                        {session.review.comment && `, "${session.review.comment}"`}
                       </p>
                     ) : (
                       <ReviewForm sessionId={session.id} />

@@ -306,7 +306,7 @@ export function ProfessionalApplyForm() {
           placeholder="Acolhedor e estruturado, direto ao ponto, provocador..."
         />
         <p className="mt-1.5 text-xs text-ink-soft">
-          Opcional — ajuda o cliente a saber se combina com você.
+          Opcional, ajuda o cliente a saber se combina com você.
         </p>
       </div>
 

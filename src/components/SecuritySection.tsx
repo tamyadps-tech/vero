@@ -4,7 +4,7 @@ const points = [
   {
     title: "LGPD desde o design",
     description:
-      "Seus dados são usados só pro que você pediu — agendar, acompanhar sessões, receber email transacional. Nada de venda de dados pra terceiros.",
+      "Seus dados são usados só pro que você pediu, agendar, acompanhar sessões, receber email transacional. Nada de venda de dados pra terceiros.",
   },
   {
     title: "Prontuário é privado",
@@ -14,7 +14,7 @@ const points = [
   {
     title: "Pagamento não passa pela Vero",
     description:
-      "Quando há cobrança, o cartão vai direto pro Checkout da Stripe (processadora certificada PCI-DSS) — a Vero nunca vê nem guarda o número do seu cartão.",
+      "Quando há cobrança, o cartão vai direto pro Checkout da Stripe (processadora certificada PCI-DSS), a Vero nunca vê nem guarda o número do seu cartão.",
   },
 ];
 
@@ -27,7 +27,7 @@ export function SecuritySection() {
             Segurança e privacidade
           </h2>
           <p className="mt-4 text-ink-soft">
-            Dados de saúde exigem mais cuidado — é assim que tratamos os
+            Dados de saúde exigem mais cuidado, é assim que tratamos os
             seus.
           </p>
         </div>

@@ -36,7 +36,7 @@ function TestCatalog() {
               Faça o teste você mesmo
             </p>
             <p className="mt-1 text-xs text-ink-soft">
-              Responde igual o cliente vê — nada é salvo, é só pra você entender o teste.
+              Responde igual o cliente vê, nada é salvo, é só pra você entender o teste.
             </p>
             <div className="mt-2">
               <TestPreview templateSlug={template.slug} />
@@ -48,7 +48,7 @@ function TestCatalog() {
                   Resultado
                 </p>
                 <p className="mt-1.5 text-sm text-ink-soft">
-                  Soma das respostas por dimensão — a de maior soma é o resultado:
+                  Soma das respostas por dimensão, a de maior soma é o resultado:
                 </p>
                 <div className="mt-2 space-y-2">
                   {template.dimensions.map((dimension) => (
@@ -93,7 +93,7 @@ export function TestesTabPanel({ clients }: { clients: ProfessionalClient[] | nu
       <p className="mt-1 text-sm text-ink-soft">
         Visão completa das autoavaliações (PHQ-9, GAD-7, Roda da Vida) de
         cada cliente. O cliente só consegue responder depois que você
-        envia o teste — envie só quando fizer sentido clinicamente, e
+        envia o teste, envie só quando fizer sentido clinicamente, e
         confira as respostas completas de quem já respondeu.
       </p>
 
@@ -117,7 +117,7 @@ export function TestesTabPanel({ clients }: { clients: ProfessionalClient[] | nu
           <p className="text-sm text-ink-soft">Supabase ainda não está configurado.</p>
         ) : clients.length === 0 ? (
           <p className="text-sm text-ink-soft">
-            Nenhum cliente ainda — assim que alguém agendar uma sessão com
+            Nenhum cliente ainda, assim que alguém agendar uma sessão com
             você, ele aparece aqui pra você enviar os testes.
           </p>
         ) : (

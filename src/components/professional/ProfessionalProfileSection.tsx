@@ -251,7 +251,7 @@ function ProfessionalProfileEditForm({
           className="block w-full text-sm text-ink-soft file:mr-3 file:rounded-lg file:border-0 file:bg-primary-light file:px-3 file:py-2 file:text-sm file:font-medium file:text-primary-dark hover:file:bg-primary-light/80 disabled:opacity-60"
         />
         <p className="mt-1.5 text-xs text-ink-soft">
-          Fotos do seu espaço de atendimento, certificados, eventos — aparecem em
+          Fotos do seu espaço de atendimento, certificados, eventos, aparecem em
           carrossel no seu perfil público. JPG, PNG ou WEBP, até 4MB cada, máximo{" "}
           {MAX_PORTFOLIO_PHOTOS}.
         </p>

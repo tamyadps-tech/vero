@@ -226,7 +226,7 @@ export default async function ProfessionalProfilePage({
             </h2>
             {reviews === null ? null : reviews.length === 0 ? (
               <p className="mt-2 text-sm text-ink-soft">
-                Ainda sem avaliações — elas aparecem aqui depois das
+                Ainda sem avaliações, elas aparecem aqui depois das
                 primeiras sessões.
               </p>
             ) : (

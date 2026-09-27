@@ -174,7 +174,7 @@ export function MarketingTemplateCard({ template }: { template: ResolvedCampaign
         <>
           <div className="mt-4 rounded-xl border border-border bg-paper-alt/40 p-3">
             <p className="text-xs font-medium uppercase tracking-wide text-ink-soft">
-              Email — assunto
+              Assunto do email
             </p>
             <p className="mt-1 text-sm text-ink">{template.email.subject}</p>
             <button
@@ -188,7 +188,7 @@ export function MarketingTemplateCard({ template }: { template: ResolvedCampaign
 
           <div className="mt-3 rounded-xl border border-border bg-paper-alt/40 p-3">
             <p className="text-xs font-medium uppercase tracking-wide text-ink-soft">
-              Email — texto
+              Texto do email
             </p>
             <p className="mt-1 whitespace-pre-wrap text-sm text-ink-soft">
               {template.content.emailBodyText}

@@ -126,7 +126,7 @@ export default async function AdminOverviewPage() {
                 Assinaturas
               </h2>
               <div className="mt-3 rounded-2xl border border-dashed border-border bg-paper-alt/40 p-6 text-sm text-ink-soft">
-                Planos SaaS mensais pro profissional ainda não existem — hoje
+                Planos SaaS mensais pro profissional ainda não existem, hoje
                 a receita é só a comissão por sessão, acima.
               </div>
             </section>

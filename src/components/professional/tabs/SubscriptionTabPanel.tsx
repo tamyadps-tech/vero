@@ -62,7 +62,7 @@ export function SubscriptionTabPanel({
         <h2 className="text-sm font-semibold uppercase tracking-wide text-ink-soft">Planos</h2>
         <p className="mt-1 text-sm text-ink-soft">
           Assinatura mensal via Stripe. Trocar de plano ajusta a cobrança com proração
-          automática — não precisa cancelar antes. Pra cancelar de vez, use o botão
+          automática, não precisa cancelar antes. Pra cancelar de vez, use o botão
           &quot;Gerenciar assinatura&quot; acima.
         </p>
         <div className="mt-4 grid gap-4 sm:grid-cols-3">

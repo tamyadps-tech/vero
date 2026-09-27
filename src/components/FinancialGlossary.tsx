@@ -2,7 +2,7 @@ const TERMS: { term: string; definition: string }[] = [
   {
     term: "Recebido",
     definition:
-      "O que já caiu de verdade, das sessões pagas. Não é a mesma coisa que lucro — ainda falta tirar os custos.",
+      "O que já caiu de verdade, das sessões pagas. Não é a mesma coisa que lucro, ainda falta tirar os custos.",
   },
   {
     term: "Custo fixo",
@@ -17,12 +17,12 @@ const TERMS: { term: string; definition: string }[] = [
   {
     term: "Margem de contribuição",
     definition:
-      "Preço da sessão menos o custo variável dela. É o quanto sobra de cada sessão pra pagar o custo fixo e, depois, virar lucro. Se for negativa, cada sessão dá prejuízo — antes mesmo de contar o custo fixo.",
+      "Preço da sessão menos o custo variável dela. É o quanto sobra de cada sessão pra pagar o custo fixo e, depois, virar lucro. Se for negativa, cada sessão dá prejuízo, antes mesmo de contar o custo fixo.",
   },
   {
     term: "Ponto de equilíbrio",
     definition:
-      "Quantas sessões por mês bastam pra cobrir o custo fixo — nem lucro, nem prejuízo. Abaixo disso, o mês fecha no vermelho.",
+      "Quantas sessões por mês bastam pra cobrir o custo fixo, nem lucro, nem prejuízo. Abaixo disso, o mês fecha no vermelho.",
   },
   {
     term: "Margem líquida",
@@ -32,16 +32,16 @@ const TERMS: { term: string; definition: string }[] = [
   {
     term: "Preço sugerido (cost-plus)",
     definition:
-      "Custo variável + a fatia do custo fixo (dividido pelo volume estimado de sessões), somado à margem que você quer ganhar. É um piso técnico — o mercado ainda pode sustentar um preço maior.",
+      "Custo variável + a fatia do custo fixo (dividido pelo volume estimado de sessões), somado à margem que você quer ganhar. É um piso técnico, o mercado ainda pode sustentar um preço maior.",
   },
 ];
 
 const CARE_TIPS: string[] = [
-  "Não subprecifique: um preço abaixo da margem de contribuição significa perder dinheiro a cada sessão — quanto mais você atende, pior fica, não melhor.",
-  "Separe uma parte da receita pro imposto (o valor varia pelo seu regime tributário — MEI, autônomo, etc.) antes de contar o resto como lucro disponível.",
-  "Revise o preço periodicamente — custo fixo e variável mudam (aluguel reajusta, ferramenta fica mais cara), e o preço da sessão devia acompanhar.",
+  "Não subprecifique: um preço abaixo da margem de contribuição significa perder dinheiro a cada sessão, quanto mais você atende, pior fica, não melhor.",
+  "Separe uma parte da receita pro imposto (o valor varia pelo seu regime tributário, MEI, autônomo, etc.) antes de contar o resto como lucro disponível.",
+  "Revise o preço periodicamente, custo fixo e variável mudam (aluguel reajusta, ferramenta fica mais cara), e o preço da sessão devia acompanhar.",
   "Faturamento não é lucro. O valor recebido antes de tirar os custos pode parecer bom e ainda assim não sobrar quase nada no fim do mês.",
-  "Use o ponto de equilíbrio como piso de planejamento, não como meta — o objetivo é ficar bem acima dele, não só empatar.",
+  "Use o ponto de equilíbrio como piso de planejamento, não como meta, o objetivo é ficar bem acima dele, não só empatar.",
 ];
 
 export function FinancialGlossary() {

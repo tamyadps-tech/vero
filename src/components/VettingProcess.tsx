@@ -21,7 +21,7 @@ const steps = [
     step: "04",
     title: "Avaliações reais mantêm o padrão",
     description:
-      "Só quem realizou a sessão pode avaliar. As notas e comentários ficam públicos no perfil pra sempre — não dá pra esconder um mau atendimento.",
+      "Só quem realizou a sessão pode avaliar. As notas e comentários ficam públicos no perfil pra sempre, não dá pra esconder um mau atendimento.",
   },
 ];
 
@@ -33,7 +33,7 @@ export function VettingProcess() {
           Como funciona o vetting
         </h2>
         <p className="mt-4 text-ink-soft">
-          A gente é rigoroso aqui de propósito — é isso que diferencia a
+          A gente é rigoroso aqui de propósito, é isso que diferencia a
           Vero de procurar &ldquo;qualquer profissional&rdquo; na internet.
         </p>
       </div>

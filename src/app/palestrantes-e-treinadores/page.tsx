@@ -7,13 +7,13 @@ import { Reveal } from "@/components/Reveal";
 export const metadata: Metadata = {
   title: "Palestrantes e treinadores — Vero",
   description:
-    "Encontre palestrantes e treinadores verificados pra levar desenvolvimento de verdade pra sua empresa — com avaliações reais de quem já contratou.",
+    "Encontre palestrantes e treinadores verificados pra levar desenvolvimento de verdade pra sua empresa, com avaliações reais de quem já contratou.",
 };
 
 const painPoints = [
   "Treinamentos genéricos que ninguém lembra depois de uma semana",
   "Dificuldade de achar um palestrante confiável, sem depender só de indicação",
-  "Engajamento baixo em capacitações obrigatórias — todo mundo só quer que acabe",
+  "Engajamento baixo em capacitações obrigatórias, todo mundo só quer que acabe",
   "Orçamento de desenvolvimento gasto em algo que não muda comportamento nenhum",
 ];
 
@@ -21,29 +21,29 @@ const benefits = [
   {
     title: "Equipe mais engajada",
     description:
-      "Conteúdo relevante, aplicado à realidade do time, muda a forma como as pessoas encaram capacitação — deixa de ser obrigação e vira interesse.",
+      "Conteúdo relevante, aplicado à realidade do time, muda a forma como as pessoas encaram capacitação, deixa de ser obrigação e vira interesse.",
   },
   {
     title: "Habilidade que sai da teoria",
     description:
-      "A diferença entre uma palestra motivacional e um treinamento que funciona é ferramenta prática que a equipe usa depois — não só slide bonito.",
+      "A diferença entre uma palestra motivacional e um treinamento que funciona é ferramenta prática que a equipe usa depois, não só slide bonito.",
   },
   {
     title: "Retenção de talento",
     description:
-      "Investir em desenvolvimento é um dos sinais mais fortes de que a empresa se importa com quem trabalha nela — e isso aparece na retenção.",
+      "Investir em desenvolvimento é um dos sinais mais fortes de que a empresa se importa com quem trabalha nela, e isso aparece na retenção.",
   },
   {
     title: "Marca empregadora mais forte",
     description:
-      "Empresa que desenvolve gente de verdade constrói reputação — dentro e fora, com quem já trabalha lá e com quem está pensando em entrar.",
+      "Empresa que desenvolve gente de verdade constrói reputação, dentro e fora, com quem já trabalha lá e com quem está pensando em entrar.",
   },
 ];
 
 const formats = [
   {
     title: "Palestra corporativa",
-    description: "Um evento, um tema, impacto imediato — pra kickoffs, convenções ou datas específicas.",
+    description: "Um evento, um tema, impacto imediato, pra kickoffs, convenções ou datas específicas.",
   },
   {
     title: "Workshop prático",
@@ -72,7 +72,7 @@ export default function PalestrantesETreinadoresPage() {
             </h1>
             <p className="mx-auto mt-5 max-w-xl text-lg leading-relaxed text-ink-soft">
               Encontre especialistas verificados pra levar desenvolvimento de verdade pra sua
-              empresa — com avaliações reais de quem já contratou, não só um portfólio bonito.
+              empresa, com avaliações reais de quem já contratou, não só um portfólio bonito.
             </p>
             <Link
               href="/profissionais?category=palestrante"
@@ -91,7 +91,7 @@ export default function PalestrantesETreinadoresPage() {
             </h2>
             <p className="mt-4 text-ink-soft">
               Se algum desses cenários é familiar, provavelmente o problema não é falta de
-              orçamento — é escolha de quem conduz:
+              orçamento, é escolha de quem conduz:
             </p>
           </div>
           <div className="mt-10 grid gap-4 sm:grid-cols-2">
@@ -114,7 +114,7 @@ export default function PalestrantesETreinadoresPage() {
               </h2>
               <p className="mt-4 text-ink-soft">
                 Segundo a Federação Internacional de Coaching (ICF), até 70% de quem passa por
-                acompanhamento profissional relata melhora real no desempenho e nas relações —
+                acompanhamento profissional relata melhora real no desempenho e nas relações,
                 o mesmo princípio vale pra treinamento em equipe, quando conduzido por quem
                 sabe transformar conteúdo em prática.
               </p>
@@ -164,7 +164,7 @@ export default function PalestrantesETreinadoresPage() {
               </h2>
               <p className="mx-auto mt-2 max-w-xl text-sm leading-relaxed text-ink-soft">
                 Todo palestrante e treinador na Vero passa por verificação de credenciais e
-                acumula avaliações reais de quem já contratou uma sessão — nada de escolher no
+                acumula avaliações reais de quem já contratou uma sessão, nada de escolher no
                 escuro.
               </p>
               <Link

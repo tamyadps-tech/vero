@@ -11,7 +11,7 @@ const features = [
     number: "02",
     title: "Avaliações públicas",
     description:
-      "Só quem realizou sessão pode avaliar. Rating e comentários ficam visíveis no perfil — prova social real, sem espaço para fraude.",
+      "Só quem realizou sessão pode avaliar. Rating e comentários ficam visíveis no perfil, prova social real, sem espaço para fraude.",
   },
   {
     number: "03",

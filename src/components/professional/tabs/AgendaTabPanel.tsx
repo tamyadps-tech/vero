@@ -27,7 +27,7 @@ export function AgendaTabPanel({
         </h2>
         <p className="mt-1 text-sm text-ink-soft">
           Navegue por dia, semana ou mês. Registre tópicos, tarefa e a
-          próxima sessão — o cliente vê isso no próprio painel. Reenvie a
+          próxima sessão, o cliente vê isso no próprio painel. Reenvie a
           confirmação por email quando precisar.
         </p>
         <div className="mt-4">

@@ -7,7 +7,7 @@ import { listPublishedPosts } from "@/lib/blog";
 export const metadata: Metadata = {
   title: "Blog — Vero",
   description:
-    "Dados, estudos e reflexões sobre saúde mental e desenvolvimento pessoal — pra ajudar você a dar o primeiro passo.",
+    "Dados, estudos e reflexões sobre saúde mental e desenvolvimento pessoal, pra ajudar você a dar o primeiro passo.",
 };
 
 export const dynamic = "force-dynamic";
@@ -26,7 +26,7 @@ export default async function BlogPage() {
             Blog
           </h1>
           <p className="mt-2 text-ink-soft">
-            Dados, estudos e reflexões sobre saúde mental e desenvolvimento pessoal — pra
+            Dados, estudos e reflexões sobre saúde mental e desenvolvimento pessoal, pra
             ajudar você a dar o primeiro passo.
           </p>
 

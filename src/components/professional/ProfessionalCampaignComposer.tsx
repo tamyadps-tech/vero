@@ -332,7 +332,7 @@ export function ProfessionalCampaignComposer({
           <p className="mt-2 text-sm text-ink-soft">
             {channel === "email"
               ? "Você ainda não tem clientes cadastrados pra mandar campanha de email."
-              : "Nenhum cliente seu tem telefone cadastrado ainda — use o campo de números manuais abaixo."}
+              : "Nenhum cliente seu tem telefone cadastrado ainda, use o campo de números manuais abaixo."}
           </p>
         ) : (
           <div className="mt-2 max-h-48 space-y-1 overflow-y-auto rounded-xl border border-border bg-paper p-2">
@@ -358,7 +358,7 @@ export function ProfessionalCampaignComposer({
 
       {channel === "whatsapp" && (
         <label className="mt-4 block text-xs font-medium text-ink-soft">
-          Outros números (formato +5511999999999) — pra quem ainda não está no seu CRM
+          Outros números (formato +5511999999999), pra quem ainda não está no seu CRM
           <textarea
             value={manualPhones}
             onChange={(event) => setManualPhones(event.target.value)}
@@ -379,7 +379,7 @@ export function ProfessionalCampaignComposer({
 
       {state.status === "done" && (
         <p className="mt-3 text-xs text-ink-soft">
-          {state.recipientCount} destinatário(s) — {state.sent} enviado(s), {state.failed} não
+          {state.recipientCount} destinatário(s), {state.sent} enviado(s), {state.failed} não
           enviado(s)
           {state.reasons.length > 0 && ` (motivo: ${state.reasons.join(", ")})`}.
         </p>
