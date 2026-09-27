@@ -19,15 +19,13 @@ export function Hero() {
             "radial-gradient(ellipse 80% 60% at 50% 0%, black 40%, transparent 90%)",
         }}
       />
-      <div className="pointer-events-none absolute -right-32 -top-32 h-96 w-96 rounded-full bg-primary-light blur-3xl" />
-      <div className="pointer-events-none absolute -left-32 top-52 h-96 w-96 rounded-full bg-accent-light blur-3xl" />
-      <div className="pointer-events-none absolute left-1/3 -bottom-40 h-80 w-80 rounded-full bg-gold-light/70 blur-3xl" />
       <div className="relative mx-auto max-w-6xl px-6 py-24 sm:py-32">
         <div className="mx-auto max-w-3xl text-center">
-          <span className="inline-flex items-center gap-2 rounded-full border border-border bg-paper/80 px-4 py-1.5 text-xs font-medium uppercase tracking-wide text-ink-soft shadow-soft backdrop-blur">
-            <span className="h-1.5 w-1.5 rounded-full bg-primary" />
+          <p className="inline-flex items-center gap-3 text-xs font-semibold uppercase tracking-[0.25em] text-ink-soft">
+            <span className="h-px w-8 bg-primary" />
             Gente de verdade, cuidando de você
-          </span>
+            <span className="h-px w-8 bg-primary" />
+          </p>
           <h1 className="mt-7 font-display text-5xl font-medium leading-[1.05] tracking-tight text-ink sm:text-6xl">
             Profissionais verificados.
             <br className="hidden sm:block" /> Progresso que{" "}
