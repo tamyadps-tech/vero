@@ -13,6 +13,8 @@ import { ReviewForm } from "@/components/ReviewForm";
 import { AssessmentsSection } from "@/components/AssessmentsSection";
 import { ExercisesSection } from "@/components/ExercisesSection";
 import { ClientProfileSection } from "@/components/client/ClientProfileSection";
+import { RatingBadge } from "@/components/RatingBadge";
+import { getReviewSummaries } from "@/lib/reviews";
 
 export const metadata: Metadata = {
   title: "Seu progresso — Vero",
@@ -68,6 +70,15 @@ export default async function ClientDashboardPage({
     listReleasedTemplateSlugsForClient(client.id),
     listReleasedExerciseSlugsForClient(client.id),
   ]);
+
+  const professionalIds = Array.from(
+    new Set(
+      (progress?.sessions ?? [])
+        .map((s) => s.professional?.id)
+        .filter((id): id is string => Boolean(id))
+    )
+  );
+  const ratings = await getReviewSummaries(professionalIds);
 
   if (!progress) {
     return (
@@ -132,8 +143,12 @@ export default async function ClientDashboardPage({
                   {dateFormatter.format(new Date(nextSession.scheduled_at))}
                 </p>
                 {nextSession.professional && (
-                  <p className="text-sm text-ink-soft">
+                  <p className="flex flex-wrap items-center gap-2 text-sm text-ink-soft">
                     com {nextSession.professional.full_name}
+                    <RatingBadge
+                      average={ratings?.[nextSession.professional.id]?.average ?? 0}
+                      count={ratings?.[nextSession.professional.id]?.count ?? 0}
+                    />
                   </p>
                 )}
               </div>
@@ -196,8 +211,12 @@ export default async function ClientDashboardPage({
                     </span>
                   </div>
                   {session.professional && (
-                    <p className="text-sm text-ink-soft">
+                    <p className="flex flex-wrap items-center gap-2 text-sm text-ink-soft">
                       com {session.professional.full_name}
+                      <RatingBadge
+                        average={ratings?.[session.professional.id]?.average ?? 0}
+                        count={ratings?.[session.professional.id]?.count ?? 0}
+                      />
                     </p>
                   )}
 

@@ -9,18 +9,21 @@ import {
 } from "./professional-campaign-templates";
 
 describe("professional-campaign-templates", () => {
-  it("has the three expected templates", () => {
+  it("has the six expected templates", () => {
     expect(PROFESSIONAL_CAMPAIGN_TEMPLATE_META.map((t) => t.id)).toEqual([
       "convite",
       "reengajamento",
       "cuidado",
+      "boas_vindas",
+      "pedido_avaliacao",
+      "oferta_pacote",
     ]);
   });
 
   it("resolves default templates with the profile link appended", () => {
     const profileUrl = "https://vero.app/profissionais/123";
     const resolved = resolveProfessionalCampaignTemplates(profileUrl);
-    expect(resolved).toHaveLength(3);
+    expect(resolved).toHaveLength(6);
     for (const template of resolved) {
       expect(template.email.html).toContain(profileUrl);
       expect(template.whatsapp).toContain(profileUrl);
@@ -41,7 +44,7 @@ describe("professional-campaign-templates", () => {
     expect(convite.email.html).toContain("Texto customizado.");
     expect(convite.whatsapp).toContain("Whats customizado");
 
-    // Os outros dois continuam com o conteúdo padrão.
+    // Os outros continuam com o conteúdo padrão.
     const cuidado = resolved.find((t) => t.id === "cuidado")!;
     expect(cuidado.email.subject).toBe(DEFAULT_PROFESSIONAL_TEMPLATE_CONTENT.cuidado.emailSubject);
   });

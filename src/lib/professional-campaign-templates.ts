@@ -9,7 +9,13 @@ import { shell, button, textToParagraphsHtml } from "@/lib/email-templates";
  * enviar, então quem edita não precisa se preocupar com isso.
  */
 
-export type ProfessionalCampaignTemplateId = "convite" | "reengajamento" | "cuidado";
+export type ProfessionalCampaignTemplateId =
+  | "convite"
+  | "reengajamento"
+  | "cuidado"
+  | "boas_vindas"
+  | "pedido_avaliacao"
+  | "oferta_pacote";
 
 export interface CampaignTemplateContent {
   emailSubject: string;
@@ -41,6 +47,21 @@ export const PROFESSIONAL_CAMPAIGN_TEMPLATE_META: ProfessionalCampaignTemplateMe
     label: "Cuidado com quem já é cliente ativo",
     goal: "Pra quem já está em acompanhamento — reforça vínculo, não é venda.",
   },
+  {
+    id: "boas_vindas",
+    label: "Boas-vindas ao novo cliente",
+    goal: "Pra quem acabou de marcar a primeira sessão — alinha expectativa antes de começar.",
+  },
+  {
+    id: "pedido_avaliacao",
+    label: "Pedido de avaliação",
+    goal: "Pra cliente satisfeito, depois de algumas sessões — pede a avaliação pública que ajuda outros a te encontrar.",
+  },
+  {
+    id: "oferta_pacote",
+    label: "Oferta de pacote de sessões",
+    goal: "Pra cliente ativo que se beneficiaria de continuidade — oferece frequência combinada em vez de sessão avulsa.",
+  },
 ];
 
 export const DEFAULT_PROFESSIONAL_TEMPLATE_CONTENT: Record<
@@ -64,6 +85,24 @@ export const DEFAULT_PROFESSIONAL_TEMPLATE_CONTENT: Record<
     emailBodyText:
       "Entre uma sessão e outra, queria só deixar um recado: estou pensando em você. Se precisar de alguma coisa antes do nosso próximo encontro, é só chamar.",
     whatsapp: "Oi! Só passando pra saber como você está — qualquer coisa antes da nossa próxima sessão, me chama.",
+  },
+  boas_vindas: {
+    emailSubject: "Que bom te receber",
+    emailBodyText:
+      "Fico feliz que você tenha decidido dar esse passo. Antes da nossa primeira sessão, qualquer dúvida sobre como funciona, formato ou o que trazer, é só me chamar. Vamos construir esse acompanhamento no seu ritmo.",
+    whatsapp: "Oi! Que bom te receber por aqui. Qualquer dúvida antes da nossa primeira sessão, me chama sem pensar duas vezes:",
+  },
+  pedido_avaliacao: {
+    emailSubject: "Um favor rápido, se puder",
+    emailBodyText:
+      "Espero que nosso acompanhamento esteja fazendo sentido pra você. Se estiver, uma avaliação sua na Vero ajuda outras pessoas a decidirem começar também, leva menos de um minuto e faz muita diferença pra mim.",
+    whatsapp: "Oi! Se nosso acompanhamento está fazendo sentido pra você, uma avaliação rápida na Vero ajuda muita gente a te encontrar também:",
+  },
+  oferta_pacote: {
+    emailSubject: "Uma forma de facilitar a continuidade",
+    emailBodyText:
+      "Notei que a continuidade tem feito diferença no seu processo, e queria te contar sobre uma forma de manter a frequência combinada com mais previsibilidade pros dois. Se fizer sentido, me chama que a gente conversa sobre as opções.",
+    whatsapp: "Oi! Queria te contar sobre uma forma de manter a frequência das nossas sessões combinada, com mais previsibilidade pros dois. Se fizer sentido, me chama:",
   },
 };
 

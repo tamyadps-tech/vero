@@ -8,6 +8,7 @@ import { HowItWorks } from "@/components/HowItWorks";
 import { VettingProcess } from "@/components/VettingProcess";
 import { SecuritySection } from "@/components/SecuritySection";
 import { ProfessionalPainPoints } from "@/components/ProfessionalPainPoints";
+import { BusinessMindsetSection } from "@/components/BusinessMindsetSection";
 import { ForProfessionals } from "@/components/ForProfessionals";
 import { FAQ } from "@/components/FAQ";
 import { Footer } from "@/components/Footer";
@@ -38,6 +39,9 @@ export default function Home() {
         </Reveal>
         <Reveal>
           <ProfessionalPainPoints />
+        </Reveal>
+        <Reveal>
+          <BusinessMindsetSection />
         </Reveal>
         <Reveal>
           <ForProfessionals />

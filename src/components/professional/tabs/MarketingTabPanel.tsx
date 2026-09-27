@@ -1,6 +1,8 @@
 import { ShareProfileLink } from "@/components/professional/ShareProfileLink";
 import { SendMessageForm } from "@/components/professional/SendMessageForm";
 import { ProfessionalCampaignComposer } from "@/components/professional/ProfessionalCampaignComposer";
+import { MarketingGlossary } from "@/components/MarketingGlossary";
+import { PaidTrafficGuide } from "@/components/PaidTrafficGuide";
 import {
   resolveProfessionalCampaignTemplates,
   type ProfessionalCampaignTemplateId,
@@ -95,6 +97,21 @@ export function MarketingTabPanel({
               }))}
             />
           )}
+        </div>
+      </section>
+
+      <section>
+        <h2 className="text-sm font-semibold uppercase tracking-wide text-ink-soft">
+          Aprender
+        </h2>
+        <p className="mt-1 text-sm text-ink-soft">
+          Termos de marketing traduzidos pra português direto, e um guia
+          completo de tráfego pago pra quem quer ir além da divulgação
+          orgânica.
+        </p>
+        <div className="mt-4 space-y-4">
+          <MarketingGlossary />
+          <PaidTrafficGuide />
         </div>
       </section>
     </div>
