@@ -22,7 +22,7 @@ export const CATEGORY_DESCRIPTIONS: Record<ProfessionalCategory, string> = {
   terapeuta:
     "Acompanhamento terapêutico contínuo pra processar emoções, hábitos e relações — de diversas abordagens (TCC, psicanálise, sistêmica e outras).",
   psicologo:
-    "Profissionais formados em Psicologia, com registro no CRP, pra avaliação, diagnóstico e tratamento de questões emocionais e de saúde mental.",
+    "Profissionais formados em Psicologia, com registro ativo no CRP, pra psicodiagnóstico e tratamento de questões comportamentais, emocionais e mentais.",
   coach:
     "Apoio focado em metas concretas — carreira, produtividade, transições de vida — com método estruturado de curto e médio prazo.",
   consultor:

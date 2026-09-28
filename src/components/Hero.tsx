@@ -1,7 +1,7 @@
 import Link from "next/link";
 
 const trustPoints = [
-  { label: "Vetting manual", detail: "credencial conferida" },
+  { label: "Verificação manual", detail: "credencial conferida" },
   { label: "Sem mensalidade", detail: "cliente paga só a sessão" },
   { label: "Progresso visual", detail: "acompanhado no painel" },
 ];
@@ -34,8 +34,8 @@ export function Hero() {
           <p className="mx-auto mt-6 max-w-xl text-lg leading-relaxed text-ink-soft">
             A Vero conecta terapeutas, psicólogos, coaches e consultores a
             clientes que buscam acompanhamento sério, com aprovação por
-            vetting, resumo de sessão automático e progresso visual, tudo
-            na sua própria conta.
+            verificação de credenciais (vetting), resumo de sessão automático
+            e progresso visual, tudo na sua própria conta.
           </p>
         </div>
         <div

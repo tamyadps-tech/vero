@@ -1,6 +1,7 @@
 import Link from "next/link";
 
 const perks = [
+  "Sem limite de clientes atendidos, quantos você conseguir, a Vero acompanha",
   "Agenda, prontuário e cobrança num só lugar",
   "Calculadora de margem e preço sugerido, a partir dos seus custos reais, chega de cobrar no chute",
   "Testes e exercícios prontos pra enviar, pra nunca faltar ideia de conteúdo pra próxima sessão",

@@ -2,7 +2,7 @@ const faqs = [
   {
     question: "Os profissionais são verificados de verdade?",
     answer:
-      "Sim. Todo perfil passa por vetting antes de ficar público, conferimos credencial (diploma, registro como CRP) e experiência declarada. Veja o processo completo acima.",
+      "Sim. Todo perfil passa por verificação de credenciais (vetting) antes de ficar público, conferimos credencial (diploma, registro como CRP) e experiência declarada. Veja o processo completo acima.",
   },
   {
     question: "Meus dados ficam seguros?",

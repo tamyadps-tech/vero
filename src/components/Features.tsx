@@ -3,7 +3,7 @@ import { Reveal } from "@/components/Reveal";
 const features = [
   {
     number: "01",
-    title: "Vetting de verdade",
+    title: "Verificação de verdade",
     description:
       "Cada profissional passa por verificação de credenciais (CRP, certificações, diplomas) antes de entrar na Vero. Só aprova quem comprova.",
   },

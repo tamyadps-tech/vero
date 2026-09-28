@@ -21,13 +21,17 @@ export function FinanceiroTabPanel({
   expenses,
   pricePerSessionCents,
   monthlyRevenueGoalCents,
+  subscriptionCostCents,
 }: {
   finance: ProfessionalFinance | null;
   expenses: ProfessionalExpense[] | null;
   pricePerSessionCents: number;
   monthlyRevenueGoalCents: number | null;
+  /** Custo mensal da sua assinatura Vero (0 quando não tem assinatura ativa) — entra automaticamente nos custos abaixo, não precisa cadastrar. */
+  subscriptionCostCents: number;
 }) {
-  const totalExpensesCents = expenses?.reduce((sum, e) => sum + e.amountCents, 0) ?? 0;
+  const manualExpensesCents = expenses?.reduce((sum, e) => sum + e.amountCents, 0) ?? 0;
+  const totalExpensesCents = manualExpensesCents + subscriptionCostCents;
   const netProfitCents = finance ? finance.receivedCents - totalExpensesCents : 0;
 
   const realizedThisMonthCents =
@@ -37,8 +41,9 @@ export function FinanceiroTabPanel({
   const monthProgress = getMonthProgress();
   const projectedRevenueCents = projectMonthEnd(realizedThisMonthCents, monthProgress);
 
-  const fixedMonthlyCostsCents =
+  const manualFixedMonthlyCostsCents =
     expenses?.filter((e) => e.kind === "fixo").reduce((sum, e) => sum + e.amountCents, 0) ?? 0;
+  const fixedMonthlyCostsCents = manualFixedMonthlyCostsCents + subscriptionCostCents;
   const variableCostPerSessionCents =
     expenses?.filter((e) => e.kind === "variavel").reduce((sum, e) => sum + e.amountCents, 0) ?? 0;
   const health = computeFinancialHealth({
@@ -86,6 +91,7 @@ export function FinanceiroTabPanel({
               </p>
               <p className="mt-1 text-xs text-ink-soft">
                 Recebido − {formatPrice(totalExpensesCents)} em despesas
+                {subscriptionCostCents > 0 && ", já com sua assinatura Vero incluída"}
               </p>
             </div>
           </div>
@@ -140,6 +146,13 @@ export function FinanceiroTabPanel({
             <p className="mt-1 text-sm text-ink-soft">
               Registre seus custos (aluguel, plataforma, marketing...) pra
               acompanhar o lucro líquido de verdade, não só o recebido.
+              {subscriptionCostCents > 0 && (
+                <>
+                  {" "}
+                  Sua assinatura Vero ({formatPrice(subscriptionCostCents)}/mês) já entra
+                  automaticamente nos cálculos abaixo, não precisa cadastrar ela aqui.
+                </>
+              )}
             </p>
             <div className="mt-4 rounded-2xl border border-border bg-paper-alt/40 p-5">
               {expenses === null ? (
@@ -155,8 +168,10 @@ export function FinanceiroTabPanel({
               Margem e preço sugerido
             </h3>
             <p className="mt-1 text-sm text-ink-soft">
-              Com base nos custos fixos e variáveis cadastrados acima, aqui está a margem do
-              seu preço atual e o preço que cobriria seus custos com uma margem saudável.
+              Com base nos custos fixos e variáveis cadastrados acima
+              {subscriptionCostCents > 0 && " (mais sua assinatura Vero)"}, aqui está a
+              margem do seu preço atual e o preço que cobriria seus custos com uma margem
+              saudável.
             </p>
             {expenses === null ? (
               <p className="mt-3 text-sm text-ink-soft">Supabase ainda não está configurado.</p>

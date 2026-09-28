@@ -22,6 +22,7 @@ export const SUBSCRIPTION_PLANS: SubscriptionPlanDef[] = [
     priceCents: 9900,
     tagline: "O essencial pra rodar sua prática",
     benefits: [
+      "Clientes atendidos ilimitados, em qualquer plano",
       "Agenda online e prontuário compartilhado",
       "Painel de clientes (CRM) automático, com status de engajamento",
       "Dashboard com KPIs da sua prática",

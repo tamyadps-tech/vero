@@ -17,7 +17,7 @@ import { getProfessionalTemplateOverrides } from "@/lib/professional-message-tem
 import { getReviewSummaries } from "@/lib/reviews";
 import { CATEGORY_LABELS } from "@/lib/professional-categories";
 import { SESSION_FORMAT_LABELS } from "@/lib/session-format";
-import { hasPlanAccess } from "@/lib/subscription-plans";
+import { hasPlanAccess, getSubscriptionPlan } from "@/lib/subscription-plans";
 import { ProfessionalProfileSection } from "@/components/professional/ProfessionalProfileSection";
 import { DashboardTabs } from "@/components/professional/DashboardTabs";
 import { DashboardShellProvider } from "@/components/professional/DashboardShellContext";
@@ -111,6 +111,10 @@ export default async function ProfessionalDashboardPage() {
   const origin = `${headersList.get("x-forwarded-proto") ?? "https"}://${headersList.get("host") ?? "vero.app"}`;
   const publicProfileUrl = `${origin}/profissionais/${professional.id}`;
   const rating = reviewSummaries?.[professional.id] ?? { average: 0, count: 0 };
+  const subscriptionCostCents =
+    professional.subscription_plan && professional.subscription_status === "ativa"
+      ? getSubscriptionPlan(professional.subscription_plan).priceCents
+      : 0;
 
   return (
     <>
@@ -185,6 +189,7 @@ export default async function ProfessionalDashboardPage() {
                   expenses={expenses}
                   pricePerSessionCents={professional.price_cents}
                   monthlyRevenueGoalCents={professional.monthly_revenue_goal_cents}
+                  subscriptionCostCents={subscriptionCostCents}
                 />
               ) : (
                 <PlanLockedPanel requiredPlan="premium" featureName="Financeiro" />
@@ -201,6 +206,7 @@ export default async function ProfessionalDashboardPage() {
                     currentPlan={professional.subscription_plan}
                     currentStatus={professional.subscription_status}
                     currentPeriodEnd={professional.subscription_current_period_end}
+                    pricePerSessionCents={professional.price_cents}
                   />
                 </div>
               </div>

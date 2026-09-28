@@ -52,7 +52,7 @@ export default async function ProfessionalProfilePage({
               Ainda não temos profissionais aprovados no ar.
             </p>
             <p className="mt-1 text-sm text-ink-soft">
-              Estamos na fase de cadastro e vetting.
+              Estamos na fase de cadastro e verificação de credenciais.
             </p>
           </div>
         </main>

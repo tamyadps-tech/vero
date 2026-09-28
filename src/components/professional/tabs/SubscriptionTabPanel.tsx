@@ -24,12 +24,21 @@ export function SubscriptionTabPanel({
   currentPlan,
   currentStatus,
   currentPeriodEnd,
+  pricePerSessionCents,
 }: {
   currentPlan: SubscriptionPlanId | null;
   currentStatus: SubscriptionStatus | null;
   currentPeriodEnd: string | null;
+  pricePerSessionCents: number;
 }) {
   const hasActive = Boolean(currentPlan) && currentStatus === "ativa";
+  const currentPlanPriceCents = currentPlan
+    ? SUBSCRIPTION_PLANS.find((p) => p.id === currentPlan)?.priceCents ?? 0
+    : 0;
+  const breakEvenSessions =
+    hasActive && pricePerSessionCents > 0
+      ? Math.ceil(currentPlanPriceCents / pricePerSessionCents)
+      : null;
 
   return (
     <div className="space-y-8">
@@ -52,6 +61,28 @@ export function SubscriptionTabPanel({
             <div className="mt-3">
               <SubscriptionPortalButton className="rounded-xl border border-border px-4 py-2 text-sm font-medium text-ink transition hover:border-primary" />
             </div>
+
+            {hasActive && (
+              <div className="mt-5 border-t border-border pt-4">
+                <p className="text-xs font-medium uppercase tracking-wide text-ink-soft">
+                  Ponto de equilíbrio da sua assinatura
+                </p>
+                <p className="mt-2 text-xl font-semibold tracking-tight text-ink">
+                  {breakEvenSessions === null
+                    ? "—"
+                    : `${breakEvenSessions} ${breakEvenSessions === 1 ? "sessão" : "sessões"}/mês`}
+                </p>
+                <p className="mt-1 text-sm leading-relaxed text-ink-soft">
+                  Ponto de equilíbrio é quantas sessões você precisa realizar no mês só pra
+                  cobrir um custo, sem lucro nem prejuízo, nesse caso, o valor que você paga
+                  pra assinatura Vero. No preço atual da sua sessão
+                  {pricePerSessionCents > 0 && ` (${formatPrice(pricePerSessionCents)})`}, é
+                  isso que a assinatura exige antes de virar lucro pra você. Esse custo já
+                  entra automaticamente no ponto de equilíbrio geral que aparece na aba
+                  Financeiro, não precisa cadastrar ele lá.
+                </p>
+              </div>
+            )}
           </>
         ) : (
           <p className="mt-2 text-sm text-ink-soft">Você ainda não assina nenhum plano.</p>
@@ -81,6 +112,13 @@ export function SubscriptionTabPanel({
                   <span className="text-sm font-normal text-ink-soft">/mês</span>
                 </p>
                 <p className="mt-1 text-xs text-ink-soft">{plan.tagline}</p>
+                {pricePerSessionCents > 0 && (
+                  <p className="mt-1 text-xs text-ink-soft">
+                    Cobre com {Math.ceil(plan.priceCents / pricePerSessionCents)}{" "}
+                    {Math.ceil(plan.priceCents / pricePerSessionCents) === 1 ? "sessão" : "sessões"}
+                    /mês, no seu preço atual
+                  </p>
+                )}
                 <ul className="mt-3 flex-1 space-y-1.5 text-sm text-ink-soft">
                   {plan.benefits.map((benefit) => (
                     <li key={benefit}>· {benefit}</li>

@@ -50,7 +50,7 @@ export default async function ProfissionaisPage({
             Encontre um profissional
           </h1>
           <p className="mt-2 text-ink-soft">
-            Todos aprovados por vetting de credenciais.
+            Todos aprovados por verificação de credenciais.
           </p>
 
           <div className="mt-8">
@@ -74,7 +74,7 @@ export default async function ProfissionaisPage({
                 Ainda não temos profissionais aprovados no ar.
               </p>
               <p className="mt-1 text-sm text-ink-soft">
-                Estamos na fase de cadastro e vetting. Enquanto isso,{" "}
+                Estamos na fase de cadastro e verificação de credenciais. Enquanto isso,{" "}
                 <Link href="/c/cadastrar" className="text-primary hover:underline">
                   crie sua conta
                 </Link>{" "}
