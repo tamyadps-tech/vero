@@ -16,7 +16,7 @@ export function Header() {
             Para profissionais
           </Link>
           <Link href="/palestrantes-e-treinadores" className="whitespace-nowrap hover:text-ink">
-            Palestrantes
+            Palestras e treinamentos
           </Link>
           <Link href="/blog" className="whitespace-nowrap hover:text-ink">
             Blog
