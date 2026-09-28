@@ -98,7 +98,7 @@ export default async function ContactDetailPage({
           {!detail.isLead && (
             <div className="mt-3 flex flex-wrap gap-3 text-sm text-ink-soft">
               <span>
-                {detail.sessionCount} sessõe{detail.sessionCount === 1 ? "" : "s"} · LTV{" "}
+                {detail.sessionCount} sessõe{detail.sessionCount === 1 ? "" : "s"} · Total pago (LTV){" "}
                 {formatPrice(detail.totalPaidCents)}
               </span>
               {detail.engagementStatus && (

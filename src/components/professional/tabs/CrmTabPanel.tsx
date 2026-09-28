@@ -73,8 +73,8 @@ export function CrmTabPanel({ contacts }: { contacts: CrmContactSummary[] | null
           </h2>
           <p className="mt-1 text-sm text-ink-soft">
             Clientes reais (quem já passou por sessão) e leads que você cadastrar
-            manualmente, num funil só. Clique num contato pra ver detalhe, notas e
-            tarefas de follow-up.
+            manualmente, todos no mesmo lugar, organizados pelo estágio de cada um.
+            Clique num contato pra ver detalhe, notas e tarefas de follow-up.
           </p>
         </div>
         <div className="flex shrink-0 gap-2">
@@ -205,7 +205,7 @@ export function CrmTabPanel({ contacts }: { contacts: CrmContactSummary[] | null
                       <>
                         <p>
                           {contact.sessionCount} sessõe{contact.sessionCount === 1 ? "" : "s"} ·{" "}
-                          LTV {formatPrice(contact.totalPaidCents)}
+                          Total pago (LTV) {formatPrice(contact.totalPaidCents)}
                         </p>
                         {contact.lastSessionAt && (
                           <p>Última: {dateFormatter.format(new Date(contact.lastSessionAt))}</p>

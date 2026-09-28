@@ -26,6 +26,42 @@ const ENGAGEMENT_ORDER = ["ativo", "em_risco", "inativo"] as const;
 
 const monthFormatter = new Intl.DateTimeFormat("pt-BR", { month: "short" });
 
+const METRIC_DEFINITIONS: { term: string; definition: string }[] = [
+  {
+    term: "Faturamento",
+    definition:
+      "Quanto entrou no total em sessões pagas, antes de tirar qualquer custo ou despesa.",
+  },
+  {
+    term: "Ticket médio",
+    definition:
+      "Quanto você recebe, em média, por sessão paga (total recebido dividido pelo número de sessões pagas).",
+  },
+  {
+    term: "Lucro líquido",
+    definition:
+      "O que sobra de verdade depois de tirar suas despesas do que você recebeu. Diferente de faturamento, que não desconta custo nenhum.",
+  },
+  {
+    term: "Recompra",
+    definition:
+      "% dos seus clientes que voltaram pra mais de uma sessão, sinal de quem confiou o suficiente pra continuar com você.",
+  },
+  {
+    term: "Taxa de conclusão",
+    definition: "% das sessões marcadas que realmente aconteceram, sem cancelamento.",
+  },
+  {
+    term: "Taxa de cancelamento",
+    definition: "% das sessões marcadas que foram canceladas, por você ou pelo cliente.",
+  },
+  {
+    term: "Engajamento (ativo / em risco / inativo)",
+    definition:
+      "Ativo é quem está em dia com você. Em risco é quem não aparece há um tempo e pode estar esfriando. Inativo é quem sumiu de vez. Ajuda a saber em quem focar pra não perder cliente sem perceber.",
+  },
+];
+
 function Kpi({ label, value, detail }: { label: string; value: string; detail?: string }) {
   return (
     <div className="rounded-2xl border border-border bg-paper-alt/40 p-5">
@@ -172,6 +208,23 @@ export function DashboardTabPanel({
             detail={`Recebido − ${formatPrice(totalExpensesCents)} em despesas`}
           />
         </div>
+
+        <details className="group mt-4 rounded-2xl border border-border bg-paper-alt/40 p-4">
+          <summary className="cursor-pointer list-none text-sm font-medium text-ink marker:content-none">
+            <span className="flex items-center justify-between gap-3">
+              O que cada número aqui significa
+              <span className="shrink-0 text-ink-soft transition group-open:rotate-45">+</span>
+            </span>
+          </summary>
+          <dl className="mt-3 grid gap-3 sm:grid-cols-2">
+            {METRIC_DEFINITIONS.map((item) => (
+              <div key={item.term}>
+                <dt className="text-xs font-semibold text-ink">{item.term}</dt>
+                <dd className="mt-0.5 text-xs leading-relaxed text-ink-soft">{item.definition}</dd>
+              </div>
+            ))}
+          </dl>
+        </details>
       </section>
 
       <section>
