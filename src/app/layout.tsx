@@ -1,7 +1,8 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Bodoni_Moda, Inter } from "next/font/google";
 import "./globals.css";
 import { AdTrackingScripts } from "@/components/AdTrackingScripts";
+import { ServiceWorkerRegister } from "@/components/ServiceWorkerRegister";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 const bodoniModa = Bodoni_Moda({
@@ -18,6 +19,16 @@ export const metadata: Metadata = {
   // é pra aparecer em buscadores. Remover quando decidirem lançar de
   // verdade (ver robots.ts também).
   robots: { index: false, follow: false },
+  manifest: "/manifest.webmanifest",
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "default",
+    title: "Vero",
+  },
+};
+
+export const viewport: Viewport = {
+  themeColor: "#454a34",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
@@ -28,6 +39,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     >
       <body className="min-h-full flex flex-col bg-paper font-sans text-ink">
         <AdTrackingScripts />
+        <ServiceWorkerRegister />
         {children}
       </body>
     </html>
